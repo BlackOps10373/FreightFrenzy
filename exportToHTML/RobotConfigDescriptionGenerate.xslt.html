@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>RobotConfigDescriptionGenerate.xslt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #bababa;}
+.s2 { color: #6a8759;}
+.s3 { color: #a9b7c6;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RobotConfigDescriptionGenerate.xslt</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">&lt;xsl:stylesheet </span><span class="s1">version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">xmlns:xsl</span><span class="s2">=&quot;http://www.w3.org/1999/XSL/Transform&quot;</span><span class="s0">&gt;</span>
+<a name="l3"><span class="ln">3    </span></a>	<span class="s0">&lt;xsl:output </span><span class="s1">method</span><span class="s2">=&quot;text&quot; </span><span class="s1">version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;UTF-8&quot; </span><span class="s1">indent</span><span class="s2">=&quot;no&quot;</span><span class="s0">/&gt;</span>
+<a name="l4"><span class="ln">4    </span></a>	<span class="s0">&lt;xsl:strip-space </span><span class="s1">elements</span><span class="s2">=&quot;*&quot;</span><span class="s0">/&gt;</span>
+<a name="l5"><span class="ln">5    </span></a>	
+<a name="l6"><span class="ln">6    </span></a>	<span class="s0">&lt;xsl:template </span><span class="s1">match</span><span class="s2">=&quot;RobotConfigTaxonomy&quot;</span><span class="s0">&gt;</span><span class="s3">&lt;![CDATA[&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; 
+<a name="l7"><span class="ln">7    </span></a>&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:fn=&quot;http://www.w3.org/2005/xpath-functions&quot;&gt; 
+<a name="l8"><span class="ln">8    </span></a>    &lt;xsl:output method=&quot;text&quot; indent=&quot;no&quot;/&gt; 
+<a name="l9"><span class="ln">9    </span></a>    &lt;xsl:strip-space elements=&quot;*&quot;/&gt; 
+<a name="l10"><span class="ln">10   </span></a> 
+<a name="l11"><span class="ln">11   </span></a>    &lt;xsl:variable name=&quot;nl&quot;&gt;&lt;xsl:text&gt; 
+<a name="l12"><span class="ln">12   </span></a>&lt;/xsl:text&gt;&lt;/xsl:variable&gt; 
+<a name="l13"><span class="ln">13   </span></a>    &lt;xsl:variable name=&quot;spaces&quot; select= &quot;'                                                                                   '&quot;/&gt; 
+<a name="l14"><span class="ln">14   </span></a>    &lt;xsl:variable name=&quot;space&quot; select= &quot;' '&quot;/&gt; 
+<a name="l15"><span class="ln">15   </span></a>  ]]&gt;</span><span class="s0">&lt;xsl:apply-templates/&gt;</span><span class="s3">&lt;![CDATA[</span>
+<a name="l16"><span class="ln">16   </span></a>  	<span class="s3">&lt;xsl:template match=&quot;MotorController&quot;&gt; 
+<a name="l17"><span class="ln">17   </span></a>        &lt;xsl:param name=&quot;indent&quot; select=&quot;0&quot;/&gt; 
+<a name="l18"><span class="ln">18   </span></a>        &lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt; 
+<a name="l19"><span class="ln">19   </span></a>        &lt;xsl:choose&gt; 
+<a name="l20"><span class="ln">20   </span></a>            &lt;xsl:when test=&quot;@port&quot;&gt;a Motor Controller &lt;xsl:choose&gt; 
+<a name="l21"><span class="ln">21   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt;(&lt;xsl:value-of select=&quot;@name&quot;/&gt;) &lt;/xsl:when&gt; 
+<a name="l22"><span class="ln">22   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l23"><span class="ln">23   </span></a>        &lt;/xsl:choose&gt;in port &lt;xsl:value-of select=&quot;@port&quot;/&gt;,&lt;xsl:value-of select=&quot;$nl&quot;/&gt;&lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;with&lt;/xsl:when&gt; 
+<a name="l24"><span class="ln">24   </span></a>            &lt;xsl:otherwise&gt;a USB Motor Controller&lt;xsl:choose&gt; 
+<a name="l25"><span class="ln">25   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt; (&lt;xsl:value-of select=&quot;@name&quot;/&gt;)&lt;/xsl:when&gt; 
+<a name="l26"><span class="ln">26   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l27"><span class="ln">27   </span></a>        &lt;/xsl:choose&gt;,&lt;xsl:value-of select=&quot;$nl&quot;/&gt;&lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;with&lt;/xsl:otherwise&gt; 
+<a name="l28"><span class="ln">28   </span></a>        &lt;/xsl:choose&gt; 
+<a name="l29"><span class="ln">29   </span></a>        &lt;xsl:value-of select=&quot;$nl&quot;/&gt; 
+<a name="l30"><span class="ln">30   </span></a>        &lt;xsl:apply-templates&gt; 
+<a name="l31"><span class="ln">31   </span></a>            &lt;xsl:with-param name=&quot;indent&quot; select=&quot;$indent+4&quot;/&gt; 
+<a name="l32"><span class="ln">32   </span></a>        &lt;/xsl:apply-templates&gt; 
+<a name="l33"><span class="ln">33   </span></a>    &lt;/xsl:template&gt; 
+<a name="l34"><span class="ln">34   </span></a>   
+<a name="l35"><span class="ln">35   </span></a>    &lt;xsl:template match=&quot;ServoController&quot;&gt; 
+<a name="l36"><span class="ln">36   </span></a>        &lt;xsl:param name=&quot;indent&quot; select=&quot;0&quot;/&gt; 
+<a name="l37"><span class="ln">37   </span></a>        &lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt; 
+<a name="l38"><span class="ln">38   </span></a>        &lt;xsl:choose&gt; 
+<a name="l39"><span class="ln">39   </span></a>            &lt;xsl:when test=&quot;@port&quot;&gt;a Servo Controller &lt;xsl:choose&gt; 
+<a name="l40"><span class="ln">40   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt;(&lt;xsl:value-of select=&quot;@name&quot;/&gt;) &lt;/xsl:when&gt; 
+<a name="l41"><span class="ln">41   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l42"><span class="ln">42   </span></a>        &lt;/xsl:choose&gt;in port &lt;xsl:value-of select=&quot;@port&quot;/&gt;,&lt;xsl:value-of select=&quot;$nl&quot;/&gt;&lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;with&lt;/xsl:when&gt; 
+<a name="l43"><span class="ln">43   </span></a>            &lt;xsl:otherwise&gt;a USB Servo Controller&lt;xsl:choose&gt; 
+<a name="l44"><span class="ln">44   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt; (&lt;xsl:value-of select=&quot;@name&quot;/&gt;)&lt;/xsl:when&gt; 
+<a name="l45"><span class="ln">45   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l46"><span class="ln">46   </span></a>        &lt;/xsl:choose&gt;,&lt;xsl:value-of select=&quot;$nl&quot;/&gt;&lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;with&lt;/xsl:otherwise&gt; 
+<a name="l47"><span class="ln">47   </span></a>        &lt;/xsl:choose&gt; 
+<a name="l48"><span class="ln">48   </span></a>        &lt;xsl:value-of select=&quot;$nl&quot;/&gt; 
+<a name="l49"><span class="ln">49   </span></a>        &lt;xsl:apply-templates&gt; 
+<a name="l50"><span class="ln">50   </span></a>            &lt;xsl:with-param name=&quot;indent&quot; select=&quot;$indent+4&quot;/&gt; 
+<a name="l51"><span class="ln">51   </span></a>        &lt;/xsl:apply-templates&gt; 
+<a name="l52"><span class="ln">52   </span></a>    &lt;/xsl:template&gt; 
+<a name="l53"><span class="ln">53   </span></a> 
+<a name="l54"><span class="ln">54   </span></a>    &lt;xsl:template match=&quot;LegacyModuleController&quot;&gt; 
+<a name="l55"><span class="ln">55   </span></a>        &lt;xsl:param name=&quot;indent&quot; select=&quot;0&quot;/&gt; 
+<a name="l56"><span class="ln">56   </span></a>        &lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;a Legacy Controller&lt;xsl:choose&gt; 
+<a name="l57"><span class="ln">57   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt; (&lt;xsl:value-of select=&quot;@name&quot;/&gt;)&lt;/xsl:when&gt; 
+<a name="l58"><span class="ln">58   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l59"><span class="ln">59   </span></a>        &lt;/xsl:choose&gt;,&lt;xsl:value-of select=&quot;$nl&quot;/&gt;&lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;with&lt;xsl:value-of select=&quot;$nl&quot;/&gt; 
+<a name="l60"><span class="ln">60   </span></a>        &lt;xsl:apply-templates&gt; 
+<a name="l61"><span class="ln">61   </span></a>            &lt;xsl:with-param name=&quot;indent&quot; select=&quot;$indent+4&quot;/&gt; 
+<a name="l62"><span class="ln">62   </span></a>        &lt;/xsl:apply-templates&gt; 
+<a name="l63"><span class="ln">63   </span></a>    &lt;/xsl:template&gt; 
+<a name="l64"><span class="ln">64   </span></a> 
+<a name="l65"><span class="ln">65   </span></a>    &lt;xsl:template match=&quot;DeviceInterfaceModule&quot;&gt; 
+<a name="l66"><span class="ln">66   </span></a>        &lt;xsl:param name=&quot;indent&quot; select=&quot;0&quot;/&gt; 
+<a name="l67"><span class="ln">67   </span></a>        &lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;a Core Device Interface Module&lt;xsl:choose&gt; 
+<a name="l68"><span class="ln">68   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt; (&lt;xsl:value-of select=&quot;@name&quot;/&gt;)&lt;/xsl:when&gt; 
+<a name="l69"><span class="ln">69   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l70"><span class="ln">70   </span></a>        &lt;/xsl:choose&gt;,&lt;xsl:value-of select=&quot;$nl&quot;/&gt;&lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;with&lt;xsl:value-of select=&quot;$nl&quot;/&gt; 
+<a name="l71"><span class="ln">71   </span></a>        &lt;xsl:apply-templates&gt; 
+<a name="l72"><span class="ln">72   </span></a>            &lt;xsl:with-param name=&quot;indent&quot; select=&quot;$indent+4&quot;/&gt; 
+<a name="l73"><span class="ln">73   </span></a>            &lt;xsl:with-param name=&quot;digitalbus&quot;&gt;digital port&lt;/xsl:with-param&gt; 
+<a name="l74"><span class="ln">74   </span></a>            &lt;xsl:with-param name=&quot;i2cbus&quot;&gt;I2C port&lt;/xsl:with-param&gt; 
+<a name="l75"><span class="ln">75   </span></a>        &lt;/xsl:apply-templates&gt; 
+<a name="l76"><span class="ln">76   </span></a>    &lt;/xsl:template&gt; 
+<a name="l77"><span class="ln">77   </span></a>   
+<a name="l78"><span class="ln">78   </span></a>&lt;/xsl:stylesheet&gt; 
+<a name="l79"><span class="ln">79   </span></a>]]&gt;</span><span class="s0">&lt;/xsl:template&gt;</span>
+<a name="l80"><span class="ln">80   </span></a>
+<a name="l81"><span class="ln">81   </span></a>	<span class="s0">&lt;xsl:template </span><span class="s1">match</span><span class="s2">=&quot;Sensor&quot;</span><span class="s0">&gt;</span><span class="s3">&lt;![CDATA[</span>
+<a name="l82"><span class="ln">82   </span></a>    <span class="s3">&lt;xsl:template match=&quot;]]&gt;</span><span class="s0">&lt;xsl:value-of </span><span class="s1">select</span><span class="s2">=&quot;XmlTag&quot;</span><span class="s0">/&gt;</span><span class="s3">&lt;![CDATA[&quot;&gt; 
+<a name="l83"><span class="ln">83   </span></a>        &lt;xsl:param name=&quot;indent&quot; select=&quot;0&quot;/&gt; 
+<a name="l84"><span class="ln">84   </span></a>        &lt;xsl:param name=&quot;]]&gt;</span><span class="s0">&lt;xsl:value-of </span><span class="s1">select</span><span class="s2">=&quot;Bus&quot;</span><span class="s0">/&gt;</span><span class="s3">&lt;![CDATA[&quot;&gt;]]&gt;</span><span class="s0">&lt;xsl:value-of </span><span class="s1">select</span><span class="s2">=&quot;BusDefault&quot;</span><span class="s0">/&gt;</span><span class="s3">&lt;![CDATA[&lt;/xsl:param&gt; 
+<a name="l85"><span class="ln">85   </span></a>        &lt;xsl:value-of select=&quot;substring($spaces, 1, $indent)&quot;/&gt;]]&gt;</span><span class="s0">&lt;xsl:value-of </span><span class="s1">select</span><span class="s2">=&quot;Description&quot;</span><span class="s0">/&gt;</span><span class="s3">&lt;![CDATA[ &lt;xsl:choose&gt; 
+<a name="l86"><span class="ln">86   </span></a>            &lt;xsl:when test=&quot;@name&quot;&gt;(&lt;xsl:value-of select=&quot;@name&quot;/&gt;) &lt;/xsl:when&gt; 
+<a name="l87"><span class="ln">87   </span></a>            &lt;xsl:otherwise&gt;&lt;/xsl:otherwise&gt; 
+<a name="l88"><span class="ln">88   </span></a>        &lt;/xsl:choose&gt;in &lt;xsl:value-of select=&quot;$]]&gt;</span><span class="s0">&lt;xsl:value-of </span><span class="s1">select</span><span class="s2">=&quot;Bus&quot;</span><span class="s0">/&gt;</span><span class="s3">&lt;![CDATA[&quot;/&gt;&lt;xsl:value-of select=&quot;$space&quot;/&gt;&lt;xsl:value-of select=&quot;@port&quot;/&gt; 
+<a name="l89"><span class="ln">89   </span></a>        &lt;xsl:value-of select=&quot;$nl&quot;/&gt; 
+<a name="l90"><span class="ln">90   </span></a>    &lt;/xsl:template&gt;]]&gt;</span>
+<a name="l91"><span class="ln">91   </span></a><span class="s0">&lt;/xsl:template&gt;</span>
+<a name="l92"><span class="ln">92   </span></a>
+<a name="l93"><span class="ln">93   </span></a><span class="s0">&lt;/xsl:stylesheet&gt;</span>
+<a name="l94"><span class="ln">94   </span></a></pre>
+</body>
+</html>

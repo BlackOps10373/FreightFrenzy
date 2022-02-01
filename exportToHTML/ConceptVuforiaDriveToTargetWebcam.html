@@ -1,0 +1,220 @@
+<html>
+<head>
+<title>ConceptVuforiaDriveToTargetWebcam</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ConceptVuforiaDriveToTargetWebcam</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">package org.firstinspires.ftc.robotcontroller.external.samples;</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">import com.qualcomm.robotcore.eventloop.opmode.Disabled;</span>
+<a name="l4"><span class="ln">4    </span></a><span class="s0">import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;</span>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">import com.qualcomm.robotcore.eventloop.opmode.TeleOp;</span>
+<a name="l6"><span class="ln">6    </span></a><span class="s0">import com.qualcomm.robotcore.hardware.DcMotor;</span>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">import com.qualcomm.robotcore.util.Range;</span>
+<a name="l8"><span class="ln">8    </span></a>
+<a name="l9"><span class="ln">9    </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.ClassFactory;</span>
+<a name="l10"><span class="ln">10   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;</span>
+<a name="l11"><span class="ln">11   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;</span>
+<a name="l12"><span class="ln">12   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.matrices.VectorF;</span>
+<a name="l13"><span class="ln">13   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;</span>
+<a name="l14"><span class="ln">14   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;</span>
+<a name="l15"><span class="ln">15   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;</span>
+<a name="l16"><span class="ln">16   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;</span>
+<a name="l17"><span class="ln">17   </span></a>
+<a name="l18"><span class="ln">18   </span></a><span class="s0">/**</span>
+<a name="l19"><span class="ln">19   </span></a> <span class="s0">* This OpMode illustrates using a webcam to locate and drive towards ANY Vuforia target.</span>
+<a name="l20"><span class="ln">20   </span></a> <span class="s0">* The code assumes a basic two-wheel Robot Configuration with motors named left_drive and right_drive.</span>
+<a name="l21"><span class="ln">21   </span></a> <span class="s0">* The motor directions must be set so a positive drive goes forward and a positive turn rotates to the right.</span>
+<a name="l22"><span class="ln">22   </span></a> <span class="s0">*</span>
+<a name="l23"><span class="ln">23   </span></a> <span class="s0">* Under manual control, the left stick will move forward/back, and the right stick will turn left/right.</span>
+<a name="l24"><span class="ln">24   </span></a> <span class="s0">* This is called POV Joystick mode, different than Tank Drive (where each joystick controls a wheel).</span>
+<a name="l25"><span class="ln">25   </span></a> <span class="s0">* Manually drive the robot until it displays Target data on the Driver Station.</span>
+<a name="l26"><span class="ln">26   </span></a> <span class="s0">* Press and hold the *Left Bumper* to enable the automatic &quot;Drive to target&quot; mode.</span>
+<a name="l27"><span class="ln">27   </span></a> <span class="s0">* Release the Left Bumper to return to manual driving mode.</span>
+<a name="l28"><span class="ln">28   </span></a> <span class="s0">*</span>
+<a name="l29"><span class="ln">29   </span></a> <span class="s0">* Use DESIRED_DISTANCE to set how close you want the robot to get to the target.</span>
+<a name="l30"><span class="ln">30   </span></a> <span class="s0">* Speed and Turn sensitivity can be adjusted using the SPEED_GAIN and TURN_GAIN constants.</span>
+<a name="l31"><span class="ln">31   </span></a> <span class="s0">*</span>
+<a name="l32"><span class="ln">32   </span></a> <span class="s0">* For more Vuforia details, or to adapt this OpMode for a phone camera, view the</span>
+<a name="l33"><span class="ln">33   </span></a> <span class="s0">*  ConceptVuforiaFieldNavigation and ConceptVuforiaFieldNavigationWebcam samples.</span>
+<a name="l34"><span class="ln">34   </span></a> <span class="s0">*</span>
+<a name="l35"><span class="ln">35   </span></a> <span class="s0">* Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.</span>
+<a name="l36"><span class="ln">36   </span></a> <span class="s0">* Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.</span>
+<a name="l37"><span class="ln">37   </span></a> <span class="s0">*</span>
+<a name="l38"><span class="ln">38   </span></a> <span class="s0">* IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as</span>
+<a name="l39"><span class="ln">39   </span></a> <span class="s0">* is explained below.</span>
+<a name="l40"><span class="ln">40   </span></a> <span class="s0">*/</span>
+<a name="l41"><span class="ln">41   </span></a>
+<a name="l42"><span class="ln">42   </span></a><span class="s0">@TeleOp(name=&quot;Drive To Target&quot;, group = &quot;Concept&quot;)</span>
+<a name="l43"><span class="ln">43   </span></a><span class="s0">@Disabled</span>
+<a name="l44"><span class="ln">44   </span></a><span class="s0">public class ConceptVuforiaDriveToTargetWebcam extends LinearOpMode</span>
+<a name="l45"><span class="ln">45   </span></a><span class="s0">{</span>
+<a name="l46"><span class="ln">46   </span></a>    <span class="s0">// Adjust these numbers to suit your robot.</span>
+<a name="l47"><span class="ln">47   </span></a>    <span class="s0">final double DESIRED_DISTANCE = 8.0; //  this is how close the camera should get to the target (inches)</span>
+<a name="l48"><span class="ln">48   </span></a>                                         <span class="s0">//  The GAIN constants set the relationship between the measured position error,</span>
+<a name="l49"><span class="ln">49   </span></a>                                         <span class="s0">//  and how much power is applied to the drive motors.  Drive = Error * Gain</span>
+<a name="l50"><span class="ln">50   </span></a>                                         <span class="s0">//  Make these values smaller for smoother control.</span>
+<a name="l51"><span class="ln">51   </span></a>    <span class="s0">final double SPEED_GAIN =   0.02 ;   //  Speed Control &quot;Gain&quot;. eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)</span>
+<a name="l52"><span class="ln">52   </span></a>    <span class="s0">final double TURN_GAIN  =   0.01 ;   //  Turn Control &quot;Gain&quot;.  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)</span>
+<a name="l53"><span class="ln">53   </span></a>
+<a name="l54"><span class="ln">54   </span></a>    <span class="s0">final double MM_PER_INCH = 25.40 ;   //  Metric conversion</span>
+<a name="l55"><span class="ln">55   </span></a>
+<a name="l56"><span class="ln">56   </span></a>    <span class="s0">/*</span>
+<a name="l57"><span class="ln">57   </span></a>     <span class="s0">* IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which</span>
+<a name="l58"><span class="ln">58   </span></a>     <span class="s0">* 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.</span>
+<a name="l59"><span class="ln">59   </span></a>     <span class="s0">* A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer</span>
+<a name="l60"><span class="ln">60   </span></a>     <span class="s0">* web site at https://developer.vuforia.com/license-manager.</span>
+<a name="l61"><span class="ln">61   </span></a>     <span class="s0">*</span>
+<a name="l62"><span class="ln">62   </span></a>     <span class="s0">* Vuforia license keys are always 380 characters long, and look as if they contain mostly</span>
+<a name="l63"><span class="ln">63   </span></a>     <span class="s0">* random data. As an example, here is a example of a fragment of a valid key:</span>
+<a name="l64"><span class="ln">64   </span></a>     <span class="s0">*      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...</span>
+<a name="l65"><span class="ln">65   </span></a>     <span class="s0">* Once you've obtained a license key, copy the string from the Vuforia web site</span>
+<a name="l66"><span class="ln">66   </span></a>     <span class="s0">* and paste it in to your code on the next line, between the double quotes.</span>
+<a name="l67"><span class="ln">67   </span></a>     <span class="s0">*/</span>
+<a name="l68"><span class="ln">68   </span></a>    <span class="s0">private static final String VUFORIA_KEY =</span>
+<a name="l69"><span class="ln">69   </span></a>            <span class="s0">&quot; --- YOUR NEW VUFORIA KEY GOES HERE  --- &quot;;</span>
+<a name="l70"><span class="ln">70   </span></a>
+<a name="l71"><span class="ln">71   </span></a>    <span class="s0">VuforiaLocalizer vuforia    = null;</span>
+<a name="l72"><span class="ln">72   </span></a>    <span class="s0">OpenGLMatrix targetPose     = null;</span>
+<a name="l73"><span class="ln">73   </span></a>    <span class="s0">String targetName           = &quot;&quot;;</span>
+<a name="l74"><span class="ln">74   </span></a>
+<a name="l75"><span class="ln">75   </span></a>    <span class="s0">private DcMotor leftDrive   = null;</span>
+<a name="l76"><span class="ln">76   </span></a>    <span class="s0">private DcMotor rightDrive  = null;</span>
+<a name="l77"><span class="ln">77   </span></a>
+<a name="l78"><span class="ln">78   </span></a>    <span class="s0">@Override public void runOpMode()</span>
+<a name="l79"><span class="ln">79   </span></a>    <span class="s0">{</span>
+<a name="l80"><span class="ln">80   </span></a>        <span class="s0">/*</span>
+<a name="l81"><span class="ln">81   </span></a>         <span class="s0">* Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.</span>
+<a name="l82"><span class="ln">82   </span></a>         <span class="s0">* To get an on-phone camera preview, use the code below.</span>
+<a name="l83"><span class="ln">83   </span></a>         <span class="s0">* If no camera preview is desired, use the parameter-less constructor instead (commented out below).</span>
+<a name="l84"><span class="ln">84   </span></a>         <span class="s0">*/</span>
+<a name="l85"><span class="ln">85   </span></a>        <span class="s0">int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(&quot;cameraMonitorViewId&quot;, &quot;id&quot;, hardwareMap.appContext.getPackageName());</span>
+<a name="l86"><span class="ln">86   </span></a>        <span class="s0">VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);</span>
+<a name="l87"><span class="ln">87   </span></a>        <span class="s0">// VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();</span>
+<a name="l88"><span class="ln">88   </span></a>
+<a name="l89"><span class="ln">89   </span></a>        <span class="s0">parameters.vuforiaLicenseKey = VUFORIA_KEY;</span>
+<a name="l90"><span class="ln">90   </span></a>
+<a name="l91"><span class="ln">91   </span></a>        <span class="s0">// Turn off Extended tracking.  Set this true if you want Vuforia to track beyond the target.</span>
+<a name="l92"><span class="ln">92   </span></a>        <span class="s0">parameters.useExtendedTracking = false;</span>
+<a name="l93"><span class="ln">93   </span></a>
+<a name="l94"><span class="ln">94   </span></a>        <span class="s0">// Connect to the camera we are to use.  This name must match what is set up in Robot Configuration</span>
+<a name="l95"><span class="ln">95   </span></a>        <span class="s0">parameters.cameraName = hardwareMap.get(WebcamName.class, &quot;Webcam 1&quot;);</span>
+<a name="l96"><span class="ln">96   </span></a>        <span class="s0">this.vuforia = ClassFactory.getInstance().createVuforia(parameters);</span>
+<a name="l97"><span class="ln">97   </span></a>
+<a name="l98"><span class="ln">98   </span></a>        <span class="s0">// Load the trackable objects from the Assets file, and give them meaningful names</span>
+<a name="l99"><span class="ln">99   </span></a>        <span class="s0">VuforiaTrackables targetsFreightFrenzy = this.vuforia.loadTrackablesFromAsset(&quot;FreightFrenzy&quot;);</span>
+<a name="l100"><span class="ln">100  </span></a>        <span class="s0">targetsFreightFrenzy.get(0).setName(&quot;Blue Storage&quot;);</span>
+<a name="l101"><span class="ln">101  </span></a>        <span class="s0">targetsFreightFrenzy.get(1).setName(&quot;Blue Alliance Wall&quot;);</span>
+<a name="l102"><span class="ln">102  </span></a>        <span class="s0">targetsFreightFrenzy.get(2).setName(&quot;Red Storage&quot;);</span>
+<a name="l103"><span class="ln">103  </span></a>        <span class="s0">targetsFreightFrenzy.get(3).setName(&quot;Red Alliance Wall&quot;);</span>
+<a name="l104"><span class="ln">104  </span></a>
+<a name="l105"><span class="ln">105  </span></a>        <span class="s0">// Start tracking targets in the background</span>
+<a name="l106"><span class="ln">106  </span></a>        <span class="s0">targetsFreightFrenzy.activate();</span>
+<a name="l107"><span class="ln">107  </span></a>
+<a name="l108"><span class="ln">108  </span></a>        <span class="s0">// Initialize the hardware variables. Note that the strings used here as parameters</span>
+<a name="l109"><span class="ln">109  </span></a>        <span class="s0">// to 'get' must correspond to the names assigned during the robot configuration</span>
+<a name="l110"><span class="ln">110  </span></a>        <span class="s0">// step (using the FTC Robot Controller app on the phone).</span>
+<a name="l111"><span class="ln">111  </span></a>        <span class="s0">leftDrive  = hardwareMap.get(DcMotor.class, &quot;left_drive&quot;);</span>
+<a name="l112"><span class="ln">112  </span></a>        <span class="s0">rightDrive = hardwareMap.get(DcMotor.class, &quot;right_drive&quot;);</span>
+<a name="l113"><span class="ln">113  </span></a>
+<a name="l114"><span class="ln">114  </span></a>        <span class="s0">// To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.</span>
+<a name="l115"><span class="ln">115  </span></a>        <span class="s0">// Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.</span>
+<a name="l116"><span class="ln">116  </span></a>        <span class="s0">leftDrive.setDirection(DcMotor.Direction.FORWARD);</span>
+<a name="l117"><span class="ln">117  </span></a>        <span class="s0">rightDrive.setDirection(DcMotor.Direction.REVERSE);</span>
+<a name="l118"><span class="ln">118  </span></a>
+<a name="l119"><span class="ln">119  </span></a>        <span class="s0">telemetry.addData(&quot;&gt;&quot;, &quot;Press Play to start&quot;);</span>
+<a name="l120"><span class="ln">120  </span></a>        <span class="s0">telemetry.update();</span>
+<a name="l121"><span class="ln">121  </span></a>
+<a name="l122"><span class="ln">122  </span></a>        <span class="s0">waitForStart();</span>
+<a name="l123"><span class="ln">123  </span></a>
+<a name="l124"><span class="ln">124  </span></a>        <span class="s0">boolean targetFound     = false;    // Set to true when a target is detected by Vuforia</span>
+<a name="l125"><span class="ln">125  </span></a>        <span class="s0">double  targetRange     = 0;        // Distance from camera to target in Inches</span>
+<a name="l126"><span class="ln">126  </span></a>        <span class="s0">double  targetBearing   = 0;        // Robot Heading, relative to target.  Positive degrees means target is to the right.</span>
+<a name="l127"><span class="ln">127  </span></a>        <span class="s0">double  drive           = 0;        // Desired forward power (-1 to +1)</span>
+<a name="l128"><span class="ln">128  </span></a>        <span class="s0">double  turn            = 0;        // Desired turning power (-1 to +1)</span>
+<a name="l129"><span class="ln">129  </span></a>
+<a name="l130"><span class="ln">130  </span></a>        <span class="s0">while (opModeIsActive())</span>
+<a name="l131"><span class="ln">131  </span></a>        <span class="s0">{</span>
+<a name="l132"><span class="ln">132  </span></a>            <span class="s0">// Look for first visible target, and save its pose.</span>
+<a name="l133"><span class="ln">133  </span></a>            <span class="s0">targetFound = false;</span>
+<a name="l134"><span class="ln">134  </span></a>            <span class="s0">for (VuforiaTrackable trackable : targetsFreightFrenzy)</span>
+<a name="l135"><span class="ln">135  </span></a>            <span class="s0">{</span>
+<a name="l136"><span class="ln">136  </span></a>                <span class="s0">if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible())</span>
+<a name="l137"><span class="ln">137  </span></a>                <span class="s0">{</span>
+<a name="l138"><span class="ln">138  </span></a>                    <span class="s0">targetPose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getVuforiaCameraFromTarget();</span>
+<a name="l139"><span class="ln">139  </span></a>
+<a name="l140"><span class="ln">140  </span></a>                    <span class="s0">// if we have a target, process the &quot;pose&quot; to determine the position of the target relative to the robot.</span>
+<a name="l141"><span class="ln">141  </span></a>                    <span class="s0">if (targetPose != null)</span>
+<a name="l142"><span class="ln">142  </span></a>                    <span class="s0">{</span>
+<a name="l143"><span class="ln">143  </span></a>                        <span class="s0">targetFound = true;</span>
+<a name="l144"><span class="ln">144  </span></a>                        <span class="s0">targetName  = trackable.getName();</span>
+<a name="l145"><span class="ln">145  </span></a>                        <span class="s0">VectorF trans = targetPose.getTranslation();</span>
+<a name="l146"><span class="ln">146  </span></a>
+<a name="l147"><span class="ln">147  </span></a>                        <span class="s0">// Extract the X &amp; Y components of the offset of the target relative to the robot</span>
+<a name="l148"><span class="ln">148  </span></a>                        <span class="s0">double targetX = trans.get(0) / MM_PER_INCH; // Image X axis</span>
+<a name="l149"><span class="ln">149  </span></a>                        <span class="s0">double targetY = trans.get(2) / MM_PER_INCH; // Image Z axis</span>
+<a name="l150"><span class="ln">150  </span></a>
+<a name="l151"><span class="ln">151  </span></a>                        <span class="s0">// target range is based on distance from robot position to origin (right triangle).</span>
+<a name="l152"><span class="ln">152  </span></a>                        <span class="s0">targetRange = Math.hypot(targetX, targetY);</span>
+<a name="l153"><span class="ln">153  </span></a>
+<a name="l154"><span class="ln">154  </span></a>                        <span class="s0">// target bearing is based on angle formed between the X axis and the target range line</span>
+<a name="l155"><span class="ln">155  </span></a>                        <span class="s0">targetBearing = Math.toDegrees(Math.asin(targetX / targetRange));</span>
+<a name="l156"><span class="ln">156  </span></a>
+<a name="l157"><span class="ln">157  </span></a>                        <span class="s0">break;  // jump out of target tracking loop if we find a target.</span>
+<a name="l158"><span class="ln">158  </span></a>                    <span class="s0">}</span>
+<a name="l159"><span class="ln">159  </span></a>                <span class="s0">}</span>
+<a name="l160"><span class="ln">160  </span></a>            <span class="s0">}</span>
+<a name="l161"><span class="ln">161  </span></a>
+<a name="l162"><span class="ln">162  </span></a>            <span class="s0">// Tell the driver what we see, and what to do.</span>
+<a name="l163"><span class="ln">163  </span></a>            <span class="s0">if (targetFound) {</span>
+<a name="l164"><span class="ln">164  </span></a>                <span class="s0">telemetry.addData(&quot;&gt;&quot;,&quot;HOLD Left-Bumper to Drive to Target\n&quot;);</span>
+<a name="l165"><span class="ln">165  </span></a>                <span class="s0">telemetry.addData(&quot;Target&quot;, &quot; %s&quot;, targetName);</span>
+<a name="l166"><span class="ln">166  </span></a>                <span class="s0">telemetry.addData(&quot;Range&quot;,  &quot;%5.1f inches&quot;, targetRange);</span>
+<a name="l167"><span class="ln">167  </span></a>                <span class="s0">telemetry.addData(&quot;Bearing&quot;,&quot;%3.0f degrees&quot;, targetBearing);</span>
+<a name="l168"><span class="ln">168  </span></a>            <span class="s0">} else {</span>
+<a name="l169"><span class="ln">169  </span></a>                <span class="s0">telemetry.addData(&quot;&gt;&quot;,&quot;Drive using joystick to find target\n&quot;);</span>
+<a name="l170"><span class="ln">170  </span></a>            <span class="s0">}</span>
+<a name="l171"><span class="ln">171  </span></a>
+<a name="l172"><span class="ln">172  </span></a>            <span class="s0">// Drive to target Automatically if Left Bumper is being pressed, AND we have found a target.</span>
+<a name="l173"><span class="ln">173  </span></a>            <span class="s0">if (gamepad1.left_bumper &amp;&amp; targetFound) {</span>
+<a name="l174"><span class="ln">174  </span></a>
+<a name="l175"><span class="ln">175  </span></a>                <span class="s0">// Determine heading and range error so we can use them to control the robot automatically.</span>
+<a name="l176"><span class="ln">176  </span></a>                <span class="s0">double  rangeError   = (targetRange - DESIRED_DISTANCE);</span>
+<a name="l177"><span class="ln">177  </span></a>                <span class="s0">double  headingError = targetBearing;</span>
+<a name="l178"><span class="ln">178  </span></a>
+<a name="l179"><span class="ln">179  </span></a>                <span class="s0">// Use the speed and turn &quot;gains&quot; to calculate how we want the robot to move.</span>
+<a name="l180"><span class="ln">180  </span></a>                <span class="s0">drive = rangeError * SPEED_GAIN;</span>
+<a name="l181"><span class="ln">181  </span></a>                <span class="s0">turn  = headingError * TURN_GAIN ;</span>
+<a name="l182"><span class="ln">182  </span></a>
+<a name="l183"><span class="ln">183  </span></a>                <span class="s0">telemetry.addData(&quot;Auto&quot;,&quot;Drive %5.2f, Turn %5.2f&quot;, drive, turn);</span>
+<a name="l184"><span class="ln">184  </span></a>            <span class="s0">} else {</span>
+<a name="l185"><span class="ln">185  </span></a>
+<a name="l186"><span class="ln">186  </span></a>                <span class="s0">// drive using manual POV Joystick mode.</span>
+<a name="l187"><span class="ln">187  </span></a>                <span class="s0">drive = -gamepad1.left_stick_y  / 2.0;  // Reduce drive rate to 50%.</span>
+<a name="l188"><span class="ln">188  </span></a>                <span class="s0">turn  =  gamepad1.right_stick_x / 4.0;  // Reduce turn rate to 25%.</span>
+<a name="l189"><span class="ln">189  </span></a>                <span class="s0">telemetry.addData(&quot;Manual&quot;,&quot;Drive %5.2f, Turn %5.2f&quot;, drive, turn);</span>
+<a name="l190"><span class="ln">190  </span></a>            <span class="s0">}</span>
+<a name="l191"><span class="ln">191  </span></a>            <span class="s0">telemetry.update();</span>
+<a name="l192"><span class="ln">192  </span></a>
+<a name="l193"><span class="ln">193  </span></a>            <span class="s0">// Calculate left and right wheel powers and send to them to the motors.</span>
+<a name="l194"><span class="ln">194  </span></a>            <span class="s0">double leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;</span>
+<a name="l195"><span class="ln">195  </span></a>            <span class="s0">double rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;</span>
+<a name="l196"><span class="ln">196  </span></a>            <span class="s0">leftDrive.setPower(leftPower);</span>
+<a name="l197"><span class="ln">197  </span></a>            <span class="s0">rightDrive.setPower(rightPower);</span>
+<a name="l198"><span class="ln">198  </span></a>
+<a name="l199"><span class="ln">199  </span></a>            <span class="s0">sleep(10);</span>
+<a name="l200"><span class="ln">200  </span></a>        <span class="s0">}</span>
+<a name="l201"><span class="ln">201  </span></a>    <span class="s0">}</span>
+<a name="l202"><span class="ln">202  </span></a><span class="s0">}</span>
+<a name="l203"><span class="ln">203  </span></a></pre>
+</body>
+</html>

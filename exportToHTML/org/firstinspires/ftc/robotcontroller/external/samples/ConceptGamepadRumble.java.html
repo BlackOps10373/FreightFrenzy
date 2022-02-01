@@ -1,0 +1,223 @@
+<html>
+<head>
+<title>ConceptGamepadRumble.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+.s5 { color: #6897bb;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ConceptGamepadRumble.java</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">org.firstinspires.ftc.robotcontroller.external.samples</span><span class="s0">;</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">import </span><span class="s1">com.qualcomm.robotcore.eventloop.opmode.Disabled</span><span class="s0">;</span>
+<a name="l4"><span class="ln">4    </span></a><span class="s0">import </span><span class="s1">com.qualcomm.robotcore.eventloop.opmode.LinearOpMode</span><span class="s0">;</span>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">import </span><span class="s1">com.qualcomm.robotcore.eventloop.opmode.TeleOp</span><span class="s0">;</span>
+<a name="l6"><span class="ln">6    </span></a><span class="s0">import </span><span class="s1">com.qualcomm.robotcore.hardware.Gamepad</span><span class="s0">;</span>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">import </span><span class="s1">com.qualcomm.robotcore.util.ElapsedTime</span><span class="s0">;</span>
+<a name="l8"><span class="ln">8    </span></a>
+<a name="l9"><span class="ln">9    </span></a><span class="s2">/**</span>
+<a name="l10"><span class="ln">10   </span></a> <span class="s2">* This sample illustrates using the rumble feature of many gamepads.</span>
+<a name="l11"><span class="ln">11   </span></a> <span class="s2">*</span>
+<a name="l12"><span class="ln">12   </span></a> <span class="s2">* Note: Some gamepads &quot;rumble&quot; better than others.</span>
+<a name="l13"><span class="ln">13   </span></a> <span class="s2">*   The Xbox &amp; PS4 have a left (rumble1) and right (rumble2) rumble motor.</span>
+<a name="l14"><span class="ln">14   </span></a> <span class="s2">*   These two gamepads have two distinct rumble modes: Large on the left, and small on the right</span>
+<a name="l15"><span class="ln">15   </span></a> <span class="s2">*   The ETpark gamepad may only respond to rumble1, and may only run at full power.</span>
+<a name="l16"><span class="ln">16   </span></a> <span class="s2">*   The Logitech F310 gamepad does not have *any* rumble ability.</span>
+<a name="l17"><span class="ln">17   </span></a> <span class="s2">*</span>
+<a name="l18"><span class="ln">18   </span></a> <span class="s2">*   Moral:  You should use this sample to experiment with your specific gamepads to explore their rumble features.</span>
+<a name="l19"><span class="ln">19   </span></a> <span class="s2">*</span>
+<a name="l20"><span class="ln">20   </span></a> <span class="s2">* The rumble motors are accessed through the standard gamepad1 and gamepad2 objects.</span>
+<a name="l21"><span class="ln">21   </span></a> <span class="s2">*   Several new methods were added to the Gamepad class in FTC SDK Rev 7</span>
+<a name="l22"><span class="ln">22   </span></a> <span class="s2">*   The key methods are as follows:</span>
+<a name="l23"><span class="ln">23   </span></a> <span class="s2">*</span>
+<a name="l24"><span class="ln">24   </span></a> <span class="s2">*   .rumble(double rumble1, double rumble2, int durationMs)</span>
+<a name="l25"><span class="ln">25   </span></a> <span class="s2">*     This method sets the rumble power of both motors for a specific time duration.</span>
+<a name="l26"><span class="ln">26   </span></a> <span class="s2">*     Both rumble arguments are motor-power levels in the 0.0 to 1.0 range.</span>
+<a name="l27"><span class="ln">27   </span></a> <span class="s2">*     durationMs is the desired length of the rumble action in milliseconds.</span>
+<a name="l28"><span class="ln">28   </span></a> <span class="s2">*     This method returns immediately.</span>
+<a name="l29"><span class="ln">29   </span></a> <span class="s2">*     Note:</span>
+<a name="l30"><span class="ln">30   </span></a> <span class="s2">*       Use a durationMs of Gamepad.RUMBLE_DURATION_CONTINUOUS to provide a continuous rumble</span>
+<a name="l31"><span class="ln">31   </span></a> <span class="s2">*       Use a power of 0, or duration of 0 to stop a rumble.</span>
+<a name="l32"><span class="ln">32   </span></a> <span class="s2">*</span>
+<a name="l33"><span class="ln">33   </span></a> <span class="s2">*   .rumbleBlips(int count) allows an easy way to signal the driver with a series of rumble blips.</span>
+<a name="l34"><span class="ln">34   </span></a> <span class="s2">*     Just specify how many blips you want.</span>
+<a name="l35"><span class="ln">35   </span></a> <span class="s2">*     This method returns immediately.</span>
+<a name="l36"><span class="ln">36   </span></a> <span class="s2">*</span>
+<a name="l37"><span class="ln">37   </span></a> <span class="s2">*   .runRumbleEffect(customRumbleEffect) allows you to run a custom rumble sequence that you have</span>
+<a name="l38"><span class="ln">38   </span></a> <span class="s2">*     built using the Gamepad.RumbleEffect.Builder()</span>
+<a name="l39"><span class="ln">39   </span></a> <span class="s2">*     A &quot;custom effect&quot; is a sequence of steps, where each step can rumble any of the</span>
+<a name="l40"><span class="ln">40   </span></a> <span class="s2">*     rumble motors for a specific period at a specific power level.</span>
+<a name="l41"><span class="ln">41   </span></a> <span class="s2">*     The Custom Effect will play as the (un-blocked) OpMode continues to run</span>
+<a name="l42"><span class="ln">42   </span></a> <span class="s2">*</span>
+<a name="l43"><span class="ln">43   </span></a> <span class="s2">*   .isRumbling() returns true if there is a rumble effect in progress.</span>
+<a name="l44"><span class="ln">44   </span></a> <span class="s2">*     Use this call to prevent stepping on a current rumble.</span>
+<a name="l45"><span class="ln">45   </span></a> <span class="s2">*</span>
+<a name="l46"><span class="ln">46   </span></a> <span class="s2">*   .stopRumble()              Stop any ongoing rumble or custom rumble effect.</span>
+<a name="l47"><span class="ln">47   </span></a> <span class="s2">*</span>
+<a name="l48"><span class="ln">48   </span></a> <span class="s2">*   .rumble(int durationMs)    Full power rumble for fixed duration.</span>
+<a name="l49"><span class="ln">49   </span></a> <span class="s2">*</span>
+<a name="l50"><span class="ln">50   </span></a> <span class="s2">*   Note: Whenever a new Rumble command is issued, any currently executing rumble action will</span>
+<a name="l51"><span class="ln">51   </span></a> <span class="s2">*   be truncated, and the new action started immediately.  Take these precautions:</span>
+<a name="l52"><span class="ln">52   </span></a> <span class="s2">*      1) Do Not SPAM the rumble motors by issuing rapid fire commands</span>
+<a name="l53"><span class="ln">53   </span></a> <span class="s2">*      2) Multiple sources for rumble commands must coordinate to avoid tromping on each other.</span>
+<a name="l54"><span class="ln">54   </span></a> <span class="s2">*</span>
+<a name="l55"><span class="ln">55   </span></a> <span class="s2">*   This can be achieved several possible ways:</span>
+<a name="l56"><span class="ln">56   </span></a> <span class="s2">*   1) Only having one source for rumble actions</span>
+<a name="l57"><span class="ln">57   </span></a> <span class="s2">*   2) Issuing rumble commands on transitions, rather than states.</span>
+<a name="l58"><span class="ln">58   </span></a> <span class="s2">*      e.g. The moment a touch sensor is pressed, rather than the entire time it is being pressed.</span>
+<a name="l59"><span class="ln">59   </span></a> <span class="s2">*   3) Scheduling rumble commands based on timed events. e.g. 10 seconds prior to endgame</span>
+<a name="l60"><span class="ln">60   </span></a> <span class="s2">*   4) Rumble on non-overlapping mechanical actions. e.g. arm fully-extended or fully-retracted.</span>
+<a name="l61"><span class="ln">61   </span></a> <span class="s2">*   5) Use isRumbling() to hold off on a new rumble if one is already in progress.</span>
+<a name="l62"><span class="ln">62   </span></a> <span class="s2">*</span>
+<a name="l63"><span class="ln">63   </span></a> <span class="s2">* The examples shown here are representstive of how to invoke a gamepad rumble.</span>
+<a name="l64"><span class="ln">64   </span></a> <span class="s2">* It is assumed that these will be modified to suit the specific robot and team strategy needs.</span>
+<a name="l65"><span class="ln">65   </span></a> <span class="s2">*</span>
+<a name="l66"><span class="ln">66   </span></a> <span class="s2">* ########   Read the telemetry display on the Driver Station Screen for instructions.   ######</span>
+<a name="l67"><span class="ln">67   </span></a> <span class="s2">*</span>
+<a name="l68"><span class="ln">68   </span></a> <span class="s2">* Ex 1)    This example shows a) how to create a custom rumble effect, and then b) how to trigger it based</span>
+<a name="l69"><span class="ln">69   </span></a> <span class="s2">*          on game time.  One use for this might be to alert the driver that half-time or End-game is approaching.</span>
+<a name="l70"><span class="ln">70   </span></a> <span class="s2">*</span>
+<a name="l71"><span class="ln">71   </span></a> <span class="s2">* Ex 2)    This example shows tying the rumble power to a changing sensor value.</span>
+<a name="l72"><span class="ln">72   </span></a> <span class="s2">*          In this case it is the Gamepad trigger, but it could be any sensor output scaled to the 0-1 range.</span>
+<a name="l73"><span class="ln">73   </span></a> <span class="s2">*          Since it takes over the rumble motors, it is only performed when the Left Bumper is pressed.</span>
+<a name="l74"><span class="ln">74   </span></a> <span class="s2">*          Note that this approach MUST include a way to turn OFF the rumble when the button is released.</span>
+<a name="l75"><span class="ln">75   </span></a> <span class="s2">*</span>
+<a name="l76"><span class="ln">76   </span></a> <span class="s2">* Ex 3)    This example shows a simple way to trigger a 3-blip sequence.  In this case it is</span>
+<a name="l77"><span class="ln">77   </span></a> <span class="s2">*          triggered by the gamepad A (Cross) button, but it could be any sensor, like a touch or light sensor.</span>
+<a name="l78"><span class="ln">78   </span></a> <span class="s2">*          Note that this code ensures that it only rumbles once when the input goes true.</span>
+<a name="l79"><span class="ln">79   </span></a> <span class="s2">*</span>
+<a name="l80"><span class="ln">80   </span></a> <span class="s2">* Ex 4)    This example shows how to trigger a single rumble when an input value gets over a certain value.</span>
+<a name="l81"><span class="ln">81   </span></a> <span class="s2">*          In this case it is reading the Right Trigger, but it could be any variable sensor, like a</span>
+<a name="l82"><span class="ln">82   </span></a> <span class="s2">*          range sensor, or position sensor.  The code needs to ensure that it is only triggered once, so</span>
+<a name="l83"><span class="ln">83   </span></a> <span class="s2">*          it waits till the sensor drops back below the threshold before it can trigger again.</span>
+<a name="l84"><span class="ln">84   </span></a> <span class="s2">*</span>
+<a name="l85"><span class="ln">85   </span></a> <span class="s2">* Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.</span>
+<a name="l86"><span class="ln">86   </span></a> <span class="s2">* Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.</span>
+<a name="l87"><span class="ln">87   </span></a> <span class="s2">*/</span>
+<a name="l88"><span class="ln">88   </span></a>
+<a name="l89"><span class="ln">89   </span></a><span class="s1">@Disabled</span>
+<a name="l90"><span class="ln">90   </span></a><span class="s1">@TeleOp(name=</span><span class="s3">&quot;Concept: Gamepad Rumble&quot;</span><span class="s0">, </span><span class="s1">group =</span><span class="s3">&quot;Concept&quot;</span><span class="s1">)</span>
+<a name="l91"><span class="ln">91   </span></a><span class="s0">public class </span><span class="s1">ConceptGamepadRumble </span><span class="s0">extends </span><span class="s1">LinearOpMode</span>
+<a name="l92"><span class="ln">92   </span></a><span class="s1">{</span>
+<a name="l93"><span class="ln">93   </span></a>    <span class="s0">boolean </span><span class="s1">lastA = </span><span class="s0">false;                      </span><span class="s4">// Use to track the prior button state.</span>
+<a name="l94"><span class="ln">94   </span></a>    <span class="s0">boolean </span><span class="s1">lastLB = </span><span class="s0">false;                     </span><span class="s4">// Use to track the prior button state.</span>
+<a name="l95"><span class="ln">95   </span></a>    <span class="s0">boolean </span><span class="s1">highLevel = </span><span class="s0">false;                  </span><span class="s4">// used to prevent multiple level-based rumbles.</span>
+<a name="l96"><span class="ln">96   </span></a>    <span class="s0">boolean </span><span class="s1">secondHalf = </span><span class="s0">false;                 </span><span class="s4">// Use to prevent multiple half-time warning rumbles.</span>
+<a name="l97"><span class="ln">97   </span></a>
+<a name="l98"><span class="ln">98   </span></a>    <span class="s1">Gamepad.RumbleEffect customRumbleEffect</span><span class="s0">;    </span><span class="s4">// Use to build a custom rumble sequence.</span>
+<a name="l99"><span class="ln">99   </span></a>    <span class="s1">ElapsedTime runtime = </span><span class="s0">new </span><span class="s1">ElapsedTime()</span><span class="s0">;    </span><span class="s4">// Use to determine when end game is starting.</span>
+<a name="l100"><span class="ln">100  </span></a>
+<a name="l101"><span class="ln">101  </span></a>    <span class="s0">final double </span><span class="s1">HALF_TIME = </span><span class="s5">60.0</span><span class="s0">;              </span><span class="s4">// Wait this many seconds before rumble-alert for half-time.</span>
+<a name="l102"><span class="ln">102  </span></a>    <span class="s0">final double </span><span class="s1">TRIGGER_THRESHOLD  = </span><span class="s5">0.75</span><span class="s0">;     </span><span class="s4">// Squeeze more than 3/4 to get rumble.</span>
+<a name="l103"><span class="ln">103  </span></a>
+<a name="l104"><span class="ln">104  </span></a>    <span class="s1">@Override</span>
+<a name="l105"><span class="ln">105  </span></a>    <span class="s0">public void </span><span class="s1">runOpMode()</span>
+<a name="l106"><span class="ln">106  </span></a>    <span class="s1">{</span>
+<a name="l107"><span class="ln">107  </span></a>        <span class="s4">// Example 1. a)   start by creating a three-pulse rumble sequence: right, LEFT, LEFT</span>
+<a name="l108"><span class="ln">108  </span></a>        <span class="s1">customRumbleEffect = </span><span class="s0">new </span><span class="s1">Gamepad.RumbleEffect.Builder()</span>
+<a name="l109"><span class="ln">109  </span></a>                <span class="s1">.addStep(</span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">1.0</span><span class="s0">, </span><span class="s5">500</span><span class="s1">)  </span><span class="s4">//  Rumble right motor 100% for 500 mSec</span>
+<a name="l110"><span class="ln">110  </span></a>                <span class="s1">.addStep(</span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">300</span><span class="s1">)  </span><span class="s4">//  Pause for 300 mSec</span>
+<a name="l111"><span class="ln">111  </span></a>                <span class="s1">.addStep(</span><span class="s5">1.0</span><span class="s0">, </span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">250</span><span class="s1">)  </span><span class="s4">//  Rumble left motor 100% for 250 mSec</span>
+<a name="l112"><span class="ln">112  </span></a>                <span class="s1">.addStep(</span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">250</span><span class="s1">)  </span><span class="s4">//  Pause for 250 mSec</span>
+<a name="l113"><span class="ln">113  </span></a>                <span class="s1">.addStep(</span><span class="s5">1.0</span><span class="s0">, </span><span class="s5">0.0</span><span class="s0">, </span><span class="s5">250</span><span class="s1">)  </span><span class="s4">//  Rumble left motor 100% for 250 mSec</span>
+<a name="l114"><span class="ln">114  </span></a>                <span class="s1">.build()</span><span class="s0">;</span>
+<a name="l115"><span class="ln">115  </span></a>
+<a name="l116"><span class="ln">116  </span></a>        <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Press Start&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l117"><span class="ln">117  </span></a>        <span class="s1">telemetry.update()</span><span class="s0">;</span>
+<a name="l118"><span class="ln">118  </span></a>
+<a name="l119"><span class="ln">119  </span></a>        <span class="s1">waitForStart()</span><span class="s0">;</span>
+<a name="l120"><span class="ln">120  </span></a>        <span class="s1">runtime.reset()</span><span class="s0">;    </span><span class="s4">// Start game timer.</span>
+<a name="l121"><span class="ln">121  </span></a>
+<a name="l122"><span class="ln">122  </span></a>        <span class="s4">// Loop while monitoring buttons for rumble triggers</span>
+<a name="l123"><span class="ln">123  </span></a>        <span class="s0">while </span><span class="s1">(opModeIsActive())</span>
+<a name="l124"><span class="ln">124  </span></a>        <span class="s1">{</span>
+<a name="l125"><span class="ln">125  </span></a>            <span class="s4">// Read and save the current gamepad button states.</span>
+<a name="l126"><span class="ln">126  </span></a>            <span class="s0">boolean </span><span class="s1">currentA = gamepad1.a </span><span class="s0">;</span>
+<a name="l127"><span class="ln">127  </span></a>            <span class="s0">boolean </span><span class="s1">currentLB = gamepad1.left_bumper </span><span class="s0">;</span>
+<a name="l128"><span class="ln">128  </span></a>
+<a name="l129"><span class="ln">129  </span></a>            <span class="s4">// Display the current Rumble status.  Just for interest.</span>
+<a name="l130"><span class="ln">130  </span></a>            <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Are we RUMBLING? %s</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s0">, </span><span class="s1">gamepad1.isRumbling() ? </span><span class="s3">&quot;YES&quot; </span><span class="s1">: </span><span class="s3">&quot;no&quot; </span><span class="s1">)</span><span class="s0">;</span>
+<a name="l131"><span class="ln">131  </span></a>
+<a name="l132"><span class="ln">132  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l133"><span class="ln">133  </span></a>            <span class="s4">// Example 1. b) Watch the runtime timer, and run the custom rumble when we hit half-time.</span>
+<a name="l134"><span class="ln">134  </span></a>            <span class="s4">//               Make sure we only signal once by setting &quot;secondHalf&quot; flag to prevent further rumbles.</span>
+<a name="l135"><span class="ln">135  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l136"><span class="ln">136  </span></a>            <span class="s0">if </span><span class="s1">((runtime.seconds() &gt; HALF_TIME) &amp;&amp; !secondHalf)  {</span>
+<a name="l137"><span class="ln">137  </span></a>                <span class="s1">gamepad1.runRumbleEffect(customRumbleEffect)</span><span class="s0">;</span>
+<a name="l138"><span class="ln">138  </span></a>                <span class="s1">secondHalf =</span><span class="s0">true;</span>
+<a name="l139"><span class="ln">139  </span></a>            <span class="s1">}</span>
+<a name="l140"><span class="ln">140  </span></a>
+<a name="l141"><span class="ln">141  </span></a>            <span class="s4">// Display the time remaining while we are still counting down.</span>
+<a name="l142"><span class="ln">142  </span></a>            <span class="s0">if </span><span class="s1">(!secondHalf) {</span>
+<a name="l143"><span class="ln">143  </span></a>                <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Halftime Alert Countdown: %3.0f Sec </span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s0">, </span><span class="s1">(HALF_TIME - runtime.seconds()) )</span><span class="s0">;</span>
+<a name="l144"><span class="ln">144  </span></a>            <span class="s1">}</span>
+<a name="l145"><span class="ln">145  </span></a>
+<a name="l146"><span class="ln">146  </span></a>
+<a name="l147"><span class="ln">147  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l148"><span class="ln">148  </span></a>            <span class="s4">// Example 2. If Left Bumper is being pressed, power the rumble motors based on the two trigger depressions.</span>
+<a name="l149"><span class="ln">149  </span></a>            <span class="s4">// This is useful to see how the rumble feels at various power levels.</span>
+<a name="l150"><span class="ln">150  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l151"><span class="ln">151  </span></a>            <span class="s0">if </span><span class="s1">(currentLB) {</span>
+<a name="l152"><span class="ln">152  </span></a>                <span class="s4">// Left Bumper is being pressed, so send left and right &quot;trigger&quot; values to left and right rumble motors.</span>
+<a name="l153"><span class="ln">153  </span></a>                <span class="s1">gamepad1.rumble(gamepad1.left_trigger</span><span class="s0">, </span><span class="s1">gamepad1.right_trigger</span><span class="s0">, </span><span class="s1">Gamepad.RUMBLE_DURATION_CONTINUOUS)</span><span class="s0">;</span>
+<a name="l154"><span class="ln">154  </span></a>
+<a name="l155"><span class="ln">155  </span></a>                <span class="s4">// Show what is being sent to rumbles</span>
+<a name="l156"><span class="ln">156  </span></a>                <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Squeeze triggers to control rumbles&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l157"><span class="ln">157  </span></a>                <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt; : Rumble&quot;</span><span class="s0">, </span><span class="s3">&quot;Left: %.0f%%   Right: %.0f%%&quot;</span><span class="s0">, </span><span class="s1">gamepad1.left_trigger * </span><span class="s5">100</span><span class="s0">, </span><span class="s1">gamepad1.right_trigger * </span><span class="s5">100</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l158"><span class="ln">158  </span></a>            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+<a name="l159"><span class="ln">159  </span></a>                <span class="s4">// Make sure rumble is turned off when Left Bumper is released (only one time each press)</span>
+<a name="l160"><span class="ln">160  </span></a>                <span class="s0">if </span><span class="s1">(lastLB) {</span>
+<a name="l161"><span class="ln">161  </span></a>                    <span class="s1">gamepad1.stopRumble()</span><span class="s0">;</span>
+<a name="l162"><span class="ln">162  </span></a>                <span class="s1">}</span>
+<a name="l163"><span class="ln">163  </span></a>
+<a name="l164"><span class="ln">164  </span></a>                <span class="s4">//  Prompt for manual rumble action</span>
+<a name="l165"><span class="ln">165  </span></a>                <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Hold Left-Bumper to test Manual Rumble&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l166"><span class="ln">166  </span></a>                <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Press A (Cross) for three blips&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l167"><span class="ln">167  </span></a>                <span class="s1">telemetry.addData(</span><span class="s3">&quot;&gt;&quot;</span><span class="s0">, </span><span class="s3">&quot;Squeeze right trigger slowly for 1 blip&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l168"><span class="ln">168  </span></a>            <span class="s1">}</span>
+<a name="l169"><span class="ln">169  </span></a>            <span class="s1">lastLB = currentLB</span><span class="s0">; </span><span class="s4">// remember the current button state for next time around the loop</span>
+<a name="l170"><span class="ln">170  </span></a>
+<a name="l171"><span class="ln">171  </span></a>
+<a name="l172"><span class="ln">172  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l173"><span class="ln">173  </span></a>            <span class="s4">// Example 3. Blip 3 times at the moment that A (Cross) is pressed. (look for pressed transition)</span>
+<a name="l174"><span class="ln">174  </span></a>            <span class="s4">// BUT !!!  Skip it altogether if the Gamepad is already rumbling.</span>
+<a name="l175"><span class="ln">175  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l176"><span class="ln">176  </span></a>            <span class="s0">if </span><span class="s1">(currentA &amp;&amp; !lastA) {</span>
+<a name="l177"><span class="ln">177  </span></a>                <span class="s0">if </span><span class="s1">(!gamepad1.isRumbling())  </span><span class="s4">// Check for possible overlap of rumbles.</span>
+<a name="l178"><span class="ln">178  </span></a>                    <span class="s1">gamepad1.rumbleBlips(</span><span class="s5">3</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l179"><span class="ln">179  </span></a>            <span class="s1">}</span>
+<a name="l180"><span class="ln">180  </span></a>            <span class="s1">lastA = currentA</span><span class="s0">; </span><span class="s4">// remember the current button state for next time around the loop</span>
+<a name="l181"><span class="ln">181  </span></a>
+<a name="l182"><span class="ln">182  </span></a>
+<a name="l183"><span class="ln">183  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l184"><span class="ln">184  </span></a>            <span class="s4">// Example 4. Rumble once when gamepad right trigger goes above the THRESHOLD.</span>
+<a name="l185"><span class="ln">185  </span></a>            <span class="s4">// ----------------------------------------------------------------------------------------</span>
+<a name="l186"><span class="ln">186  </span></a>            <span class="s0">if </span><span class="s1">(gamepad1.right_trigger &gt; TRIGGER_THRESHOLD) {</span>
+<a name="l187"><span class="ln">187  </span></a>                <span class="s0">if </span><span class="s1">(!highLevel) {</span>
+<a name="l188"><span class="ln">188  </span></a>                    <span class="s1">gamepad1.rumble(</span><span class="s5">0.9</span><span class="s0">, </span><span class="s5">0</span><span class="s0">, </span><span class="s5">200</span><span class="s1">)</span><span class="s0">;  </span><span class="s4">// 200 mSec burst on left motor.</span>
+<a name="l189"><span class="ln">189  </span></a>                    <span class="s1">highLevel = </span><span class="s0">true;  </span><span class="s4">// Hold off any more triggers</span>
+<a name="l190"><span class="ln">190  </span></a>                <span class="s1">}</span>
+<a name="l191"><span class="ln">191  </span></a>            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+<a name="l192"><span class="ln">192  </span></a>                <span class="s1">highLevel = </span><span class="s0">false;  </span><span class="s4">// We can trigger again now.</span>
+<a name="l193"><span class="ln">193  </span></a>            <span class="s1">}</span>
+<a name="l194"><span class="ln">194  </span></a>
+<a name="l195"><span class="ln">195  </span></a>            <span class="s4">// Send the telemetry data to the Driver Station, and then pause to pace the program.</span>
+<a name="l196"><span class="ln">196  </span></a>            <span class="s1">telemetry.update()</span><span class="s0">;</span>
+<a name="l197"><span class="ln">197  </span></a>            <span class="s1">sleep(</span><span class="s5">10</span><span class="s1">)</span><span class="s0">;</span>
+<a name="l198"><span class="ln">198  </span></a>        <span class="s1">}</span>
+<a name="l199"><span class="ln">199  </span></a>    <span class="s1">}</span>
+<a name="l200"><span class="ln">200  </span></a><span class="s1">}</span>
+<a name="l201"><span class="ln">201  </span></a></pre>
+</body>
+</html>

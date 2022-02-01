@@ -1,0 +1,191 @@
+<html>
+<head>
+<title>Errors.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #cc7832;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Errors.js</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">/* Copyright (c) 2012-2017 The ANTLR Project. All rights reserved. 
+<a name="l2"><span class="ln">2    </span></a> * Use of this file is governed by the BSD 3-clause license that 
+<a name="l3"><span class="ln">3    </span></a> * can be found in the LICENSE.txt file in the project root. 
+<a name="l4"><span class="ln">4    </span></a> */</span>
+<a name="l5"><span class="ln">5    </span></a>
+<a name="l6"><span class="ln">6    </span></a><span class="s0">// The root of the ANTLR exception hierarchy. In general, ANTLR tracks just</span>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">//  3 kinds of errors: prediction errors, failed predicate errors, and</span>
+<a name="l8"><span class="ln">8    </span></a><span class="s0">//  mismatched input errors. In each case, the parser knows where it is</span>
+<a name="l9"><span class="ln">9    </span></a><span class="s0">//  in the input, where it is in the ATN, the rule invocation stack,</span>
+<a name="l10"><span class="ln">10   </span></a><span class="s0">//  and what kind of problem occurred.</span>
+<a name="l11"><span class="ln">11   </span></a>
+<a name="l12"><span class="ln">12   </span></a><span class="s2">var </span><span class="s1">PredicateTransition = require(</span><span class="s3">'./../atn/Transition'</span><span class="s1">).PredicateTransition;</span>
+<a name="l13"><span class="ln">13   </span></a>
+<a name="l14"><span class="ln">14   </span></a><span class="s2">function </span><span class="s1">RecognitionException(params) {</span>
+<a name="l15"><span class="ln">15   </span></a>	<span class="s1">Error.call(</span><span class="s2">this</span><span class="s1">);</span>
+<a name="l16"><span class="ln">16   </span></a>	<span class="s2">if </span><span class="s1">(!!Error.captureStackTrace) {</span>
+<a name="l17"><span class="ln">17   </span></a>        <span class="s1">Error.captureStackTrace(</span><span class="s2">this</span><span class="s1">, RecognitionException);</span>
+<a name="l18"><span class="ln">18   </span></a>	<span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+<a name="l19"><span class="ln">19   </span></a>		<span class="s2">var </span><span class="s1">stack = </span><span class="s2">new </span><span class="s1">Error().stack;</span>
+<a name="l20"><span class="ln">20   </span></a>	<span class="s1">}</span>
+<a name="l21"><span class="ln">21   </span></a>	<span class="s2">this</span><span class="s1">.message = params.message;</span>
+<a name="l22"><span class="ln">22   </span></a>    <span class="s2">this</span><span class="s1">.recognizer = params.recognizer;</span>
+<a name="l23"><span class="ln">23   </span></a>    <span class="s2">this</span><span class="s1">.input = params.input;</span>
+<a name="l24"><span class="ln">24   </span></a>    <span class="s2">this</span><span class="s1">.ctx = params.ctx;</span>
+<a name="l25"><span class="ln">25   </span></a>    <span class="s0">// The current {@link Token} when an error occurred. Since not all streams</span>
+<a name="l26"><span class="ln">26   </span></a>    <span class="s0">// support accessing symbols by index, we have to track the {@link Token}</span>
+<a name="l27"><span class="ln">27   </span></a>    <span class="s0">// instance itself.</span>
+<a name="l28"><span class="ln">28   </span></a>    <span class="s2">this</span><span class="s1">.offendingToken = </span><span class="s2">null</span><span class="s1">;</span>
+<a name="l29"><span class="ln">29   </span></a>    <span class="s0">// Get the ATN state number the parser was in at the time the error</span>
+<a name="l30"><span class="ln">30   </span></a>    <span class="s0">// occurred. For {@link NoViableAltException} and</span>
+<a name="l31"><span class="ln">31   </span></a>    <span class="s0">// {@link LexerNoViableAltException} exceptions, this is the</span>
+<a name="l32"><span class="ln">32   </span></a>    <span class="s0">// {@link DecisionState} number. For others, it is the state whose outgoing</span>
+<a name="l33"><span class="ln">33   </span></a>    <span class="s0">// edge we couldn't match.</span>
+<a name="l34"><span class="ln">34   </span></a>    <span class="s2">this</span><span class="s1">.offendingState = -</span><span class="s4">1</span><span class="s1">;</span>
+<a name="l35"><span class="ln">35   </span></a>    <span class="s2">if </span><span class="s1">(</span><span class="s2">this</span><span class="s1">.recognizer!==</span><span class="s2">null</span><span class="s1">) {</span>
+<a name="l36"><span class="ln">36   </span></a>        <span class="s2">this</span><span class="s1">.offendingState = </span><span class="s2">this</span><span class="s1">.recognizer.state;</span>
+<a name="l37"><span class="ln">37   </span></a>    <span class="s1">}</span>
+<a name="l38"><span class="ln">38   </span></a>    <span class="s2">return this</span><span class="s1">;</span>
+<a name="l39"><span class="ln">39   </span></a><span class="s1">}</span>
+<a name="l40"><span class="ln">40   </span></a>
+<a name="l41"><span class="ln">41   </span></a><span class="s1">RecognitionException.prototype = Object.create(Error.prototype);</span>
+<a name="l42"><span class="ln">42   </span></a><span class="s1">RecognitionException.prototype.constructor = RecognitionException;</span>
+<a name="l43"><span class="ln">43   </span></a>
+<a name="l44"><span class="ln">44   </span></a><span class="s0">// &lt;p&gt;If the state number is not known, this method returns -1.&lt;/p&gt;</span>
+<a name="l45"><span class="ln">45   </span></a>
+<a name="l46"><span class="ln">46   </span></a><span class="s0">//</span>
+<a name="l47"><span class="ln">47   </span></a><span class="s0">// Gets the set of input symbols which could potentially follow the</span>
+<a name="l48"><span class="ln">48   </span></a><span class="s0">// previously matched symbol at the time this exception was thrown.</span>
+<a name="l49"><span class="ln">49   </span></a><span class="s0">//</span>
+<a name="l50"><span class="ln">50   </span></a><span class="s0">// &lt;p&gt;If the set of expected tokens is not known and could not be computed,</span>
+<a name="l51"><span class="ln">51   </span></a><span class="s0">// this method returns {@code null}.&lt;/p&gt;</span>
+<a name="l52"><span class="ln">52   </span></a><span class="s0">//</span>
+<a name="l53"><span class="ln">53   </span></a><span class="s0">// @return The set of token types that could potentially follow the current</span>
+<a name="l54"><span class="ln">54   </span></a><span class="s0">// state in the ATN, or {@code null} if the information is not available.</span>
+<a name="l55"><span class="ln">55   </span></a><span class="s0">// /</span>
+<a name="l56"><span class="ln">56   </span></a><span class="s1">RecognitionException.prototype.getExpectedTokens = </span><span class="s2">function</span><span class="s1">() {</span>
+<a name="l57"><span class="ln">57   </span></a>    <span class="s2">if </span><span class="s1">(</span><span class="s2">this</span><span class="s1">.recognizer!==</span><span class="s2">null</span><span class="s1">) {</span>
+<a name="l58"><span class="ln">58   </span></a>        <span class="s2">return this</span><span class="s1">.recognizer.atn.getExpectedTokens(</span><span class="s2">this</span><span class="s1">.offendingState, </span><span class="s2">this</span><span class="s1">.ctx);</span>
+<a name="l59"><span class="ln">59   </span></a>    <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+<a name="l60"><span class="ln">60   </span></a>        <span class="s2">return null</span><span class="s1">;</span>
+<a name="l61"><span class="ln">61   </span></a>    <span class="s1">}</span>
+<a name="l62"><span class="ln">62   </span></a><span class="s1">};</span>
+<a name="l63"><span class="ln">63   </span></a>
+<a name="l64"><span class="ln">64   </span></a><span class="s1">RecognitionException.prototype.toString = </span><span class="s2">function</span><span class="s1">() {</span>
+<a name="l65"><span class="ln">65   </span></a>    <span class="s2">return this</span><span class="s1">.message;</span>
+<a name="l66"><span class="ln">66   </span></a><span class="s1">};</span>
+<a name="l67"><span class="ln">67   </span></a>
+<a name="l68"><span class="ln">68   </span></a><span class="s2">function </span><span class="s1">LexerNoViableAltException(lexer, input, startIndex, deadEndConfigs) {</span>
+<a name="l69"><span class="ln">69   </span></a>	<span class="s1">RecognitionException.call(</span><span class="s2">this</span><span class="s1">, {message:</span><span class="s3">&quot;&quot;</span><span class="s1">, recognizer:lexer, input:input, ctx:</span><span class="s2">null</span><span class="s1">});</span>
+<a name="l70"><span class="ln">70   </span></a>    <span class="s2">this</span><span class="s1">.startIndex = startIndex;</span>
+<a name="l71"><span class="ln">71   </span></a>    <span class="s2">this</span><span class="s1">.deadEndConfigs = deadEndConfigs;</span>
+<a name="l72"><span class="ln">72   </span></a>    <span class="s2">return this</span><span class="s1">;</span>
+<a name="l73"><span class="ln">73   </span></a><span class="s1">}</span>
+<a name="l74"><span class="ln">74   </span></a>
+<a name="l75"><span class="ln">75   </span></a><span class="s1">LexerNoViableAltException.prototype = Object.create(RecognitionException.prototype);</span>
+<a name="l76"><span class="ln">76   </span></a><span class="s1">LexerNoViableAltException.prototype.constructor = LexerNoViableAltException;</span>
+<a name="l77"><span class="ln">77   </span></a>
+<a name="l78"><span class="ln">78   </span></a><span class="s1">LexerNoViableAltException.prototype.toString = </span><span class="s2">function</span><span class="s1">() {</span>
+<a name="l79"><span class="ln">79   </span></a>    <span class="s2">var </span><span class="s1">symbol = </span><span class="s3">&quot;&quot;</span><span class="s1">;</span>
+<a name="l80"><span class="ln">80   </span></a>    <span class="s2">if </span><span class="s1">(</span><span class="s2">this</span><span class="s1">.startIndex &gt;= </span><span class="s4">0 </span><span class="s1">&amp;&amp; </span><span class="s2">this</span><span class="s1">.startIndex &lt; </span><span class="s2">this</span><span class="s1">.input.size) {</span>
+<a name="l81"><span class="ln">81   </span></a>        <span class="s1">symbol = </span><span class="s2">this</span><span class="s1">.input.getText((</span><span class="s2">this</span><span class="s1">.startIndex,</span><span class="s2">this</span><span class="s1">.startIndex));</span>
+<a name="l82"><span class="ln">82   </span></a>    <span class="s1">}</span>
+<a name="l83"><span class="ln">83   </span></a>    <span class="s2">return </span><span class="s3">&quot;LexerNoViableAltException&quot; </span><span class="s1">+ symbol;</span>
+<a name="l84"><span class="ln">84   </span></a><span class="s1">};</span>
+<a name="l85"><span class="ln">85   </span></a>
+<a name="l86"><span class="ln">86   </span></a><span class="s0">// Indicates that the parser could not decide which of two or more paths</span>
+<a name="l87"><span class="ln">87   </span></a><span class="s0">// to take based upon the remaining input. It tracks the starting token</span>
+<a name="l88"><span class="ln">88   </span></a><span class="s0">// of the offending input and also knows where the parser was</span>
+<a name="l89"><span class="ln">89   </span></a><span class="s0">// in the various paths when the error. Reported by reportNoViableAlternative()</span>
+<a name="l90"><span class="ln">90   </span></a><span class="s0">//</span>
+<a name="l91"><span class="ln">91   </span></a><span class="s2">function </span><span class="s1">NoViableAltException(recognizer, input, startToken, offendingToken, deadEndConfigs, ctx) {</span>
+<a name="l92"><span class="ln">92   </span></a>	<span class="s1">ctx = ctx || recognizer._ctx;</span>
+<a name="l93"><span class="ln">93   </span></a>	<span class="s1">offendingToken = offendingToken || recognizer.getCurrentToken();</span>
+<a name="l94"><span class="ln">94   </span></a>	<span class="s1">startToken = startToken || recognizer.getCurrentToken();</span>
+<a name="l95"><span class="ln">95   </span></a>	<span class="s1">input = input || recognizer.getInputStream();</span>
+<a name="l96"><span class="ln">96   </span></a>	<span class="s1">RecognitionException.call(</span><span class="s2">this</span><span class="s1">, {message:</span><span class="s3">&quot;&quot;</span><span class="s1">, recognizer:recognizer, input:input, ctx:ctx});</span>
+<a name="l97"><span class="ln">97   </span></a>    <span class="s0">// Which configurations did we try at input.index() that couldn't match</span>
+<a name="l98"><span class="ln">98   </span></a>	<span class="s0">// input.LT(1)?//</span>
+<a name="l99"><span class="ln">99   </span></a>    <span class="s2">this</span><span class="s1">.deadEndConfigs = deadEndConfigs;</span>
+<a name="l100"><span class="ln">100  </span></a>    <span class="s0">// The token object at the start index; the input stream might</span>
+<a name="l101"><span class="ln">101  </span></a>    <span class="s0">// not be buffering tokens so get a reference to it. (At the</span>
+<a name="l102"><span class="ln">102  </span></a>    <span class="s0">// time the error occurred, of course the stream needs to keep a</span>
+<a name="l103"><span class="ln">103  </span></a>    <span class="s0">// buffer all of the tokens but later we might not have access to those.)</span>
+<a name="l104"><span class="ln">104  </span></a>    <span class="s2">this</span><span class="s1">.startToken = startToken;</span>
+<a name="l105"><span class="ln">105  </span></a>    <span class="s2">this</span><span class="s1">.offendingToken = offendingToken;</span>
+<a name="l106"><span class="ln">106  </span></a><span class="s1">}</span>
+<a name="l107"><span class="ln">107  </span></a>
+<a name="l108"><span class="ln">108  </span></a><span class="s1">NoViableAltException.prototype = Object.create(RecognitionException.prototype);</span>
+<a name="l109"><span class="ln">109  </span></a><span class="s1">NoViableAltException.prototype.constructor = NoViableAltException;</span>
+<a name="l110"><span class="ln">110  </span></a>
+<a name="l111"><span class="ln">111  </span></a><span class="s0">// This signifies any kind of mismatched input exceptions such as</span>
+<a name="l112"><span class="ln">112  </span></a><span class="s0">// when the current input does not match the expected token.</span>
+<a name="l113"><span class="ln">113  </span></a><span class="s0">//</span>
+<a name="l114"><span class="ln">114  </span></a><span class="s2">function </span><span class="s1">InputMismatchException(recognizer) {</span>
+<a name="l115"><span class="ln">115  </span></a>	<span class="s1">RecognitionException.call(</span><span class="s2">this</span><span class="s1">, {message:</span><span class="s3">&quot;&quot;</span><span class="s1">, recognizer:recognizer, input:recognizer.getInputStream(), ctx:recognizer._ctx});</span>
+<a name="l116"><span class="ln">116  </span></a>    <span class="s2">this</span><span class="s1">.offendingToken = recognizer.getCurrentToken();</span>
+<a name="l117"><span class="ln">117  </span></a><span class="s1">}</span>
+<a name="l118"><span class="ln">118  </span></a>
+<a name="l119"><span class="ln">119  </span></a><span class="s1">InputMismatchException.prototype = Object.create(RecognitionException.prototype);</span>
+<a name="l120"><span class="ln">120  </span></a><span class="s1">InputMismatchException.prototype.constructor = InputMismatchException;</span>
+<a name="l121"><span class="ln">121  </span></a>
+<a name="l122"><span class="ln">122  </span></a><span class="s0">// A semantic predicate failed during validation. Validation of predicates</span>
+<a name="l123"><span class="ln">123  </span></a><span class="s0">// occurs when normally parsing the alternative just like matching a token.</span>
+<a name="l124"><span class="ln">124  </span></a><span class="s0">// Disambiguating predicate evaluation occurs when we test a predicate during</span>
+<a name="l125"><span class="ln">125  </span></a><span class="s0">// prediction.</span>
+<a name="l126"><span class="ln">126  </span></a>
+<a name="l127"><span class="ln">127  </span></a><span class="s2">function </span><span class="s1">FailedPredicateException(recognizer, predicate, message) {</span>
+<a name="l128"><span class="ln">128  </span></a>	<span class="s1">RecognitionException.call(</span><span class="s2">this</span><span class="s1">, {message:</span><span class="s2">this</span><span class="s1">.formatMessage(predicate,message || </span><span class="s2">null</span><span class="s1">), recognizer:recognizer,</span>
+<a name="l129"><span class="ln">129  </span></a>                         <span class="s1">input:recognizer.getInputStream(), ctx:recognizer._ctx});</span>
+<a name="l130"><span class="ln">130  </span></a>    <span class="s2">var </span><span class="s1">s = recognizer._interp.atn.states[recognizer.state];</span>
+<a name="l131"><span class="ln">131  </span></a>    <span class="s2">var </span><span class="s1">trans = s.transitions[</span><span class="s4">0</span><span class="s1">];</span>
+<a name="l132"><span class="ln">132  </span></a>    <span class="s2">if </span><span class="s1">(trans </span><span class="s2">instanceof </span><span class="s1">PredicateTransition) {</span>
+<a name="l133"><span class="ln">133  </span></a>        <span class="s2">this</span><span class="s1">.ruleIndex = trans.ruleIndex;</span>
+<a name="l134"><span class="ln">134  </span></a>        <span class="s2">this</span><span class="s1">.predicateIndex = trans.predIndex;</span>
+<a name="l135"><span class="ln">135  </span></a>    <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+<a name="l136"><span class="ln">136  </span></a>        <span class="s2">this</span><span class="s1">.ruleIndex = </span><span class="s4">0</span><span class="s1">;</span>
+<a name="l137"><span class="ln">137  </span></a>        <span class="s2">this</span><span class="s1">.predicateIndex = </span><span class="s4">0</span><span class="s1">;</span>
+<a name="l138"><span class="ln">138  </span></a>    <span class="s1">}</span>
+<a name="l139"><span class="ln">139  </span></a>    <span class="s2">this</span><span class="s1">.predicate = predicate;</span>
+<a name="l140"><span class="ln">140  </span></a>    <span class="s2">this</span><span class="s1">.offendingToken = recognizer.getCurrentToken();</span>
+<a name="l141"><span class="ln">141  </span></a>    <span class="s2">return this</span><span class="s1">;</span>
+<a name="l142"><span class="ln">142  </span></a><span class="s1">}</span>
+<a name="l143"><span class="ln">143  </span></a>
+<a name="l144"><span class="ln">144  </span></a><span class="s1">FailedPredicateException.prototype = Object.create(RecognitionException.prototype);</span>
+<a name="l145"><span class="ln">145  </span></a><span class="s1">FailedPredicateException.prototype.constructor = FailedPredicateException;</span>
+<a name="l146"><span class="ln">146  </span></a>
+<a name="l147"><span class="ln">147  </span></a><span class="s1">FailedPredicateException.prototype.formatMessage = </span><span class="s2">function</span><span class="s1">(predicate, message) {</span>
+<a name="l148"><span class="ln">148  </span></a>    <span class="s2">if </span><span class="s1">(message !==</span><span class="s2">null</span><span class="s1">) {</span>
+<a name="l149"><span class="ln">149  </span></a>        <span class="s2">return </span><span class="s1">message;</span>
+<a name="l150"><span class="ln">150  </span></a>    <span class="s1">} </span><span class="s2">else </span><span class="s1">{</span>
+<a name="l151"><span class="ln">151  </span></a>        <span class="s2">return </span><span class="s3">&quot;failed predicate: {&quot; </span><span class="s1">+ predicate + </span><span class="s3">&quot;}?&quot;</span><span class="s1">;</span>
+<a name="l152"><span class="ln">152  </span></a>    <span class="s1">}</span>
+<a name="l153"><span class="ln">153  </span></a><span class="s1">};</span>
+<a name="l154"><span class="ln">154  </span></a>
+<a name="l155"><span class="ln">155  </span></a><span class="s2">function </span><span class="s1">ParseCancellationException() {</span>
+<a name="l156"><span class="ln">156  </span></a>	<span class="s1">Error.call(</span><span class="s2">this</span><span class="s1">);</span>
+<a name="l157"><span class="ln">157  </span></a>	<span class="s1">Error.captureStackTrace(</span><span class="s2">this</span><span class="s1">, ParseCancellationException);</span>
+<a name="l158"><span class="ln">158  </span></a>	<span class="s2">return this</span><span class="s1">;</span>
+<a name="l159"><span class="ln">159  </span></a><span class="s1">}</span>
+<a name="l160"><span class="ln">160  </span></a>
+<a name="l161"><span class="ln">161  </span></a><span class="s1">ParseCancellationException.prototype = Object.create(Error.prototype);</span>
+<a name="l162"><span class="ln">162  </span></a><span class="s1">ParseCancellationException.prototype.constructor = ParseCancellationException;</span>
+<a name="l163"><span class="ln">163  </span></a>
+<a name="l164"><span class="ln">164  </span></a><span class="s1">exports.RecognitionException = RecognitionException;</span>
+<a name="l165"><span class="ln">165  </span></a><span class="s1">exports.NoViableAltException = NoViableAltException;</span>
+<a name="l166"><span class="ln">166  </span></a><span class="s1">exports.LexerNoViableAltException = LexerNoViableAltException;</span>
+<a name="l167"><span class="ln">167  </span></a><span class="s1">exports.InputMismatchException = InputMismatchException;</span>
+<a name="l168"><span class="ln">168  </span></a><span class="s1">exports.FailedPredicateException = FailedPredicateException;</span>
+<a name="l169"><span class="ln">169  </span></a><span class="s1">exports.ParseCancellationException = ParseCancellationException;</span>
+<a name="l170"><span class="ln">170  </span></a></pre>
+</body>
+</html>

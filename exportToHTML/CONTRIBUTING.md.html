@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>CONTRIBUTING.md</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #a9b7c6;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CONTRIBUTING.md</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0"># </span><span class="s2">Contributing to the FTC SDK</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a><span class="s2">The following is a set of guidelines for contributing the FIRST FTC SDK.  The FTC Technology Team welcomes suggestions for improvements to core software, ideas for new features, requests for built-in support of new sensors, and well written bug reports.</span>
+<a name="l4"><span class="ln">4    </span></a>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">## </span><span class="s2">How can I contribute?</span>
+<a name="l6"><span class="ln">6    </span></a>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">### </span><span class="s2">Pull requests</span>
+<a name="l8"><span class="ln">8    </span></a>
+<a name="l9"><span class="ln">9    </span></a><span class="s1">__</span><span class="s2">STOP</span><span class="s1">!__  </span><span class="s2">If you are new to git, do not understand the mechanics of forks, branches, and pulls, if what you just read is confusing, </span><span class="s1">__</span><span class="s2">do not</span><span class="s1">__ </span><span class="s2">push this button.  Most likely it won't do what you think it will.</span>
+<a name="l10"><span class="ln">10   </span></a>
+<a name="l11"><span class="ln">11   </span></a><span class="s1">![</span><span class="s2">Pull Button</span><span class="s1">](</span><span class="s2">../doc/media/PullRequest.PNG</span><span class="s1">)</span>
+<a name="l12"><span class="ln">12   </span></a>
+<a name="l13"><span class="ln">13   </span></a><span class="s2">If you are looking at this button then you've pushed some changes to your team</span><span class="s1">'</span><span class="s2">s fork of ftctechnh/ftc_app.  Congratulations</span><span class="s1">!  </span><span class="s2">You are almost certainly finished.</span>
+<a name="l14"><span class="ln">14   </span></a>
+<a name="l15"><span class="ln">15   </span></a><span class="s2">The vast majority of pull requests seen on the ftctechnh/ftc_app repository are not intended to be merged into the official SDK.  Team software is just that, your team's.  It's specific to the tasks you are trying to accomplish, the testing you are doing, and goals your team has.  You don't want that pushed into the official SDK.</span>
+<a name="l16"><span class="ln">16   </span></a>
+<a name="l17"><span class="ln">17   </span></a><span class="s2">If what you've read so far makes little sense, there are some very good git learning resources online.  </span>
+<a name="l18"><span class="ln">18   </span></a><span class="s1">[</span><span class="s2">Git Book</span><span class="s1">](https://git-scm.com/book/en/v2)  </span>
+<a name="l19"><span class="ln">19   </span></a><span class="s1">[</span><span class="s2">Interactive Git Tutorial</span><span class="s1">](https://try.github.io)</span>
+<a name="l20"><span class="ln">20   </span></a>
+<a name="l21"><span class="ln">21   </span></a><span class="s0">##### </span><span class="s2">Guidlines for experienced GIT users.</span>
+<a name="l22"><span class="ln">22   </span></a>
+<a name="l23"><span class="ln">23   </span></a><span class="s2">If you are absolutely certain that you want to push the big green button above, read on.  Otherwise back </span><span class="s1">_</span><span class="s2">slowly away from keyboard</span><span class="s1">_</span><span class="s2">.</span>
+<a name="l24"><span class="ln">24   </span></a>
+<a name="l25"><span class="ln">25   </span></a><span class="s2">The real intent for advanced users is often to issue a pull request from the </span><span class="s1">[</span><span class="s2">branch</span><span class="s1">](https://www.atlassian.com/git/tutorials/using-branches/git-branch) </span><span class="s2">on a local fork back to master on either the same local fork or a child of the team fork and not on the parent ftctechnh/ftc_app.  See </span><span class="s1">[</span><span class="s2">Creating a Pull Request</span><span class="s1">](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)</span><span class="s2">.</span>
+<a name="l26"><span class="ln">26   </span></a>
+<a name="l27"><span class="ln">27   </span></a><span class="s2">If that is indeed the intent, then you can merge your </span><span class="s1">[</span><span class="s2">topic branch</span><span class="s1">](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches) </span><span class="s2">into master locally by hand before pushing it up to github, or if you want a pull request for pulls between branches on the same repository because, say, you want team members to look at your software before merging into master, you can select the base fork from the dropdown on the </span><span class="s1">&quot;</span><span class="s2">Open a pull request</span><span class="s1">&quot; </span><span class="s2">page and select your team repo instead of ftctechnh's.</span>
+<a name="l28"><span class="ln">28   </span></a>
+<a name="l29"><span class="ln">29   </span></a><span class="s2">Alternatively, if you have a team repository forked from ftctechnh/ftc_app, and then team members individually fork from your team repository, then pull requests from the individual team member's forks will have the main team repository automatically selected as the base fork for the pull. And you won't inadvertently request to pull your team software into ftctechnh</span><span class="s1">'</span><span class="s2">s repository.</span>
+<a name="l30"><span class="ln">30   </span></a>
+<a name="l31"><span class="ln">31   </span></a><span class="s2">The latter would be the </span><span class="s1">&quot;</span><span class="s2">best</span><span class="s1">&quot; </span><span class="s2">way to manage software among a large team. But as with all things git there are many options.</span>
+<a name="l32"><span class="ln">32   </span></a>
+<a name="l33"><span class="ln">33   </span></a><span class="s2">Pull requests that do not fall into the category above are evaluated by the FTC Technology Team on a case-by-case basis.  Please note however that the deployment model of the SDK does not support direct pulls into ftctechnh/ftc_app.  </span>
+<a name="l34"><span class="ln">34   </span></a>
+<a name="l35"><span class="ln">35   </span></a><span class="s0">### </span><span class="s2">Report bugs</span>
+<a name="l36"><span class="ln">36   </span></a>
+<a name="l37"><span class="ln">37   </span></a><span class="s2">This section guides you through filing a bug report.  The better the report the more likely it is to be root caused and fixed.  Please refrain from feature requests or software enhancements when opening new issues.  See Suggesting Enhancements below.</span>
+<a name="l38"><span class="ln">38   </span></a>
+<a name="l39"><span class="ln">39   </span></a><span class="s0">#### </span><span class="s2">Before submitting a bug report</span>
+<a name="l40"><span class="ln">40   </span></a>
+<a name="l41"><span class="ln">41   </span></a><span class="s0">- </span><span class="s2">Check the </span><span class="s1">[</span><span class="s2">forums</span><span class="s1">](http://ftcforum.usfirst.org/forum.php) </span><span class="s2">to see if someone else has run into the problem and whether there is an official solution that doesn't require a new SDK.</span>
+<a name="l42"><span class="ln">42   </span></a>
+<a name="l43"><span class="ln">43   </span></a><span class="s0">- </span><span class="s2">Perform a search of current </span><span class="s1">[</span><span class="s2">issues</span><span class="s1">](https://github.com/ftctechnh/ftc_app/issues) </span><span class="s2">to see if the problem has already been reported.  If so, add a comment to the existing issue instead of creating a new one.</span>
+<a name="l44"><span class="ln">44   </span></a>
+<a name="l45"><span class="ln">45   </span></a><span class="s0">#### </span><span class="s2">How Do I Submit A </span><span class="s1">(</span><span class="s2">Good</span><span class="s1">) </span><span class="s2">Bug Report?</span>
+<a name="l46"><span class="ln">46   </span></a>
+<a name="l47"><span class="ln">47   </span></a><span class="s2">Bugs are tracked as GitHub issues. Create an issue on ftctechnh/ftc_app and provide the following information.</span>
+<a name="l48"><span class="ln">48   </span></a><span class="s2">Explain the problem and include additional details to help maintainers reproduce the problem</span><span class="s1">:</span>
+<a name="l49"><span class="ln">49   </span></a>
+<a name="l50"><span class="ln">50   </span></a><span class="s0">- </span><span class="s2">Use a clear and descriptive title for the issue to identify the problem.</span>
+<a name="l51"><span class="ln">51   </span></a>
+<a name="l52"><span class="ln">52   </span></a><span class="s0">- </span><span class="s2">Describe the exact steps which reproduce the problem in as many details as possible.</span>
+<a name="l53"><span class="ln">53   </span></a>
+<a name="l54"><span class="ln">54   </span></a><span class="s0">- </span><span class="s2">Provide specific examples to demonstrate the steps.</span>
+<a name="l55"><span class="ln">55   </span></a>
+<a name="l56"><span class="ln">56   </span></a><span class="s0">- </span><span class="s2">Describe the behavior you observed after following the steps and point out what exactly is the problem with that behavior. Explain which behavior you expected to see instead and why. If applicable, include screenshots which show you following the described steps and clearly demonstrate the problem.</span>
+<a name="l57"><span class="ln">57   </span></a>
+<a name="l58"><span class="ln">58   </span></a><span class="s0">- </span><span class="s2">If you're reporting that the RobotController crashed, include the logfile with a stack trace of the crash.  </span><span class="s1">[</span><span class="s2">Example of good bug report with stack trace</span><span class="s1">](https://github.com/ftctechnh/ftc_app/issues/224)</span>
+<a name="l59"><span class="ln">59   </span></a>
+<a name="l60"><span class="ln">60   </span></a><span class="s0">- </span><span class="s2">If the problem wasn't triggered by a specific action, describe what you were doing before the problem happened and share more information using the guidelines below.</span>
+<a name="l61"><span class="ln">61   </span></a>
+<a name="l62"><span class="ln">62   </span></a><span class="s0">### </span><span class="s2">Suggesting Enhancements</span>
+<a name="l63"><span class="ln">63   </span></a>
+<a name="l64"><span class="ln">64   </span></a><span class="s2">FIRST volunteers are awesome.  You all have great ideas and we want to hear them.  </span>
+<a name="l65"><span class="ln">65   </span></a>
+<a name="l66"><span class="ln">66   </span></a><span class="s2">Enhancements should be broadly applicable to a large majority of teams, should not force teams to change their workflow, and should provide real value to the mission of FIRST as it relates to engaging youth in engineering activities.</span>
+<a name="l67"><span class="ln">67   </span></a>
+<a name="l68"><span class="ln">68   </span></a><span class="s2">The best way to get momentum behind new features is to post a description of your idea in the forums.  Build community support for it.  The FTC Technology Team monitors the forums.  We'll hear you and if there</span><span class="s1">'</span><span class="s2">s a large enough call for the feature it's very likely to get put on the list for a future release.</span>
+<a name="l69"><span class="ln">69   </span></a></pre>
+</body>
+</html>

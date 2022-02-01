@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>readme.md</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #a9b7c6;}
+.s3 { color: #808080;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+readme.md</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0"># </span><span class="s2">Blocks Samples</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a><span class="s2">This directory contains the sample projects for blocks.</span>
+<a name="l4"><span class="ln">4    </span></a>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">## </span><span class="s2">Line Breaks</span>
+<a name="l6"><span class="ln">6    </span></a>
+<a name="l7"><span class="ln">7    </span></a><span class="s2">Although the blocks editor produces .blk files with no line breaks, the samples should have line breaks.</span>
+<a name="l8"><span class="ln">8    </span></a><span class="s2">To add the appropriate line breaks</span><span class="s1">:</span>
+<a name="l9"><span class="ln">9    </span></a><span class="s0">1. </span><span class="s2">Replace </span><span class="s3">`</span><span class="s1">&gt;&lt;</span><span class="s3">` </span><span class="s2">with </span><span class="s3">`</span><span class="s1">&gt;</span><span class="s2">\n</span><span class="s1">&lt;</span><span class="s3">`</span><span class="s2">.</span>
+<a name="l10"><span class="ln">10   </span></a><span class="s0">2. </span><span class="s2">Replace </span><span class="s3">`</span><span class="s2">&lt;field name=&quot;TEXT&quot;&gt;\n&lt;/field&gt;</span><span class="s3">` </span><span class="s2">with </span><span class="s3">`</span><span class="s2">&lt;field name=&quot;TEXT&quot;&gt;&lt;/field&gt;</span><span class="s3">`</span><span class="s2">.</span>
+<a name="l11"><span class="ln">11   </span></a>
+<a name="l12"><span class="ln">12   </span></a><span class="s0">## </span><span class="s2">Hardware and Webcam Names</span>
+<a name="l13"><span class="ln">13   </span></a>
+<a name="l14"><span class="ln">14   </span></a><span class="s2">If you add a new sample or you modify an existing sample, you may need to modify the method </span>
+<a name="l15"><span class="ln">15   </span></a><span class="s2">replaceHardwareIdentifiers in </span>
+<a name="l16"><span class="ln">16   </span></a><span class="s2">lib/Blocks/src/main/java/com/google/blocks/ftcrobotcontroller/util/ProjectsUtil.java.</span>
+<a name="l17"><span class="ln">17   </span></a><span class="s2">Each hardware or webcam name in the sample file must be handled in that method.</span>
+<a name="l18"><span class="ln">18   </span></a>
+<a name="l19"><span class="ln">19   </span></a><span class="s1">__</span><span class="s2">If a hardware </span><span class="s1">(</span><span class="s2">or webcam</span><span class="s1">) </span><span class="s2">name is not handled, it won't be replaced with the correct name of the</span>
+<a name="l20"><span class="ln">20   </span></a><span class="s2">hardware </span><span class="s1">(</span><span class="s2">or webcam</span><span class="s1">) </span><span class="s2">from the active configuration when a new op mode is created with that sample.</span><span class="s1">__</span>
+<a name="l21"><span class="ln">21   </span></a>
+<a name="l22"><span class="ln">22   </span></a><span class="s0">1. </span><span class="s2">Look in the .blk file for elements with the following tags</span><span class="s1">:</span>
+<a name="l23"><span class="ln">23   </span></a>  <span class="s0">* </span><span class="s3">`</span><span class="s2">&lt;field name=&quot;IDENTIFIER&quot;&gt;</span><span class="s3">`</span>
+<a name="l24"><span class="ln">24   </span></a>  <span class="s0">* </span><span class="s3">`</span><span class="s2">&lt;field name=&quot;IDENTIFIER1&quot;&gt;</span><span class="s3">`</span>
+<a name="l25"><span class="ln">25   </span></a>  <span class="s0">* </span><span class="s3">`</span><span class="s2">&lt;field name=&quot;IDENTIFIER2&quot;&gt;</span><span class="s3">`</span>
+<a name="l26"><span class="ln">26   </span></a>  <span class="s0">* </span><span class="s3">`</span><span class="s2">&lt;field name=&quot;WEBCAM_NAME&quot;&gt;</span><span class="s3">`</span>
+<a name="l27"><span class="ln">27   </span></a><span class="s0">2. </span><span class="s2">Make a note of the values of these elements.</span>
+<a name="l28"><span class="ln">28   </span></a>   <span class="s2">For example, in</span>
+<a name="l29"><span class="ln">29   </span></a>
+<a name="l30"><span class="ln">30   </span></a>   <span class="s3">`</span><span class="s2">&lt;field name=&quot;IDENTIFIER&quot;&gt;right_driveAsDcMotor&lt;/field&gt;</span><span class="s3">`</span>
+<a name="l31"><span class="ln">31   </span></a>
+<a name="l32"><span class="ln">32   </span></a>   <span class="s2">the value is </span><span class="s3">`</span><span class="s2">right_driveAsDcMotor</span><span class="s3">`</span><span class="s2">.</span>
+<a name="l33"><span class="ln">33   </span></a><span class="s0">3. </span><span class="s2">Look in replaceHardwareIdentifiers to see if there is already a call to replaceIdentifierInBlocks for the values.</span>
+<a name="l34"><span class="ln">34   </span></a>   <span class="s2">For example, the following code is already present to handle </span><span class="s3">`</span><span class="s2">right_driveAsDcMotor</span><span class="s3">`</span><span class="s2">.</span>
+<a name="l35"><span class="ln">35   </span></a><span class="s3">```java</span>
+<a name="l36"><span class="ln">36   </span></a>        <span class="s3">blkContent = replaceIdentifierInBlocks(&quot;right_driveAsDcMotor&quot;,</span>
+<a name="l37"><span class="ln">37   </span></a>            <span class="s3">rightDcMotor, blkContent, false, items, &quot;IDENTIFIER&quot;, &quot;IDENTIFIER2&quot;);</span>
+<a name="l38"><span class="ln">38   </span></a><span class="s3">```</span>
+<a name="l39"><span class="ln">39   </span></a><span class="s0">4. </span><span class="s2">If there is not a call to replaceIdentifierInBlocks for that value, you must add one.</span>
+<a name="l40"><span class="ln">40   </span></a></pre>
+</body>
+</html>

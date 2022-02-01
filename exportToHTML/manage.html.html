@@ -1,0 +1,910 @@
+<html>
+<head>
+<title>manage.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #bababa;}
+.s2 { color: #a9b7c6;}
+.s3 { color: #a5c261;}
+.s4 { color: #808080;}
+.s5 { color: #6d9cbe;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+manage.html</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">&lt;!DOCTYPE </span><span class="s1">html</span><span class="s0">&gt;</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">&lt;html </span><span class="s1">lang</span><span class="s3">=&quot;en&quot;</span><span class="s0">&gt;</span>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">&lt;head&gt;</span>
+<a name="l4"><span class="ln">4    </span></a>    <span class="s0">&lt;meta </span><span class="s1">name</span><span class="s3">=&quot;viewport&quot; </span><span class="s1">content</span><span class="s3">=&quot;width=device-width, initial-scale=1&quot;</span><span class="s0">&gt;</span>
+<a name="l5"><span class="ln">5    </span></a>    <span class="s0">&lt;meta </span><span class="s1">charset</span><span class="s3">=&quot;utf-8&quot;</span><span class="s0">&gt;</span>
+<a name="l6"><span class="ln">6    </span></a>    <span class="s0">&lt;link </span><span class="s1">rel</span><span class="s3">=&quot;stylesheet&quot; </span><span class="s1">href</span><span class="s3">=&quot;/css/bootstrap.min.css&quot;</span><span class="s0">&gt;</span>
+<a name="l7"><span class="ln">7    </span></a>    <span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/es5-shim.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l8"><span class="ln">8    </span></a>    <span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/es6-shim.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l9"><span class="ln">9    </span></a>    <span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/websocket-iframe.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l10"><span class="ln">10   </span></a>    <span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/jquery-3.4.1.min.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l11"><span class="ln">11   </span></a>    <span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/bootstrap.min.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l12"><span class="ln">12   </span></a>
+<a name="l13"><span class="ln">13   </span></a>    <span class="s0">&lt;link </span><span class="s1">rel</span><span class="s3">=&quot;stylesheet/less&quot; </span><span class="s1">type</span><span class="s3">=&quot;text/css&quot; </span><span class="s1">href</span><span class="s3">=&quot;/css/manage.less&quot;</span><span class="s0">&gt;</span>
+<a name="l14"><span class="ln">14   </span></a>    <span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/less.min.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l15"><span class="ln">15   </span></a><span class="s0">&lt;/head&gt;</span>
+<a name="l16"><span class="ln">16   </span></a><span class="s0">&lt;body&gt;</span>
+<a name="l17"><span class="ln">17   </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;blocker&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">display: none; z-index: 10; width: 100%; height: 200%; background-color: rgba(201,201,201,.7); position: fixed; top: 0; left: 0;</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+<a name="l18"><span class="ln">18   </span></a>        <span class="s0">&lt;h2 </span><span class="s1">id</span><span class="s3">=&quot;blockerText&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">margin:auto; margin-top: 10%; width: 60%; padding:5px; text-align: center; background-color: #ffffff; border: 2px solid black </span><span class="s3">&quot;</span><span class="s0">&gt;&lt;/h2&gt;</span>
+<a name="l19"><span class="ln">19   </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l20"><span class="ln">20   </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;progressBanner&quot; </span><span class="s1">class</span><span class="s3">=&quot;alert alert-info&quot; </span><span class="s1">role</span><span class="s3">=&quot;alert&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">position:fixed; width:100%; top:0px; display: none; z-index:10;</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+<a name="l21"><span class="ln">21   </span></a>        <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;progressMessage&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+<a name="l22"><span class="ln">22   </span></a>        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;progress&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">margin-top:20px; margin-bottom: 10px;</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+<a name="l23"><span class="ln">23   </span></a>            <span class="s4">&lt;!-- Having a separate indeterminate progress bar prevents animating backwards --&gt;</span>
+<a name="l24"><span class="ln">24   </span></a>            <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;progressBar&quot; </span><span class="s1">class</span><span class="s3">=&quot;progress-bar&quot; </span><span class="s1">role</span><span class="s3">=&quot;progressbar&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+<a name="l25"><span class="ln">25   </span></a>            <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;indeterminateProgressBar&quot; </span><span class="s1">class</span><span class="s3">=&quot;progress-bar progress-bar-striped active&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">width:100%;</span><span class="s3">&quot; </span><span class="s1">role</span><span class="s3">=&quot;progressbar&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+<a name="l26"><span class="ln">26   </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l27"><span class="ln">27   </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l28"><span class="ln">28   </span></a>    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;bordered-text-block&quot;</span><span class="s0">&gt;</span>
+<a name="l29"><span class="ln">29   </span></a>        <span class="s0">&lt;h1 </span><span class="s1">class</span><span class="s3">=&quot;header-shared-line&quot;</span><span class="s0">&gt;</span><span class="s2">Robot Controller version: </span><span class="s0">&lt;/h1&gt;&lt;span </span><span class="s1">id</span><span class="s3">=&quot;id_rc_version&quot; </span><span class="s1">class</span><span class="s3">=&quot;next-to-header&quot;</span><span class="s0">&gt;&lt;/span&gt;</span>
+<a name="l30"><span class="ln">30   </span></a>        <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_control_hub_os_version_item&quot;</span><span class="s0">&gt;</span>
+<a name="l31"><span class="ln">31   </span></a>            <span class="s0">&lt;h1 </span><span class="s1">class</span><span class="s3">=&quot;header-shared-line&quot;</span><span class="s0">&gt;</span><span class="s2">Control Hub OS version: </span><span class="s0">&lt;/h1&gt;&lt;span </span><span class="s1">id</span><span class="s3">=&quot;id_control_hub_os_version&quot; </span><span class="s1">class</span><span class="s3">=&quot;next-to-header&quot;</span><span class="s0">&gt;&lt;/span&gt;</span>
+<a name="l32"><span class="ln">32   </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l33"><span class="ln">33   </span></a>        <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_rev_firmware_versions_item&quot;</span><span class="s0">&gt;</span>
+<a name="l34"><span class="ln">34   </span></a>            <span class="s0">&lt;h1&gt;</span><span class="s2">REV Hub firmware versions:</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l35"><span class="ln">35   </span></a>            <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_rev_firmware_versions&quot; </span><span class="s1">class</span><span class="s3">=&quot;indented&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+<a name="l36"><span class="ln">36   </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l37"><span class="ln">37   </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l38"><span class="ln">38   </span></a>    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;bordered-text-block&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_network_settings_block&quot;</span><span class="s0">&gt;</span>
+<a name="l39"><span class="ln">39   </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Wi-Fi Settings</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l40"><span class="ln">40   </span></a>        <span class="s0">&lt;form </span><span class="s1">class</span><span class="s3">=&quot;indented&quot;</span><span class="s0">&gt;</span>
+<a name="l41"><span class="ln">41   </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;form-group&quot;</span><span class="s0">&gt;</span>
+<a name="l42"><span class="ln">42   </span></a>                <span class="s0">&lt;label </span><span class="s1">for</span><span class="s3">=&quot;id_rc_name&quot;</span><span class="s0">&gt;</span><span class="s2">Name</span><span class="s0">&lt;/label&gt;</span>
+<a name="l43"><span class="ln">43   </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_rc_name&quot; </span><span class="s1">class</span><span class="s3">=&quot;form-control limited-width&quot; </span><span class="s1">type</span><span class="s3">=&quot;text&quot; </span><span class="s1">value</span><span class="s3">=&quot;(name)&quot;</span><span class="s0">&gt;</span>
+<a name="l44"><span class="ln">44   </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l45"><span class="ln">45   </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;form-group&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_password_group&quot;</span><span class="s0">&gt;</span>
+<a name="l46"><span class="ln">46   </span></a>                <span class="s0">&lt;label </span><span class="s1">for</span><span class="s3">=&quot;id_ap_new_password&quot;</span><span class="s0">&gt;</span><span class="s2">New Password</span><span class="s0">&lt;/label&gt;</span>
+<a name="l47"><span class="ln">47   </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_ap_new_password&quot; </span><span class="s1">class</span><span class="s3">=&quot;form-control limited-width&quot; </span><span class="s1">type</span><span class="s3">=&quot;password&quot; </span><span class="s1">value</span><span class="s3">=&quot;&quot;</span><span class="s0">&gt;</span>
+<a name="l48"><span class="ln">48   </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l49"><span class="ln">49   </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;form-group&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_confirmed_password_group&quot;</span><span class="s0">&gt;</span>
+<a name="l50"><span class="ln">50   </span></a>                <span class="s0">&lt;label </span><span class="s1">for</span><span class="s3">=&quot;id_ap_confirmed_password&quot;</span><span class="s0">&gt;</span><span class="s2">Confirm Password</span><span class="s0">&lt;/label&gt;</span>
+<a name="l51"><span class="ln">51   </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_ap_confirmed_password&quot; </span><span class="s1">class</span><span class="s3">=&quot;form-control limited-width&quot; </span><span class="s1">type</span><span class="s3">=&quot;password&quot; </span><span class="s1">value</span><span class="s3">=&quot;&quot;</span><span class="s0">&gt;</span>
+<a name="l52"><span class="ln">52   </span></a>                <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;checkbox&quot;</span><span class="s0">&gt;</span>
+<a name="l53"><span class="ln">53   </span></a>                    <span class="s0">&lt;label&gt;</span>
+<a name="l54"><span class="ln">54   </span></a>                        <span class="s0">&lt;input </span><span class="s1">type</span><span class="s3">=&quot;checkbox&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;onShowPasswordCheckbox()&quot;</span><span class="s0">&gt;</span>
+<a name="l55"><span class="ln">55   </span></a>                        <span class="s2">Show Password</span>
+<a name="l56"><span class="ln">56   </span></a>                    <span class="s0">&lt;/label&gt;</span>
+<a name="l57"><span class="ln">57   </span></a>                <span class="s0">&lt;/div&gt;</span>
+<a name="l58"><span class="ln">58   </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l59"><span class="ln">59   </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;form-group&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_wifi_band_group&quot;</span><span class="s0">&gt;</span>
+<a name="l60"><span class="ln">60   </span></a>                <span class="s0">&lt;label&gt;</span><span class="s2">Wi-Fi Band</span><span class="s0">&lt;/label&gt;</span>
+<a name="l61"><span class="ln">61   </span></a>                <span class="s0">&lt;br&gt;</span>
+<a name="l62"><span class="ln">62   </span></a>                <span class="s0">&lt;label </span><span class="s1">class</span><span class="s3">=&quot;radio-inline&quot;</span><span class="s0">&gt;</span>
+<a name="l63"><span class="ln">63   </span></a>                    <span class="s0">&lt;input </span><span class="s1">type</span><span class="s3">=&quot;radio&quot; </span><span class="s1">name</span><span class="s3">=&quot;wifiBand&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_wifi_band_24&quot; </span><span class="s1">value</span><span class="s3">=&quot;band_24&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;updateChannelList();&quot;</span><span class="s0">&gt;</span><span class="s2">2.4 GHz</span>
+<a name="l64"><span class="ln">64   </span></a>                <span class="s0">&lt;/label&gt;</span>
+<a name="l65"><span class="ln">65   </span></a>                <span class="s0">&lt;label </span><span class="s1">class</span><span class="s3">=&quot;radio-inline&quot;</span><span class="s0">&gt;</span>
+<a name="l66"><span class="ln">66   </span></a>                    <span class="s0">&lt;input </span><span class="s1">type</span><span class="s3">=&quot;radio&quot; </span><span class="s1">name</span><span class="s3">=&quot;wifiBand&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_wifi_band_5&quot; </span><span class="s1">value</span><span class="s3">=&quot;band_5&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;updateChannelList();&quot;</span><span class="s0">&gt;</span><span class="s2">5 GHz</span>
+<a name="l67"><span class="ln">67   </span></a>                <span class="s0">&lt;/label&gt;</span>
+<a name="l68"><span class="ln">68   </span></a>                <span class="s0">&lt;span </span><span class="s1">class</span><span class="s3">=&quot;help-block&quot;</span><span class="s0">&gt;</span>
+<a name="l69"><span class="ln">69   </span></a>                    <span class="s2">The 5 GHz Wi-Fi band is highly recommended, unless you need to connect older devices that only support 2.4 GHz Wi-Fi.</span>
+<a name="l70"><span class="ln">70   </span></a>                <span class="s0">&lt;/span&gt;</span>
+<a name="l71"><span class="ln">71   </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l72"><span class="ln">72   </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;form-group&quot;</span><span class="s0">&gt;</span>
+<a name="l73"><span class="ln">73   </span></a>                <span class="s0">&lt;label </span><span class="s1">for</span><span class="s3">=&quot;id_ap_channel&quot;</span><span class="s0">&gt;</span><span class="s2">Wi-Fi Channel</span><span class="s0">&lt;/label&gt;</span>
+<a name="l74"><span class="ln">74   </span></a>                <span class="s0">&lt;select </span><span class="s1">id</span><span class="s3">=&quot;id_ap_channel&quot; </span><span class="s1">class</span><span class="s3">=&quot;form-control&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">max-width: 150px; margin-bottom: 10px;</span><span class="s3">&quot; </span><span class="s1">onchange</span><span class="s3">=&quot;updateApSettingsButton();&quot;</span><span class="s0">&gt;&lt;/select&gt;</span>
+<a name="l75"><span class="ln">75   </span></a>                <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;checkbox&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_show_overlapping_channels&quot;</span><span class="s0">&gt;</span>
+<a name="l76"><span class="ln">76   </span></a>                    <span class="s0">&lt;label&gt;</span>
+<a name="l77"><span class="ln">77   </span></a>                        <span class="s0">&lt;input </span><span class="s1">type</span><span class="s3">=&quot;checkbox&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_show_overlapping_channels_checkbox&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;updateChannelList('overlappingChannelsCheckbox')&quot;</span><span class="s0">&gt;</span>
+<a name="l78"><span class="ln">78   </span></a>                        <span class="s2">Show overlapping channels (not recommended)</span>
+<a name="l79"><span class="ln">79   </span></a>                    <span class="s0">&lt;/label&gt;</span>
+<a name="l80"><span class="ln">80   </span></a>                <span class="s0">&lt;/div&gt;</span>
+<a name="l81"><span class="ln">81   </span></a>                <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_submit_network_settings_warning&quot; </span><span class="s1">class</span><span class="s3">=&quot;sized-input alert alert-danger&quot; </span><span class="s1">role</span><span class="s3">=&quot;alert&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">display:inline-block; margin-bottom:0;</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+<a name="l82"><span class="ln">82   </span></a>                    <span class="s2">Please select a Wi-Fi channel from the dropdown menu</span>
+<a name="l83"><span class="ln">83   </span></a>                <span class="s0">&lt;/div&gt;</span>
+<a name="l84"><span class="ln">84   </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l85"><span class="ln">85   </span></a>        <span class="s0">&lt;/form&gt;</span>
+<a name="l86"><span class="ln">86   </span></a>        <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_submit_network_settings_button&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-select-button btn btn-primary&quot; </span><span class="s1">disabled title</span><span class="s3">=&quot;Not connected to robot&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;onSubmitNetworkSettings()&quot;</span><span class="s0">&gt;</span>
+<a name="l87"><span class="ln">87   </span></a>            <span class="s2">Apply Wi-Fi Settings</span>
+<a name="l88"><span class="ln">88   </span></a>        <span class="s0">&lt;/button&gt;</span>
+<a name="l89"><span class="ln">89   </span></a>        <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_control_hub_wifi_warnings&quot;</span><span class="s0">&gt;</span>
+<a name="l90"><span class="ln">90   </span></a>            <span class="s0">&lt;span </span><span class="s1">class</span><span class="s3">=&quot;help-block&quot;</span><span class="s0">&gt;</span>
+<a name="l91"><span class="ln">91   </span></a>            <span class="s2">You will need to reconnect to the new Wi-Fi network after changing the Control Hub's name and/or password.</span>
+<a name="l92"><span class="ln">92   </span></a>            <span class="s0">&lt;/span&gt;</span>
+<a name="l93"><span class="ln">93   </span></a>            <span class="s0">&lt;span </span><span class="s1">class</span><span class="s3">=&quot;help-block&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">margin-bottom:0; max-width:700px</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+<a name="l94"><span class="ln">94   </span></a>                <span class="s2">If you are unable to connect to the Control Hub's network after switching to the 5 GHz band,</span>
+<a name="l95"><span class="ln">95   </span></a>                <span class="s2">you can perform a Wi-Fi factory reset by holding down the Control Hub's button while you</span>
+<a name="l96"><span class="ln">96   </span></a>                <span class="s2">turn it on, until you see a rapid sequence of color changes on the Control Hub's light.</span>
+<a name="l97"><span class="ln">97   </span></a>                <span class="s2">The Wi-Fi network name and password will be reset to their default values, and the Wi-Fi band will be set to 2.4 GHz.</span>
+<a name="l98"><span class="ln">98   </span></a>            <span class="s0">&lt;/span&gt;</span>
+<a name="l99"><span class="ln">99   </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l100"><span class="ln">100  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l101"><span class="ln">101  </span></a><span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;bordered-text-block&quot;</span><span class="s0">&gt;</span>
+<a name="l102"><span class="ln">102  </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_download_logs&quot;</span><span class="s0">&gt;</span>
+<a name="l103"><span class="ln">103  </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Download Robot Controller Logs</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l104"><span class="ln">104  </span></a>        <span class="s0">&lt;p&gt;</span><span class="s2">Examination of activity logs from the robot controller can sometimes help diagnose problems and bugs.</span><span class="s0">&lt;/p&gt;</span>
+<a name="l105"><span class="ln">105  </span></a>        <span class="s0">&lt;p&gt;&lt;button </span><span class="s1">onclick</span><span class="s3">=&quot;javascript:onDownloadLogsClicked()&quot;</span><span class="s0">&gt;</span><span class="s2">Download Logs</span><span class="s0">&lt;span </span><span class="s1">id</span><span class="s3">=&quot;id_log_count&quot;</span><span class="s0">&gt;&lt;/span&gt;&lt;/button&gt;&lt;/p&gt;</span>
+<a name="l106"><span class="ln">106  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l107"><span class="ln">107  </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_upload_firmware&quot;</span><span class="s0">&gt;</span>
+<a name="l108"><span class="ln">108  </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Update REV Hub Firmware</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l109"><span class="ln">109  </span></a>        <span class="s0">&lt;p&gt;</span><span class="s2">Update firmware on the REV Expansion Hub and REV Control Hub.</span><span class="s0">&lt;br&gt;</span><span class="s2">You can upload a firmware file yourself, or use the included version.</span><span class="s0">&lt;/p&gt;</span>
+<a name="l110"><span class="ln">110  </span></a>        <span class="s0">&lt;div&gt;</span>
+<a name="l111"><span class="ln">111  </span></a>            <span class="s0">&lt;p&gt;</span>
+<a name="l112"><span class="ln">112  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_input_file_firmware&quot; </span><span class="s1">type</span><span class="s3">=&quot;file&quot; </span><span class="s1">class</span><span class="s3">=&quot;hidden hidden-input-file&quot;</span><span class="s0">&gt;</span>
+<a name="l113"><span class="ln">113  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_firmware_feedback&quot; </span><span class="s1">readonly class</span><span class="s3">=&quot;upload-feedback&quot; </span><span class="s1">type</span><span class="s3">=&quot;text&quot; </span><span class="s1">value</span><span class="s3">=&quot;(firmware)&quot;</span><span class="s0">&gt;&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_firmware_button&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-select-button&quot; </span><span class="s0">&gt;</span><span class="s2">Select Firmware...</span><span class="s0">&lt;/button&gt;</span>
+<a name="l114"><span class="ln">114  </span></a>            <span class="s0">&lt;/p&gt;</span>
+<a name="l115"><span class="ln">115  </span></a>            <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_action_firmware&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-action-button&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;firmwareUpdateButtonClicked();&quot;</span><span class="s0">&gt;</span><span class="s2">Upload</span><span class="s0">&lt;/button&gt;</span>
+<a name="l116"><span class="ln">116  </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l117"><span class="ln">117  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l118"><span class="ln">118  </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_update_robot_controller_application&quot;</span><span class="s0">&gt;</span>
+<a name="l119"><span class="ln">119  </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Update Robot Controller App</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l120"><span class="ln">120  </span></a>        <span class="s0">&lt;p&gt;</span><span class="s2">Upload and install a new Robot Controller App to the REV Control Hub.</span><span class="s0">&lt;/p&gt;</span>
+<a name="l121"><span class="ln">121  </span></a>        <span class="s0">&lt;div&gt;</span>
+<a name="l122"><span class="ln">122  </span></a>            <span class="s0">&lt;p&gt;</span>
+<a name="l123"><span class="ln">123  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_input_file_apk&quot; </span><span class="s1">type</span><span class="s3">=&quot;file&quot; </span><span class="s1">class</span><span class="s3">=&quot;hidden hidden-input-file&quot;</span><span class="s0">&gt;</span>
+<a name="l124"><span class="ln">124  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_apk_feedback&quot; </span><span class="s1">readonly class</span><span class="s3">=&quot;upload-feedback&quot; </span><span class="s1">type</span><span class="s3">=&quot;text&quot; </span><span class="s1">value</span><span class="s3">=&quot;(apk)&quot;</span><span class="s0">&gt;&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_apk_button&quot;</span>
+<a name="l125"><span class="ln">125  </span></a>                    <span class="s1">class</span><span class="s3">=&quot;aligned-select-button&quot;</span><span class="s0">&gt;</span><span class="s2">Select App...</span><span class="s0">&lt;/button&gt;</span>
+<a name="l126"><span class="ln">126  </span></a>                <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_action_apk&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-action-button&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;updateApk();&quot;</span><span class="s0">&gt;</span><span class="s2">Update</span><span class="s0">&lt;/button&gt;</span>
+<a name="l127"><span class="ln">127  </span></a>            <span class="s0">&lt;/p&gt;</span>
+<a name="l128"><span class="ln">128  </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l129"><span class="ln">129  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l130"><span class="ln">130  </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_upload_webcam_calibration&quot;</span><span class="s0">&gt;</span>
+<a name="l131"><span class="ln">131  </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Upload Webcam Calibration File</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l132"><span class="ln">132  </span></a>        <span class="s0">&lt;p&gt;</span><span class="s2">Upload a webcam calibration file.</span><span class="s0">&lt;/p&gt;</span>
+<a name="l133"><span class="ln">133  </span></a>        <span class="s0">&lt;div&gt;</span>
+<a name="l134"><span class="ln">134  </span></a>            <span class="s0">&lt;p&gt;</span>
+<a name="l135"><span class="ln">135  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_input_file_webcam_calibration&quot; </span><span class="s1">type</span><span class="s3">=&quot;file&quot; </span><span class="s1">class</span><span class="s3">=&quot;hidden hidden-input-file&quot;</span><span class="s0">&gt;</span>
+<a name="l136"><span class="ln">136  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_webcam_calibration_feedback&quot; </span><span class="s1">readonly class</span><span class="s3">=&quot;upload-feedback&quot; </span><span class="s1">type</span><span class="s3">=&quot;text&quot; </span><span class="s1">value</span><span class="s3">=&quot;(webcam_calibration)&quot;</span><span class="s0">&gt;</span>
+<a name="l137"><span class="ln">137  </span></a>                    <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_webcam_calibration_button&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-select-button&quot; </span><span class="s0">&gt;</span><span class="s2">Select Webcam Calibration File...</span><span class="s0">&lt;/button&gt;</span>
+<a name="l138"><span class="ln">138  </span></a>                <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_action_webcam_calibration&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-action-button&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;uploadWebcamCalibration();&quot;</span><span class="s0">&gt;</span><span class="s2">Upload</span><span class="s0">&lt;/button&gt;</span>
+<a name="l139"><span class="ln">139  </span></a>            <span class="s0">&lt;/p&gt;</span>
+<a name="l140"><span class="ln">140  </span></a>            <span class="s0">&lt;p </span><span class="s1">id</span><span class="s3">=&quot;id_webcam_calibration_upload_complete&quot; </span><span class="s1">class</span><span class="s3">=&quot;text-ok&quot;</span><span class="s0">&gt;&lt;/p&gt;</span>
+<a name="l141"><span class="ln">141  </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l142"><span class="ln">142  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l143"><span class="ln">143  </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_upload_tflite_model&quot;</span><span class="s0">&gt;</span>
+<a name="l144"><span class="ln">144  </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Upload TensorFlow Lite Model File</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l145"><span class="ln">145  </span></a>        <span class="s0">&lt;p&gt;</span><span class="s2">Upload a TensorFlow Lite model file.</span><span class="s0">&lt;/p&gt;</span>
+<a name="l146"><span class="ln">146  </span></a>        <span class="s0">&lt;div&gt;</span>
+<a name="l147"><span class="ln">147  </span></a>            <span class="s0">&lt;p&gt;</span>
+<a name="l148"><span class="ln">148  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_input_file_tflite_model&quot; </span><span class="s1">type</span><span class="s3">=&quot;file&quot; </span><span class="s1">class</span><span class="s3">=&quot;hidden hidden-input-file&quot;</span><span class="s0">&gt;</span>
+<a name="l149"><span class="ln">149  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_tflite_model_feedback&quot; </span><span class="s1">readonly class</span><span class="s3">=&quot;upload-feedback&quot; </span><span class="s1">type</span><span class="s3">=&quot;text&quot; </span><span class="s1">value</span><span class="s3">=&quot;(tflite_model)&quot;</span><span class="s0">&gt;</span>
+<a name="l150"><span class="ln">150  </span></a>                    <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_tflite_model_button&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-select-button&quot; </span><span class="s0">&gt;</span><span class="s2">Select TensorflowLite Model File...</span><span class="s0">&lt;/button&gt;</span>
+<a name="l151"><span class="ln">151  </span></a>                <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_action_tflite_model&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-action-button&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;uploadTfliteModel();&quot;</span><span class="s0">&gt;</span><span class="s2">Upload</span><span class="s0">&lt;/button&gt;</span>
+<a name="l152"><span class="ln">152  </span></a>            <span class="s0">&lt;/p&gt;</span>
+<a name="l153"><span class="ln">153  </span></a>            <span class="s0">&lt;p </span><span class="s1">id</span><span class="s3">=&quot;id_tflite_model_upload_complete&quot; </span><span class="s1">class</span><span class="s3">=&quot;text-ok&quot;</span><span class="s0">&gt;&lt;/p&gt;</span>
+<a name="l154"><span class="ln">154  </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l155"><span class="ln">155  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l156"><span class="ln">156  </span></a>    <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_update_control_hub_operating_system&quot;</span><span class="s0">&gt;</span>
+<a name="l157"><span class="ln">157  </span></a>        <span class="s0">&lt;h1&gt;</span><span class="s2">Update Control Hub Operating System</span><span class="s0">&lt;/h1&gt;</span>
+<a name="l158"><span class="ln">158  </span></a>        <span class="s0">&lt;p&gt;</span><span class="s2">Upload an Operating System update file for the REV Control Hub</span><span class="s0">&lt;/p&gt;</span>
+<a name="l159"><span class="ln">159  </span></a>        <span class="s0">&lt;div&gt;</span>
+<a name="l160"><span class="ln">160  </span></a>            <span class="s0">&lt;p&gt;</span>
+<a name="l161"><span class="ln">161  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_input_file_ota&quot; </span><span class="s1">type</span><span class="s3">=&quot;file&quot; </span><span class="s1">class</span><span class="s3">=&quot;hidden hidden-input-file&quot;</span><span class="s0">&gt;</span>
+<a name="l162"><span class="ln">162  </span></a>                <span class="s0">&lt;input </span><span class="s1">id</span><span class="s3">=&quot;id_ota_feedback&quot; </span><span class="s1">readonly class</span><span class="s3">=&quot;upload-feedback&quot; </span><span class="s1">type</span><span class="s3">=&quot;text&quot; </span><span class="s1">value</span><span class="s3">=&quot;(zip)&quot;</span><span class="s0">&gt;</span>
+<a name="l163"><span class="ln">163  </span></a>                <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_ota_button&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-select-button&quot;</span><span class="s0">&gt;</span><span class="s2">Select Update File...</span><span class="s0">&lt;/button&gt;</span>
+<a name="l164"><span class="ln">164  </span></a>                <span class="s0">&lt;button </span><span class="s1">id</span><span class="s3">=&quot;id_action_ota&quot; </span><span class="s1">class</span><span class="s3">=&quot;aligned-action-button&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;uploadOta();&quot;</span><span class="s0">&gt;</span><span class="s2">Update </span><span class="s5">&amp;amp; </span><span class="s2">Reboot</span><span class="s0">&lt;/button&gt;</span>
+<a name="l165"><span class="ln">165  </span></a>            <span class="s0">&lt;/p&gt;</span>
+<a name="l166"><span class="ln">166  </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l167"><span class="ln">167  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l168"><span class="ln">168  </span></a><span class="s0">&lt;/div&gt;</span>
+<a name="l169"><span class="ln">169  </span></a>
+<a name="l170"><span class="ln">170  </span></a><span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;modal fade&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_modal&quot; </span><span class="s1">tabindex</span><span class="s3">=&quot;-1&quot; </span><span class="s1">role</span><span class="s3">=&quot;dialog&quot; </span><span class="s1">aria-labelledby</span><span class="s3">=&quot;id_fw_update_title&quot;</span><span class="s0">&gt;</span>
+<a name="l171"><span class="ln">171  </span></a>    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;modal-dialog&quot; </span><span class="s1">role</span><span class="s3">=&quot;document&quot;</span><span class="s0">&gt;</span>
+<a name="l172"><span class="ln">172  </span></a>        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;modal-content&quot;</span><span class="s0">&gt;</span>
+<a name="l173"><span class="ln">173  </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;modal-header&quot;</span><span class="s0">&gt;</span>
+<a name="l174"><span class="ln">174  </span></a>                <span class="s0">&lt;button </span><span class="s1">type</span><span class="s3">=&quot;button&quot; </span><span class="s1">class</span><span class="s3">=&quot;close&quot; </span><span class="s1">data-dismiss</span><span class="s3">=&quot;modal&quot; </span><span class="s1">aria-label</span><span class="s3">=&quot;Close&quot;</span><span class="s0">&gt;&lt;span </span><span class="s1">aria-hidden</span><span class="s3">=&quot;true&quot;</span><span class="s0">&gt;</span><span class="s5">&amp;times;</span><span class="s0">&lt;/span&gt;&lt;/button&gt;</span>
+<a name="l175"><span class="ln">175  </span></a>                <span class="s0">&lt;h3 </span><span class="s1">class</span><span class="s3">=&quot;modal-title&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_title&quot;</span><span class="s0">&gt;</span><span class="s2">REV Hub Firmware Update</span><span class="s0">&lt;/h3&gt;</span>
+<a name="l176"><span class="ln">176  </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l177"><span class="ln">177  </span></a>            <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;modal-body&quot;</span><span class="s0">&gt;</span>
+<a name="l178"><span class="ln">178  </span></a>                <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_loading_devices&quot;</span><span class="s0">&gt;</span>
+<a name="l179"><span class="ln">179  </span></a>                    <span class="s0">&lt;h4&gt;</span><span class="s2">Getting devices available for update</span><span class="s0">&lt;/h4&gt;</span>
+<a name="l180"><span class="ln">180  </span></a>                    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;progress&quot;</span><span class="s0">&gt;</span>
+<a name="l181"><span class="ln">181  </span></a>                        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;progress-bar progress-bar-striped active&quot; </span><span class="s1">role</span><span class="s3">=&quot;progressbar&quot; </span><span class="s1">style</span><span class="s3">=&quot;</span><span class="s2">width:100%;</span><span class="s3">&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+<a name="l182"><span class="ln">182  </span></a>                    <span class="s0">&lt;/div&gt;</span>
+<a name="l183"><span class="ln">183  </span></a>                <span class="s0">&lt;/div&gt;</span>
+<a name="l184"><span class="ln">184  </span></a>                <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_content&quot;</span><span class="s0">&gt;</span>
+<a name="l185"><span class="ln">185  </span></a>                    <span class="s0">&lt;h4&gt;</span><span class="s2">REV Hubs that will be updated:</span><span class="s0">&lt;/h4&gt;</span>
+<a name="l186"><span class="ln">186  </span></a>                    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;list-group&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_device_list&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+<a name="l187"><span class="ln">187  </span></a>                    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;panel panel-info&quot;</span><span class="s0">&gt;</span>
+<a name="l188"><span class="ln">188  </span></a>                        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;panel-heading&quot;</span><span class="s0">&gt;&lt;h4 </span><span class="s1">class</span><span class="s3">=&quot;panel-title&quot;</span><span class="s0">&gt;</span><span class="s2">Note</span><span class="s0">&lt;/h4&gt;&lt;/div&gt;</span>
+<a name="l189"><span class="ln">189  </span></a>                        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;panel-body&quot;</span><span class="s0">&gt;</span>
+<a name="l190"><span class="ln">190  </span></a>                            <span class="s2">Expansion Hubs are only available for firmware update if they are</span>
+<a name="l191"><span class="ln">191  </span></a>                            <span class="s2">plugged into the Robot Controller directly via USB (not RS485).</span>
+<a name="l192"><span class="ln">192  </span></a>                        <span class="s0">&lt;/div&gt;</span>
+<a name="l193"><span class="ln">193  </span></a>                    <span class="s0">&lt;/div&gt;</span>
+<a name="l194"><span class="ln">194  </span></a>                    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;panel panel-danger&quot;</span><span class="s0">&gt;</span>
+<a name="l195"><span class="ln">195  </span></a>                        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;panel-heading&quot;</span><span class="s0">&gt;&lt;h4 </span><span class="s1">class</span><span class="s3">=&quot;panel-title&quot;</span><span class="s0">&gt;</span><span class="s2">Warning</span><span class="s0">&lt;/h4&gt;&lt;/div&gt;</span>
+<a name="l196"><span class="ln">196  </span></a>                        <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;panel-body&quot;</span><span class="s0">&gt;</span>
+<a name="l197"><span class="ln">197  </span></a>                            <span class="s2">While the firmware update is in progress, do not unplug any hubs or restart</span>
+<a name="l198"><span class="ln">198  </span></a>                            <span class="s2">the robot, or a hub may need to be updated again before it can be used.</span>
+<a name="l199"><span class="ln">199  </span></a>                        <span class="s0">&lt;/div&gt;</span>
+<a name="l200"><span class="ln">200  </span></a>                    <span class="s0">&lt;/div&gt;</span>
+<a name="l201"><span class="ln">201  </span></a>                    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;text-center&quot;</span><span class="s0">&gt;</span>
+<a name="l202"><span class="ln">202  </span></a>                        <span class="s0">&lt;button </span><span class="s1">type</span><span class="s3">=&quot;button&quot; </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_apply_button&quot; </span><span class="s1">class</span><span class="s3">=&quot;btn btn-primary&quot; </span><span class="s1">data-dismiss</span><span class="s3">=&quot;modal&quot;</span><span class="s0">&gt;</span>
+<a name="l203"><span class="ln">203  </span></a>                            <span class="s2">Update Hub Firmware</span>
+<a name="l204"><span class="ln">204  </span></a>                        <span class="s0">&lt;/button&gt;</span>
+<a name="l205"><span class="ln">205  </span></a>                    <span class="s0">&lt;/div&gt;</span>
+<a name="l206"><span class="ln">206  </span></a>                <span class="s0">&lt;/div&gt;</span>
+<a name="l207"><span class="ln">207  </span></a>                <span class="s0">&lt;div </span><span class="s1">id</span><span class="s3">=&quot;id_fw_update_no_devices_found&quot;</span><span class="s0">&gt;</span>
+<a name="l208"><span class="ln">208  </span></a>                    <span class="s0">&lt;h4&gt;</span><span class="s2">No Expansion Hubs were found via USB.</span><span class="s0">&lt;/h4&gt;</span>
+<a name="l209"><span class="ln">209  </span></a>                    <span class="s0">&lt;div </span><span class="s1">class</span><span class="s3">=&quot;text-center&quot;</span><span class="s0">&gt;</span>
+<a name="l210"><span class="ln">210  </span></a>                        <span class="s0">&lt;button </span><span class="s1">type</span><span class="s3">=&quot;button&quot; </span><span class="s1">onclick</span><span class="s3">=&quot;openFirmwareUpdateModal()&quot; </span><span class="s1">class</span><span class="s3">=&quot;btn btn-primary&quot;</span><span class="s0">&gt;</span>
+<a name="l211"><span class="ln">211  </span></a>                            <span class="s2">Re-scan for Expansion Hubs</span>
+<a name="l212"><span class="ln">212  </span></a>                        <span class="s0">&lt;/button&gt;</span>
+<a name="l213"><span class="ln">213  </span></a>                    <span class="s0">&lt;/div&gt;</span>
+<a name="l214"><span class="ln">214  </span></a>                <span class="s0">&lt;/div&gt;</span>
+<a name="l215"><span class="ln">215  </span></a>            <span class="s0">&lt;/div&gt;</span>
+<a name="l216"><span class="ln">216  </span></a>        <span class="s0">&lt;/div&gt;</span>
+<a name="l217"><span class="ln">217  </span></a>    <span class="s0">&lt;/div&gt;</span>
+<a name="l218"><span class="ln">218  </span></a><span class="s0">&lt;/div&gt;</span>
+<a name="l219"><span class="ln">219  </span></a>
+<a name="l220"><span class="ln">220  </span></a><span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/rc_config.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l221"><span class="ln">221  </span></a><span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot; </span><span class="s1">src</span><span class="s3">=&quot;/js/util.js&quot;</span><span class="s0">&gt;&lt;/script&gt;</span>
+<a name="l222"><span class="ln">222  </span></a><span class="s0">&lt;script </span><span class="s1">type</span><span class="s3">=&quot;text/javascript&quot;</span><span class="s0">&gt;</span>
+<a name="l223"><span class="ln">223  </span></a>    <span class="s2">'use strict';</span>
+<a name="l224"><span class="ln">224  </span></a>
+<a name="l225"><span class="ln">225  </span></a>    <span class="s2">var appUpdateRequiresReboot = false;</span>
+<a name="l226"><span class="ln">226  </span></a>    <span class="s2">var mostRecentUploadIdentifier;</span>
+<a name="l227"><span class="ln">227  </span></a>    <span class="s2">var allAvailableChannels;</span>
+<a name="l228"><span class="ln">228  </span></a>    <span class="s2">let currentChannel;</span>
+<a name="l229"><span class="ln">229  </span></a>    <span class="s2">let currentlyOn2_4Ghz = false;</span>
+<a name="l230"><span class="ln">230  </span></a>    <span class="s2">let currentlyOn5Ghz = false;</span>
+<a name="l231"><span class="ln">231  </span></a>    <span class="s2">var isControlHub;</span>
+<a name="l232"><span class="ln">232  </span></a>    <span class="s2">var originalName;</span>
+<a name="l233"><span class="ln">233  </span></a>    <span class="s2">var originalPassword;</span>
+<a name="l234"><span class="ln">234  </span></a>
+<a name="l235"><span class="ln">235  </span></a>    <span class="s2">var CH_UPDATER_NAMESPACE = &quot;ControlHubUpdater&quot;;</span>
+<a name="l236"><span class="ln">236  </span></a>    <span class="s2">var PROGRESS_NAMESPACE = &quot;progress&quot;;</span>
+<a name="l237"><span class="ln">237  </span></a>
+<a name="l238"><span class="ln">238  </span></a>    <span class="s2">var remainingModulesForFwUpdate = []; // contains hub serial numbers</span>
+<a name="l239"><span class="ln">239  </span></a>    <span class="s2">var fwUpdateFilename; // falsy value indicates that the built-in firmware file should be used</span>
+<a name="l240"><span class="ln">240  </span></a>
+<a name="l241"><span class="ln">241  </span></a>    <span class="s2">var updateAbandonmentEventHandler = function(event) { event.preventDefault(); event.returnValue = &quot;Update in progress&quot;; }</span>
+<a name="l242"><span class="ln">242  </span></a>
+<a name="l243"><span class="ln">243  </span></a>    <span class="s2">var handleShowProgress = function(webSocketMessage) {</span>
+<a name="l244"><span class="ln">244  </span></a>        <span class="s2">var payload = JSON.parse(webSocketMessage.payload);</span>
+<a name="l245"><span class="ln">245  </span></a>
+<a name="l246"><span class="ln">246  </span></a>        <span class="s2">document.getElementById('progressMessage').innerText = payload.message;</span>
+<a name="l247"><span class="ln">247  </span></a>        <span class="s2">var progressBar = document.getElementById('progressBar');</span>
+<a name="l248"><span class="ln">248  </span></a>        <span class="s2">var indeterminateProgressBar = document.getElementById('indeterminateProgressBar');</span>
+<a name="l249"><span class="ln">249  </span></a>
+<a name="l250"><span class="ln">250  </span></a>        <span class="s2">if (payload.cur === 0) {</span>
+<a name="l251"><span class="ln">251  </span></a>            <span class="s2">indeterminateProgressBar.style.display = 'block';</span>
+<a name="l252"><span class="ln">252  </span></a>            <span class="s2">progressBar.style.display = 'none';</span>
+<a name="l253"><span class="ln">253  </span></a>        <span class="s2">} else {</span>
+<a name="l254"><span class="ln">254  </span></a>            <span class="s2">var percent = ((payload.cur / payload.max) * 100).toFixed(2) + &quot;%&quot;;</span>
+<a name="l255"><span class="ln">255  </span></a>            <span class="s2">progressBar.style.width = percent;</span>
+<a name="l256"><span class="ln">256  </span></a>            <span class="s2">progressBar.style.display = 'block';</span>
+<a name="l257"><span class="ln">257  </span></a>            <span class="s2">indeterminateProgressBar.style.display = 'none';</span>
+<a name="l258"><span class="ln">258  </span></a>        <span class="s2">}</span>
+<a name="l259"><span class="ln">259  </span></a>
+<a name="l260"><span class="ln">260  </span></a>        <span class="s2">document.getElementById('progressBanner').style.display = 'block';</span>
+<a name="l261"><span class="ln">261  </span></a>    <span class="s2">};</span>
+<a name="l262"><span class="ln">262  </span></a>
+<a name="l263"><span class="ln">263  </span></a>    <span class="s2">var dismissProgress = function(webSocketMessage) {</span>
+<a name="l264"><span class="ln">264  </span></a>        <span class="s2">document.getElementById('progressBanner').style.display = 'none';</span>
+<a name="l265"><span class="ln">265  </span></a>    <span class="s2">};</span>
+<a name="l266"><span class="ln">266  </span></a>
+<a name="l267"><span class="ln">267  </span></a>    <span class="s2">var handleUpdaterNotification = function(webSocketMessage) {</span>
+<a name="l268"><span class="ln">268  </span></a>        <span class="s2">var payload = JSON.parse(webSocketMessage.payload);</span>
+<a name="l269"><span class="ln">269  </span></a>        <span class="s2">console.log(payload);</span>
+<a name="l270"><span class="ln">270  </span></a>        <span class="s2">var message = payload.message;</span>
+<a name="l271"><span class="ln">271  </span></a>
+<a name="l272"><span class="ln">272  </span></a>        <span class="s2">if (payload.presentationType === &quot;STATUS&quot;) {</span>
+<a name="l273"><span class="ln">273  </span></a>            <span class="s2">message = message.replace(/\n/g, &quot;&lt;br&gt;&quot;);</span>
+<a name="l274"><span class="ln">274  </span></a>            <span class="s2">showUploadBlocker(message);</span>
+<a name="l275"><span class="ln">275  </span></a>        <span class="s2">} else {</span>
+<a name="l276"><span class="ln">276  </span></a>            <span class="s2">hideUploadBlocker();</span>
+<a name="l277"><span class="ln">277  </span></a>            <span class="s2">removeClass(document.documentElement, &quot;wait&quot;);</span>
+<a name="l278"><span class="ln">278  </span></a>            <span class="s2">window.removeEventListener('beforeunload', updateAbandonmentEventHandler);</span>
+<a name="l279"><span class="ln">279  </span></a>
+<a name="l280"><span class="ln">280  </span></a>            <span class="s2">setTimeout(function() {</span>
+<a name="l281"><span class="ln">281  </span></a>                <span class="s2">// We put this functionality in a 10 ms timeout, because we want the hiding to finish before we display the alert/confirmation</span>
+<a name="l282"><span class="ln">282  </span></a>                <span class="s2">if (payload.presentationType === &quot;PROMPT&quot;) {</span>
+<a name="l283"><span class="ln">283  </span></a>                    <span class="s2">var confirmationResult = confirm(message);</span>
+<a name="l284"><span class="ln">284  </span></a>                    <span class="s2">console.log(&quot;Confirmation result: &quot; + confirmationResult);</span>
+<a name="l285"><span class="ln">285  </span></a>                    <span class="s2">if (confirmationResult === true) {</span>
+<a name="l286"><span class="ln">286  </span></a>                        <span class="s2">var confirmationMessage = new WEBSOCKET_LIB.WebSocketMessage(CH_UPDATER_NAMESPACE, &quot;confirmDangerousAction&quot;, mostRecentUploadIdentifier);</span>
+<a name="l287"><span class="ln">287  </span></a>                        <span class="s2">WEBSOCKET_LIB.webSocketManager.sendMessage(confirmationMessage);</span>
+<a name="l288"><span class="ln">288  </span></a>                    <span class="s2">} else {</span>
+<a name="l289"><span class="ln">289  </span></a>                        <span class="s2">// If we aren't going to install the uploaded file, we should delete it.</span>
+<a name="l290"><span class="ln">290  </span></a>                        <span class="s2">var deleteUploadedFileMessage = new WEBSOCKET_LIB.WebSocketMessage(CH_UPDATER_NAMESPACE, &quot;deleteUploadedFile&quot;, mostRecentUploadIdentifier);</span>
+<a name="l291"><span class="ln">291  </span></a>                        <span class="s2">WEBSOCKET_LIB.webSocketManager.sendMessage(deleteUploadedFileMessage);</span>
+<a name="l292"><span class="ln">292  </span></a>                    <span class="s2">}</span>
+<a name="l293"><span class="ln">293  </span></a>                <span class="s2">} else {</span>
+<a name="l294"><span class="ln">294  </span></a>                    <span class="s2">// For now we treat successes and failures the same way. In the future, we can style the messages differently if desired.</span>
+<a name="l295"><span class="ln">295  </span></a>                    <span class="s2">alert(message);</span>
+<a name="l296"><span class="ln">296  </span></a>                <span class="s2">}</span>
+<a name="l297"><span class="ln">297  </span></a>            <span class="s2">}, 10);</span>
+<a name="l298"><span class="ln">298  </span></a>        <span class="s2">}</span>
+<a name="l299"><span class="ln">299  </span></a>    <span class="s2">};</span>
+<a name="l300"><span class="ln">300  </span></a>
+<a name="l301"><span class="ln">301  </span></a>    <span class="s2">var bindToControlHubUpdaterTransaction = function (xhr) {</span>
+<a name="l302"><span class="ln">302  </span></a>        <span class="s2">var responseObject = JSON.parse(xhr.response);</span>
+<a name="l303"><span class="ln">303  </span></a>        <span class="s2">if (responseObject.uploadIdentifier) {</span>
+<a name="l304"><span class="ln">304  </span></a>            <span class="s2">addClass(document.documentElement, &quot;wait&quot;);</span>
+<a name="l305"><span class="ln">305  </span></a>            <span class="s2">window.addEventListener('beforeunload', updateAbandonmentEventHandler);</span>
+<a name="l306"><span class="ln">306  </span></a>            <span class="s2">mostRecentUploadIdentifier = responseObject.uploadIdentifier;</span>
+<a name="l307"><span class="ln">307  </span></a>            <span class="s2">var bindMessage = new WEBSOCKET_LIB.WebSocketMessage(CH_UPDATER_NAMESPACE, &quot;bind&quot;, responseObject.uploadIdentifier);</span>
+<a name="l308"><span class="ln">308  </span></a>            <span class="s2">WEBSOCKET_LIB.webSocketManager.sendMessage(bindMessage);</span>
+<a name="l309"><span class="ln">309  </span></a>        <span class="s2">}</span>
+<a name="l310"><span class="ln">310  </span></a>    <span class="s2">}</span>
+<a name="l311"><span class="ln">311  </span></a>
+<a name="l312"><span class="ln">312  </span></a>    <span class="s2">function onWebSocketConnected() {</span>
+<a name="l313"><span class="ln">313  </span></a>        <span class="s2">updateApSettingsButton();</span>
+<a name="l314"><span class="ln">314  </span></a>    <span class="s2">}</span>
+<a name="l315"><span class="ln">315  </span></a>
+<a name="l316"><span class="ln">316  </span></a>    <span class="s2">function onWebSocketDisconnected() {</span>
+<a name="l317"><span class="ln">317  </span></a>        <span class="s2">dismissProgress();</span>
+<a name="l318"><span class="ln">318  </span></a>        <span class="s2">updateApSettingsButton();</span>
+<a name="l319"><span class="ln">319  </span></a>    <span class="s2">}</span>
+<a name="l320"><span class="ln">320  </span></a>
+<a name="l321"><span class="ln">321  </span></a>    <span class="s2">WEBSOCKET_LIB.webSocketManager.subscribeToNamespace(CH_UPDATER_NAMESPACE);</span>
+<a name="l322"><span class="ln">322  </span></a>    <span class="s2">WEBSOCKET_LIB.webSocketManager.subscribeToNamespace(PROGRESS_NAMESPACE);</span>
+<a name="l323"><span class="ln">323  </span></a>    <span class="s2">WEBSOCKET_LIB.webSocketManager.registerTypeHandler(CH_UPDATER_NAMESPACE, &quot;notification&quot;, handleUpdaterNotification);</span>
+<a name="l324"><span class="ln">324  </span></a>    <span class="s2">WEBSOCKET_LIB.webSocketManager.registerTypeHandler(PROGRESS_NAMESPACE, &quot;showProgress&quot;, handleShowProgress);</span>
+<a name="l325"><span class="ln">325  </span></a>    <span class="s2">WEBSOCKET_LIB.webSocketManager.registerTypeHandler(PROGRESS_NAMESPACE, &quot;dismissProgress&quot;, dismissProgress)</span>
+<a name="l326"><span class="ln">326  </span></a>    <span class="s2">WEBSOCKET_LIB.webSocketManager.registerConnectionStateListeners(onWebSocketConnected, onWebSocketDisconnected);</span>
+<a name="l327"><span class="ln">327  </span></a>
+<a name="l328"><span class="ln">328  </span></a>    <span class="s2">var initUpload = function (idInput, idFeedback, idButton, ext, idAction, options) {</span>
+<a name="l329"><span class="ln">329  </span></a>        <span class="s2">if (typeof options === 'undefined') options = {};</span>
+<a name="l330"><span class="ln">330  </span></a>        <span class="s2">if (typeof options.hideActionButton === 'undefined') options.hideActionButton = true;</span>
+<a name="l331"><span class="ln">331  </span></a>
+<a name="l332"><span class="ln">332  </span></a>        <span class="s2">var input = document.getElementById(idInput);</span>
+<a name="l333"><span class="ln">333  </span></a>        <span class="s2">var feedback = document.getElementById(idFeedback);</span>
+<a name="l334"><span class="ln">334  </span></a>        <span class="s2">var button = document.getElementById(idButton);</span>
+<a name="l335"><span class="ln">335  </span></a>        <span class="s2">var action = document.getElementById(idAction);</span>
+<a name="l336"><span class="ln">336  </span></a>
+<a name="l337"><span class="ln">337  </span></a>        <span class="s2">feedback.value = &quot;&quot;;</span>
+<a name="l338"><span class="ln">338  </span></a>        <span class="s2">feedback.onclick = function () { input.click(); };</span>
+<a name="l339"><span class="ln">339  </span></a>        <span class="s2">button.onclick = function () { input.click(); };</span>
+<a name="l340"><span class="ln">340  </span></a>        <span class="s2">input.accept = ext;</span>
+<a name="l341"><span class="ln">341  </span></a>        <span class="s2">input.onchange = function () { fileInputChange(input, feedback, ext, action, options.fileSelectedCallback); };</span>
+<a name="l342"><span class="ln">342  </span></a>        <span class="s2">if (options.hideActionButton) {</span>
+<a name="l343"><span class="ln">343  </span></a>            <span class="s2">hideElement(action, true);</span>
+<a name="l344"><span class="ln">344  </span></a>        <span class="s2">}</span>
+<a name="l345"><span class="ln">345  </span></a>    <span class="s2">}</span>
+<a name="l346"><span class="ln">346  </span></a>
+<a name="l347"><span class="ln">347  </span></a>    <span class="s2">var fileInputChange = function(input, feedback, ext, action, fileSelectedCallback) {</span>
+<a name="l348"><span class="ln">348  </span></a>        <span class="s2">if (input.files &amp;&amp; input.files.length &gt; 0) {</span>
+<a name="l349"><span class="ln">349  </span></a>            <span class="s2">var file = input.files[0];</span>
+<a name="l350"><span class="ln">350  </span></a>            <span class="s2">console.log(&quot;fileInputChange() ext=&quot; + ext + &quot; file=&quot; + file);</span>
+<a name="l351"><span class="ln">351  </span></a>            <span class="s2">if (endsWith(file.name, ext)) {</span>
+<a name="l352"><span class="ln">352  </span></a>                <span class="s2">feedback.value = file.name;</span>
+<a name="l353"><span class="ln">353  </span></a>                <span class="s2">feedback.dataFile = file;</span>
+<a name="l354"><span class="ln">354  </span></a>                <span class="s2">hideElement(action, false);</span>
+<a name="l355"><span class="ln">355  </span></a>                <span class="s2">if (fileSelectedCallback) {</span>
+<a name="l356"><span class="ln">356  </span></a>                    <span class="s2">fileSelectedCallback();</span>
+<a name="l357"><span class="ln">357  </span></a>                <span class="s2">}</span>
+<a name="l358"><span class="ln">358  </span></a>            <span class="s2">} else {</span>
+<a name="l359"><span class="ln">359  </span></a>                <span class="s2">alert(&quot;Please choose a file with extension: &quot; + ext);</span>
+<a name="l360"><span class="ln">360  </span></a>            <span class="s2">}</span>
+<a name="l361"><span class="ln">361  </span></a>        <span class="s2">} else {</span>
+<a name="l362"><span class="ln">362  </span></a>            <span class="s2">console.log(&quot;input files empty&quot;);</span>
+<a name="l363"><span class="ln">363  </span></a>        <span class="s2">}</span>
+<a name="l364"><span class="ln">364  </span></a>    <span class="s2">}</span>
+<a name="l365"><span class="ln">365  </span></a>
+<a name="l366"><span class="ln">366  </span></a>    <span class="s2">initUpload('id_input_file_firmware', 'id_firmware_feedback', 'id_firmware_button', '.bin', 'id_action_firmware', {</span>
+<a name="l367"><span class="ln">367  </span></a>        <span class="s2">hideActionButton: false,</span>
+<a name="l368"><span class="ln">368  </span></a>        <span class="s2">fileSelectedCallback: function() {</span>
+<a name="l369"><span class="ln">369  </span></a>            <span class="s2">document.getElementById('id_action_firmware').innerText = &quot;Update using selected firmware file&quot;;</span>
+<a name="l370"><span class="ln">370  </span></a>        <span class="s2">}</span>
+<a name="l371"><span class="ln">371  </span></a>    <span class="s2">});</span>
+<a name="l372"><span class="ln">372  </span></a>    <span class="s2">initUpload('id_input_file_apk',      'id_apk_feedback',      'id_apk_button',      '.apk', 'id_action_apk');</span>
+<a name="l373"><span class="ln">373  </span></a>    <span class="s2">initUpload('id_input_file_ota',      'id_ota_feedback',      'id_ota_button',      '.zip', 'id_action_ota');</span>
+<a name="l374"><span class="ln">374  </span></a>
+<a name="l375"><span class="ln">375  </span></a>    <span class="s2">$('#id_id_webcam_calibration_upload_complete').hide();</span>
+<a name="l376"><span class="ln">376  </span></a>    <span class="s2">initUpload('id_input_file_webcam_calibration', 'id_webcam_calibration_feedback', 'id_webcam_calibration_button', '.xml', 'id_action_webcam_calibration');</span>
+<a name="l377"><span class="ln">377  </span></a>
+<a name="l378"><span class="ln">378  </span></a>    <span class="s2">$('#id_id_tflite_model_upload_complete').hide();</span>
+<a name="l379"><span class="ln">379  </span></a>    <span class="s2">initUpload('id_input_file_tflite_model', 'id_tflite_model_feedback', 'id_tflite_model_button', '.tflite', 'id_action_tflite_model');</span>
+<a name="l380"><span class="ln">380  </span></a>
+<a name="l381"><span class="ln">381  </span></a>    <span class="s2">var showUploadBlocker = function(text) {</span>
+<a name="l382"><span class="ln">382  </span></a>        <span class="s2">if (!text) {</span>
+<a name="l383"><span class="ln">383  </span></a>            <span class="s2">text = &quot;Please wait while upload finishes&quot;;</span>
+<a name="l384"><span class="ln">384  </span></a>        <span class="s2">}</span>
+<a name="l385"><span class="ln">385  </span></a>        <span class="s2">$('#blockerText').html(text);</span>
+<a name="l386"><span class="ln">386  </span></a>        <span class="s2">$('#blocker').show();</span>
+<a name="l387"><span class="ln">387  </span></a>    <span class="s2">}</span>
+<a name="l388"><span class="ln">388  </span></a>
+<a name="l389"><span class="ln">389  </span></a>    <span class="s2">var hideUploadBlocker = function() {</span>
+<a name="l390"><span class="ln">390  </span></a>        <span class="s2">$('#blocker').hide();</span>
+<a name="l391"><span class="ln">391  </span></a>    <span class="s2">}</span>
+<a name="l392"><span class="ln">392  </span></a>
+<a name="l393"><span class="ln">393  </span></a>    <span class="s2">var uploadSuccess = function(file, xhr, e) {</span>
+<a name="l394"><span class="ln">394  </span></a>        <span class="s2">hideUploadBlocker();</span>
+<a name="l395"><span class="ln">395  </span></a>    <span class="s2">}</span>
+<a name="l396"><span class="ln">396  </span></a>
+<a name="l397"><span class="ln">397  </span></a>    <span class="s2">var uploadFailure = function(file, xhr, e) {</span>
+<a name="l398"><span class="ln">398  </span></a>        <span class="s2">hideUploadBlocker();</span>
+<a name="l399"><span class="ln">399  </span></a>    <span class="s2">}</span>
+<a name="l400"><span class="ln">400  </span></a>
+<a name="l401"><span class="ln">401  </span></a>    <span class="s2">var performNextFirmwareUpdate = function() {</span>
+<a name="l402"><span class="ln">402  </span></a>        <span class="s2">var module = remainingModulesForFwUpdate.shift();</span>
+<a name="l403"><span class="ln">403  </span></a>        <span class="s2">if (!module) return;</span>
+<a name="l404"><span class="ln">404  </span></a>        <span class="s2">console.log(&quot;performNextFirmwareUpdate() called, module=&quot; + JSON.stringify(module));</span>
+<a name="l405"><span class="ln">405  </span></a>        <span class="s2">var fwUpdateRequest = new XMLHttpRequest();</span>
+<a name="l406"><span class="ln">406  </span></a>        <span class="s2">fwUpdateRequest.onreadystatechange = function() {</span>
+<a name="l407"><span class="ln">407  </span></a>            <span class="s2">if (fwUpdateRequest.readyState === 4) {</span>
+<a name="l408"><span class="ln">408  </span></a>                <span class="s2">if (fwUpdateRequest.status === 200) {</span>
+<a name="l409"><span class="ln">409  </span></a>                    <span class="s2">var result = JSON.parse(fwUpdateRequest.responseText);</span>
+<a name="l410"><span class="ln">410  </span></a>                    <span class="s2">console.log(&quot;Firmware update result: &quot; + fwUpdateRequest.responseText);</span>
+<a name="l411"><span class="ln">411  </span></a>                    <span class="s2">if (result.success === true) {</span>
+<a name="l412"><span class="ln">412  </span></a>                        <span class="s2">if (remainingModulesForFwUpdate.length &gt; 0) {</span>
+<a name="l413"><span class="ln">413  </span></a>                            <span class="s2">performNextFirmwareUpdate();</span>
+<a name="l414"><span class="ln">414  </span></a>                        <span class="s2">} else {</span>
+<a name="l415"><span class="ln">415  </span></a>                            <span class="s2">alert(&quot;Firmware update completed successfully&quot;)</span>
+<a name="l416"><span class="ln">416  </span></a>                        <span class="s2">}</span>
+<a name="l417"><span class="ln">417  </span></a>                        <span class="s2">refreshRCInfo();</span>
+<a name="l418"><span class="ln">418  </span></a>                    <span class="s2">} else {</span>
+<a name="l419"><span class="ln">419  </span></a>                        <span class="s2">var deviceString;</span>
+<a name="l420"><span class="ln">420  </span></a>                        <span class="s2">if (module.serialNumber === &quot;(embedded)&quot;) {</span>
+<a name="l421"><span class="ln">421  </span></a>                            <span class="s2">deviceString = &quot;Control Hub&quot;;</span>
+<a name="l422"><span class="ln">422  </span></a>                        <span class="s2">} else {</span>
+<a name="l423"><span class="ln">423  </span></a>                            <span class="s2">deviceString = &quot;Expansion Hub &quot; + module.serialNumber;</span>
+<a name="l424"><span class="ln">424  </span></a>                        <span class="s2">}</span>
+<a name="l425"><span class="ln">425  </span></a>                        <span class="s2">var failureMessage = &quot;Firmware update of &quot; + deviceString + &quot; failed&quot;;</span>
+<a name="l426"><span class="ln">426  </span></a>                        <span class="s2">if (result.errorMessage) {</span>
+<a name="l427"><span class="ln">427  </span></a>                            <span class="s2">failureMessage += &quot; because &quot; + result.errorMessage;</span>
+<a name="l428"><span class="ln">428  </span></a>                        <span class="s2">}</span>
+<a name="l429"><span class="ln">429  </span></a>                        <span class="s2">failureMessage += &quot;. Please try again.&quot;;</span>
+<a name="l430"><span class="ln">430  </span></a>                        <span class="s2">console.log(failureMessage);</span>
+<a name="l431"><span class="ln">431  </span></a>                        <span class="s2">alert(failureMessage);</span>
+<a name="l432"><span class="ln">432  </span></a>                    <span class="s2">}</span>
+<a name="l433"><span class="ln">433  </span></a>                <span class="s2">} else {</span>
+<a name="l434"><span class="ln">434  </span></a>                    <span class="s2">console.log(&quot;Received code &quot; + fwUpdateRequest.status + &quot; when updating firmware&quot;);</span>
+<a name="l435"><span class="ln">435  </span></a>                <span class="s2">}</span>
+<a name="l436"><span class="ln">436  </span></a>            <span class="s2">}</span>
+<a name="l437"><span class="ln">437  </span></a>        <span class="s2">};</span>
+<a name="l438"><span class="ln">438  </span></a>        <span class="s2">fwUpdateRequest.open(&quot;POST&quot;, URI_PERFORM_REV_FIRMWARE_UPDATE);</span>
+<a name="l439"><span class="ln">439  </span></a>        <span class="s2">fwUpdateRequest.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);</span>
+<a name="l440"><span class="ln">440  </span></a>        <span class="s2">var params = &quot;serialNumber=&quot; + module.serialNumber;</span>
+<a name="l441"><span class="ln">441  </span></a>        <span class="s2">if (fwUpdateFilename) {</span>
+<a name="l442"><span class="ln">442  </span></a>            <span class="s2">params += &quot;&amp;filename=&quot; + fwUpdateFilename;</span>
+<a name="l443"><span class="ln">443  </span></a>        <span class="s2">}</span>
+<a name="l444"><span class="ln">444  </span></a>        <span class="s2">fwUpdateRequest.send(params);</span>
+<a name="l445"><span class="ln">445  </span></a>    <span class="s2">}</span>
+<a name="l446"><span class="ln">446  </span></a>
+<a name="l447"><span class="ln">447  </span></a>    <span class="s2">var firmwareUpdateButtonClicked = function() {</span>
+<a name="l448"><span class="ln">448  </span></a>        <span class="s2">var feedback = document.getElementById('id_firmware_feedback');</span>
+<a name="l449"><span class="ln">449  </span></a>        <span class="s2">var uploadedFile = feedback.dataFile;</span>
+<a name="l450"><span class="ln">450  </span></a>        <span class="s2">var useUploadedFile = !!uploadedFile;</span>
+<a name="l451"><span class="ln">451  </span></a>        <span class="s2">console.log(&quot;firmwareUpdateButtonClicked() useUploadedFile=&quot; + useUploadedFile);</span>
+<a name="l452"><span class="ln">452  </span></a>        <span class="s2">if (useUploadedFile) {</span>
+<a name="l453"><span class="ln">453  </span></a>            <span class="s2">var url = URI_UPLOAD_EXPANSION_HUB_FIRMWARE;</span>
+<a name="l454"><span class="ln">454  </span></a>            <span class="s2">showUploadBlocker();</span>
+<a name="l455"><span class="ln">455  </span></a>            <span class="s2">uploadFile(uploadedFile, url, true,</span>
+<a name="l456"><span class="ln">456  </span></a>                <span class="s2">function(xhr, e) {</span>
+<a name="l457"><span class="ln">457  </span></a>                    <span class="s2">uploadSuccess(uploadedFile, xhr, e);</span>
+<a name="l458"><span class="ln">458  </span></a>                    <span class="s2">fwUpdateFilename = xhr.responseText; // response contains uploaded filename</span>
+<a name="l459"><span class="ln">459  </span></a>                    <span class="s2">openFirmwareUpdateModal();</span>
+<a name="l460"><span class="ln">460  </span></a>                <span class="s2">},</span>
+<a name="l461"><span class="ln">461  </span></a>                <span class="s2">function(xhr, e) { uploadFailure(uploadedFile, xhr, e); });</span>
+<a name="l462"><span class="ln">462  </span></a>        <span class="s2">} else {</span>
+<a name="l463"><span class="ln">463  </span></a>            <span class="s2">openFirmwareUpdateModal();</span>
+<a name="l464"><span class="ln">464  </span></a>        <span class="s2">}</span>
+<a name="l465"><span class="ln">465  </span></a>    <span class="s2">}</span>
+<a name="l466"><span class="ln">466  </span></a>
+<a name="l467"><span class="ln">467  </span></a>    <span class="s2">// This method may be called with the modal already open</span>
+<a name="l468"><span class="ln">468  </span></a>    <span class="s2">// This means that the modal should start over, beginning with a fresh scan</span>
+<a name="l469"><span class="ln">469  </span></a>    <span class="s2">var openFirmwareUpdateModal = function() {</span>
+<a name="l470"><span class="ln">470  </span></a>        <span class="s2">var loadingDiv = document.getElementById('id_fw_update_loading_devices');</span>
+<a name="l471"><span class="ln">471  </span></a>        <span class="s2">var id_fw_update_contentDiv = document.getElementById('id_fw_update_content');</span>
+<a name="l472"><span class="ln">472  </span></a>        <span class="s2">var noDevicesFoundDiv = document.getElementById('id_fw_update_no_devices_found');</span>
+<a name="l473"><span class="ln">473  </span></a>
+<a name="l474"><span class="ln">474  </span></a>        <span class="s2">loadingDiv.style.display = 'block';</span>
+<a name="l475"><span class="ln">475  </span></a>        <span class="s2">id_fw_update_contentDiv.style.display = 'none';</span>
+<a name="l476"><span class="ln">476  </span></a>        <span class="s2">noDevicesFoundDiv.style.display = 'none';</span>
+<a name="l477"><span class="ln">477  </span></a>        <span class="s2">$('#id_fw_update_modal').modal('show');</span>
+<a name="l478"><span class="ln">478  </span></a>        <span class="s2">var availableDevicesRequest = new XMLHttpRequest();</span>
+<a name="l479"><span class="ln">479  </span></a>        <span class="s2">availableDevicesRequest.onreadystatechange = function() {</span>
+<a name="l480"><span class="ln">480  </span></a>            <span class="s2">if (availableDevicesRequest.readyState === 4) {</span>
+<a name="l481"><span class="ln">481  </span></a>                <span class="s2">if (availableDevicesRequest.status === 200) {</span>
+<a name="l482"><span class="ln">482  </span></a>                    <span class="s2">loadingDiv.style.display = 'none';</span>
+<a name="l483"><span class="ln">483  </span></a>                    <span class="s2">var modules = JSON.parse(availableDevicesRequest.responseText).modules;</span>
+<a name="l484"><span class="ln">484  </span></a>
+<a name="l485"><span class="ln">485  </span></a>                    <span class="s2">if (modules.length === 0) {</span>
+<a name="l486"><span class="ln">486  </span></a>                        <span class="s2">noDevicesFoundDiv.style.display = 'block';</span>
+<a name="l487"><span class="ln">487  </span></a>                    <span class="s2">} else {</span>
+<a name="l488"><span class="ln">488  </span></a>                        <span class="s2">var deviceList = document.getElementById('id_fw_update_device_list');</span>
+<a name="l489"><span class="ln">489  </span></a>                        <span class="s2">deviceList.textContent = '';</span>
+<a name="l490"><span class="ln">490  </span></a>                        <span class="s2">modules.forEach(function(module) {</span>
+<a name="l491"><span class="ln">491  </span></a>                            <span class="s2">var headerText;</span>
+<a name="l492"><span class="ln">492  </span></a>                            <span class="s2">var displayModuleAddress;</span>
+<a name="l493"><span class="ln">493  </span></a>                            <span class="s2">var descriptionText;</span>
+<a name="l494"><span class="ln">494  </span></a>                            <span class="s2">if (module.serialNumber === '(embedded)') {</span>
+<a name="l495"><span class="ln">495  </span></a>                                <span class="s2">headerText = &quot;Control Hub&quot;;</span>
+<a name="l496"><span class="ln">496  </span></a>                                <span class="s2">displayModuleAddress = false;</span>
+<a name="l497"><span class="ln">497  </span></a>                            <span class="s2">} else {</span>
+<a name="l498"><span class="ln">498  </span></a>                                <span class="s2">headerText = &quot;Expansion Hub&quot;;</span>
+<a name="l499"><span class="ln">499  </span></a>                                <span class="s2">displayModuleAddress = true;</span>
+<a name="l500"><span class="ln">500  </span></a>                            <span class="s2">}</span>
+<a name="l501"><span class="ln">501  </span></a>                            <span class="s2">descriptionText = &quot;Serial number: &quot; + module.serialNumber + &quot;&lt;br&gt;&quot;;</span>
+<a name="l502"><span class="ln">502  </span></a>                            <span class="s2">if (displayModuleAddress) {</span>
+<a name="l503"><span class="ln">503  </span></a>                                <span class="s2">descriptionText += &quot;Module address: &quot; + module.moduleAddress + &quot;&lt;br&gt;&quot;;</span>
+<a name="l504"><span class="ln">504  </span></a>                            <span class="s2">}</span>
+<a name="l505"><span class="ln">505  </span></a>                            <span class="s2">descriptionText += &quot;Current firmware version: &quot; + module.formattedFirmwareVersionString + &quot;&lt;br&gt;&quot;;</span>
+<a name="l506"><span class="ln">506  </span></a>
+<a name="l507"><span class="ln">507  </span></a>                            <span class="s2">var listEntry = document.createElement('div');</span>
+<a name="l508"><span class="ln">508  </span></a>                            <span class="s2">var header = document.createElement('h4');</span>
+<a name="l509"><span class="ln">509  </span></a>                            <span class="s2">var description = document.createElement('p');</span>
+<a name="l510"><span class="ln">510  </span></a>                            <span class="s2">listEntry.classList.add(&quot;list-group-item&quot;);</span>
+<a name="l511"><span class="ln">511  </span></a>                            <span class="s2">header.appendChild(document.createTextNode(headerText));</span>
+<a name="l512"><span class="ln">512  </span></a>                            <span class="s2">description.innerHTML = descriptionText;</span>
+<a name="l513"><span class="ln">513  </span></a>                            <span class="s2">listEntry.appendChild(header);</span>
+<a name="l514"><span class="ln">514  </span></a>                            <span class="s2">listEntry.appendChild(description);</span>
+<a name="l515"><span class="ln">515  </span></a>                            <span class="s2">deviceList.appendChild(listEntry);</span>
+<a name="l516"><span class="ln">516  </span></a>                        <span class="s2">});</span>
+<a name="l517"><span class="ln">517  </span></a>                        <span class="s2">document.getElementById('id_fw_update_apply_button').onclick = function() {</span>
+<a name="l518"><span class="ln">518  </span></a>                            <span class="s2">remainingModulesForFwUpdate = modules;</span>
+<a name="l519"><span class="ln">519  </span></a>                            <span class="s2">performNextFirmwareUpdate();</span>
+<a name="l520"><span class="ln">520  </span></a>                        <span class="s2">};</span>
+<a name="l521"><span class="ln">521  </span></a>                        <span class="s2">document.getElementById('id_fw_update_content').style.display = 'block';</span>
+<a name="l522"><span class="ln">522  </span></a>                    <span class="s2">}</span>
+<a name="l523"><span class="ln">523  </span></a>                <span class="s2">} else if (availableDevicesRequest.status === 503) {</span>
+<a name="l524"><span class="ln">524  </span></a>                    <span class="s2">window.setTimeout(openFirmwareUpdateModal, 1000); // Try again after a second, the robot is probably still starting up</span>
+<a name="l525"><span class="ln">525  </span></a>                <span class="s2">} else {</span>
+<a name="l526"><span class="ln">526  </span></a>                    <span class="s2">console.log(&quot;Received code &quot; + availableDevicesRequest.status + &quot; when getting available devices&quot;);</span>
+<a name="l527"><span class="ln">527  </span></a>                <span class="s2">}</span>
+<a name="l528"><span class="ln">528  </span></a>            <span class="s2">}</span>
+<a name="l529"><span class="ln">529  </span></a>        <span class="s2">};</span>
+<a name="l530"><span class="ln">530  </span></a>        <span class="s2">availableDevicesRequest.open(&quot;GET&quot;, URI_REV_HUBS_AVAILABLE_FOR_UPDATE);</span>
+<a name="l531"><span class="ln">531  </span></a>        <span class="s2">availableDevicesRequest.send();</span>
+<a name="l532"><span class="ln">532  </span></a>    <span class="s2">}</span>
+<a name="l533"><span class="ln">533  </span></a>
+<a name="l534"><span class="ln">534  </span></a>    <span class="s2">var updateApk = function() {</span>
+<a name="l535"><span class="ln">535  </span></a>        <span class="s2">var feedback = document.getElementById('id_apk_feedback');</span>
+<a name="l536"><span class="ln">536  </span></a>        <span class="s2">var file = feedback.dataFile;</span>
+<a name="l537"><span class="ln">537  </span></a>        <span class="s2">console.log(&quot;updateApk() name=&quot; + file.name);</span>
+<a name="l538"><span class="ln">538  </span></a>        <span class="s2">var url = URI_UPDATE_CONTROL_HUB_APK;</span>
+<a name="l539"><span class="ln">539  </span></a>        <span class="s2">showUploadBlocker();</span>
+<a name="l540"><span class="ln">540  </span></a>        <span class="s2">uploadFile(file, url, true,</span>
+<a name="l541"><span class="ln">541  </span></a>            <span class="s2">function(xhr, e) {</span>
+<a name="l542"><span class="ln">542  </span></a>                <span class="s2">if (appUpdateRequiresReboot) {</span>
+<a name="l543"><span class="ln">543  </span></a>                    <span class="s2">uploadSuccess(file, xhr, e);</span>
+<a name="l544"><span class="ln">544  </span></a>                    <span class="s2">reboot();</span>
+<a name="l545"><span class="ln">545  </span></a>                <span class="s2">} else {</span>
+<a name="l546"><span class="ln">546  </span></a>                    <span class="s2">bindToControlHubUpdaterTransaction(xhr);</span>
+<a name="l547"><span class="ln">547  </span></a>                <span class="s2">}</span>
+<a name="l548"><span class="ln">548  </span></a>            <span class="s2">},</span>
+<a name="l549"><span class="ln">549  </span></a>            <span class="s2">function(xhr, e) {</span>
+<a name="l550"><span class="ln">550  </span></a>                <span class="s2">uploadFailure(file, xhr, e);</span>
+<a name="l551"><span class="ln">551  </span></a>            <span class="s2">});</span>
+<a name="l552"><span class="ln">552  </span></a>    <span class="s2">}</span>
+<a name="l553"><span class="ln">553  </span></a>
+<a name="l554"><span class="ln">554  </span></a>    <span class="s2">var reboot = function() {</span>
+<a name="l555"><span class="ln">555  </span></a>        <span class="s2">console.log(&quot;reboot()&quot;);</span>
+<a name="l556"><span class="ln">556  </span></a>        <span class="s2">var xhr = new XMLHttpRequest();</span>
+<a name="l557"><span class="ln">557  </span></a>        <span class="s2">xhr.onreadystatechange = function() {</span>
+<a name="l558"><span class="ln">558  </span></a>            <span class="s2">if (xhr.readyState === 4) {</span>
+<a name="l559"><span class="ln">559  </span></a>                <span class="s2">if (xhr.status === 200) {</span>
+<a name="l560"><span class="ln">560  </span></a>                    <span class="s2">// nothing to do</span>
+<a name="l561"><span class="ln">561  </span></a>                <span class="s2">} else {</span>
+<a name="l562"><span class="ln">562  </span></a>                    <span class="s2">alert(&quot;Robot controller failed to reboot&quot;);</span>
+<a name="l563"><span class="ln">563  </span></a>                <span class="s2">}</span>
+<a name="l564"><span class="ln">564  </span></a>            <span class="s2">}</span>
+<a name="l565"><span class="ln">565  </span></a>        <span class="s2">};</span>
+<a name="l566"><span class="ln">566  </span></a>        <span class="s2">xhr.open(&quot;POST&quot;, URI_REBOOT);</span>
+<a name="l567"><span class="ln">567  </span></a>        <span class="s2">xhr.send();</span>
+<a name="l568"><span class="ln">568  </span></a>    <span class="s2">}</span>
+<a name="l569"><span class="ln">569  </span></a>
+<a name="l570"><span class="ln">570  </span></a>    <span class="s2">var uploadWebcamCalibration = function () {</span>
+<a name="l571"><span class="ln">571  </span></a>        <span class="s2">var feedback = document.getElementById('id_webcam_calibration_feedback');</span>
+<a name="l572"><span class="ln">572  </span></a>        <span class="s2">var file = feedback.dataFile;</span>
+<a name="l573"><span class="ln">573  </span></a>        <span class="s2">console.log(&quot;uploadWebcamCalibration() name=&quot; + file.name);</span>
+<a name="l574"><span class="ln">574  </span></a>        <span class="s2">var url = URI_UPLOAD_WEBCAM_CALIBRATION_FILE;</span>
+<a name="l575"><span class="ln">575  </span></a>        <span class="s2">showUploadBlocker();</span>
+<a name="l576"><span class="ln">576  </span></a>        <span class="s2">uploadFile(file, url, true,</span>
+<a name="l577"><span class="ln">577  </span></a>            <span class="s2">function(xhr, e) {</span>
+<a name="l578"><span class="ln">578  </span></a>                <span class="s2">uploadSuccess(file, xhr, e);</span>
+<a name="l579"><span class="ln">579  </span></a>                <span class="s2">showToast('id_webcam_calibration_upload_complete', 'Webcam Calibration upload complete');</span>
+<a name="l580"><span class="ln">580  </span></a>            <span class="s2">},</span>
+<a name="l581"><span class="ln">581  </span></a>            <span class="s2">function(xhr, e) { uploadFailure(file, xhr, e); });</span>
+<a name="l582"><span class="ln">582  </span></a>    <span class="s2">}</span>
+<a name="l583"><span class="ln">583  </span></a>
+<a name="l584"><span class="ln">584  </span></a>    <span class="s2">var uploadTfliteModel = function () {</span>
+<a name="l585"><span class="ln">585  </span></a>        <span class="s2">var feedback = document.getElementById('id_tflite_model_feedback');</span>
+<a name="l586"><span class="ln">586  </span></a>        <span class="s2">var file = feedback.dataFile;</span>
+<a name="l587"><span class="ln">587  </span></a>        <span class="s2">console.log(&quot;uploadTfliteModel() name=&quot; + file.name);</span>
+<a name="l588"><span class="ln">588  </span></a>        <span class="s2">var url = URI_UPLOAD_TFLITE_MODEL_FILE;</span>
+<a name="l589"><span class="ln">589  </span></a>        <span class="s2">showUploadBlocker();</span>
+<a name="l590"><span class="ln">590  </span></a>        <span class="s2">uploadFile(file, url, true,</span>
+<a name="l591"><span class="ln">591  </span></a>            <span class="s2">function(xhr, e) {</span>
+<a name="l592"><span class="ln">592  </span></a>                <span class="s2">uploadSuccess(file, xhr, e);</span>
+<a name="l593"><span class="ln">593  </span></a>                <span class="s2">showToast('id_tflite_model_upload_complete', 'TensorFlow Lite model upload complete');</span>
+<a name="l594"><span class="ln">594  </span></a>            <span class="s2">},</span>
+<a name="l595"><span class="ln">595  </span></a>            <span class="s2">function(xhr, e) { uploadFailure(file, xhr, e); });</span>
+<a name="l596"><span class="ln">596  </span></a>    <span class="s2">}</span>
+<a name="l597"><span class="ln">597  </span></a>
+<a name="l598"><span class="ln">598  </span></a>    <span class="s2">var uploadOta = function () {</span>
+<a name="l599"><span class="ln">599  </span></a>        <span class="s2">var feedback = document.getElementById('id_ota_feedback');</span>
+<a name="l600"><span class="ln">600  </span></a>        <span class="s2">var file = feedback.dataFile;</span>
+<a name="l601"><span class="ln">601  </span></a>        <span class="s2">console.log(&quot;uploadOta() name=&quot; + file.name);</span>
+<a name="l602"><span class="ln">602  </span></a>        <span class="s2">var url = URI_UPLOAD_CONTROL_HUB_OTA;</span>
+<a name="l603"><span class="ln">603  </span></a>        <span class="s2">showUploadBlocker();</span>
+<a name="l604"><span class="ln">604  </span></a>        <span class="s2">uploadFile(file, url, true,</span>
+<a name="l605"><span class="ln">605  </span></a>            <span class="s2">function(xhr, e) {</span>
+<a name="l606"><span class="ln">606  </span></a>                <span class="s2">bindToControlHubUpdaterTransaction(xhr);</span>
+<a name="l607"><span class="ln">607  </span></a>            <span class="s2">},</span>
+<a name="l608"><span class="ln">608  </span></a>            <span class="s2">function(xhr, e) {</span>
+<a name="l609"><span class="ln">609  </span></a>                <span class="s2">uploadFailure(file, xhr, e);</span>
+<a name="l610"><span class="ln">610  </span></a>            <span class="s2">});</span>
+<a name="l611"><span class="ln">611  </span></a>     <span class="s2">}</span>
+<a name="l612"><span class="ln">612  </span></a>
+<a name="l613"><span class="ln">613  </span></a>    <span class="s2">var onSubmitNetworkSettings = function () {</span>
+<a name="l614"><span class="ln">614  </span></a>        <span class="s2">console.log(&quot;onSubmitNetworkSettings()&quot;);</span>
+<a name="l615"><span class="ln">615  </span></a>        <span class="s2">var newName = document.getElementById(&quot;id_rc_name&quot;).value.trim();</span>
+<a name="l616"><span class="ln">616  </span></a>        <span class="s2">var newPw = document.getElementById(&quot;id_ap_new_password&quot;).value;</span>
+<a name="l617"><span class="ln">617  </span></a>        <span class="s2">var confirmPw = document.getElementById(&quot;id_ap_confirmed_password&quot;).value;</span>
+<a name="l618"><span class="ln">618  </span></a>        <span class="s2">var newChannelName = document.getElementById(&quot;id_ap_channel&quot;).value;</span>
+<a name="l619"><span class="ln">619  </span></a>        <span class="s2">const newChannelIs5Ghz = document.getElementById(&quot;id_wifi_band_5&quot;).checked;</span>
+<a name="l620"><span class="ln">620  </span></a>        <span class="s2">if (newName.length &lt; 2 || newName.length &gt; 32) {</span>
+<a name="l621"><span class="ln">621  </span></a>            <span class="s2">alert(&quot;RC Name must be between 2 and 32 chars&quot;);</span>
+<a name="l622"><span class="ln">622  </span></a>        <span class="s2">} else if (newName.match(/\s/) != null) {</span>
+<a name="l623"><span class="ln">623  </span></a>            <span class="s2">alert(&quot;RC Name must not include whitespace (space, tab, return, etc..)&quot;);</span>
+<a name="l624"><span class="ln">624  </span></a>        <span class="s2">} else if (newPw &amp;&amp; (newPw.length &lt; 8 || newPw.length &gt; 63)) {</span>
+<a name="l625"><span class="ln">625  </span></a>            <span class="s2">alert(&quot;Password must be between 8 and 63 chars&quot;);</span>
+<a name="l626"><span class="ln">626  </span></a>        <span class="s2">} else if (newPw &amp;&amp; newPw.localeCompare(confirmPw) !== 0) {</span>
+<a name="l627"><span class="ln">627  </span></a>            <span class="s2">alert(&quot;New password and the confirmation password are different&quot;);</span>
+<a name="l628"><span class="ln">628  </span></a>        <span class="s2">} else {</span>
+<a name="l629"><span class="ln">629  </span></a>            <span class="s2">console.log(&quot;newName=&quot; + newName + &quot; newPw=&quot; + newPw + &quot; newChannelName=&quot; + newChannelName);</span>
+<a name="l630"><span class="ln">630  </span></a>            <span class="s2">var xhr = new XMLHttpRequest();</span>
+<a name="l631"><span class="ln">631  </span></a>            <span class="s2">var params = PARAM_NAME + '=' + encodeURIComponent(newName);</span>
+<a name="l632"><span class="ln">632  </span></a>            <span class="s2">if (newPw) {</span>
+<a name="l633"><span class="ln">633  </span></a>                <span class="s2">params += &quot;&amp;&quot; + PARAM_AP_PASSWORD + '=' + encodeURIComponent(newPw);</span>
+<a name="l634"><span class="ln">634  </span></a>            <span class="s2">}</span>
+<a name="l635"><span class="ln">635  </span></a>            <span class="s2">if (newChannelName) {</span>
+<a name="l636"><span class="ln">636  </span></a>                <span class="s2">params += &quot;&amp;&quot; + PARAM_CHANNEL_NAME + '=' + encodeURIComponent(newChannelName);</span>
+<a name="l637"><span class="ln">637  </span></a>            <span class="s2">}</span>
+<a name="l638"><span class="ln">638  </span></a>            <span class="s2">xhr.open('POST', URI_CHANGE_NETWORK_SETTINGS, true /*async*/);</span>
+<a name="l639"><span class="ln">639  </span></a>            <span class="s2">xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');</span>
+<a name="l640"><span class="ln">640  </span></a>            <span class="s2">xhr.onreadystatechange = function () {</span>
+<a name="l641"><span class="ln">641  </span></a>                <span class="s2">if (xhr.readyState === 4) {</span>
+<a name="l642"><span class="ln">642  </span></a>                    <span class="s2">if (xhr.status === 200 || xhr.status === 0) {</span>
+<a name="l643"><span class="ln">643  </span></a>                        <span class="s2">// Either the settings application succeeded, or we were disconnected from the network before we got a response.</span>
+<a name="l644"><span class="ln">644  </span></a>                        <span class="s2">currentChannel = newChannelName;</span>
+<a name="l645"><span class="ln">645  </span></a>                        <span class="s2">currentlyOn5Ghz = newChannelIs5Ghz;</span>
+<a name="l646"><span class="ln">646  </span></a>                        <span class="s2">currentlyOn2_4Ghz = !newChannelIs5Ghz;</span>
+<a name="l647"><span class="ln">647  </span></a>                    <span class="s2">} else {</span>
+<a name="l648"><span class="ln">648  </span></a>                        <span class="s2">console.log(&quot;Network settings failed to apply. Error code: &quot; + xhr.status + &quot; Error text: &quot; + xhr.responseText);</span>
+<a name="l649"><span class="ln">649  </span></a>                        <span class="s2">var error = &quot;The network settings failed to apply&quot;;</span>
+<a name="l650"><span class="ln">650  </span></a>                        <span class="s2">if (xhr.responseText) {</span>
+<a name="l651"><span class="ln">651  </span></a>                            <span class="s2">error += &quot;. &quot; + xhr.responseText;</span>
+<a name="l652"><span class="ln">652  </span></a>                        <span class="s2">}</span>
+<a name="l653"><span class="ln">653  </span></a>                        <span class="s2">alert(error);</span>
+<a name="l654"><span class="ln">654  </span></a>                    <span class="s2">}</span>
+<a name="l655"><span class="ln">655  </span></a>                <span class="s2">}</span>
+<a name="l656"><span class="ln">656  </span></a>            <span class="s2">};</span>
+<a name="l657"><span class="ln">657  </span></a>            <span class="s2">xhr.send(params);</span>
+<a name="l658"><span class="ln">658  </span></a>
+<a name="l659"><span class="ln">659  </span></a>            <span class="s2">if (isControlHub) {</span>
+<a name="l660"><span class="ln">660  </span></a>                <span class="s2">let nameChanged = originalName !== newName;</span>
+<a name="l661"><span class="ln">661  </span></a>                <span class="s2">let passwordChanged = originalPassword !== newPw;</span>
+<a name="l662"><span class="ln">662  </span></a>                <span class="s2">if (nameChanged &amp;&amp; passwordChanged) {</span>
+<a name="l663"><span class="ln">663  </span></a>                    <span class="s2">alert(&quot;The Control Hub's name and password have been changed. If you are connected to the Control Hub via Wi-Fi, you have been disconnected. You will need to connect to the new network.&quot;);</span>
+<a name="l664"><span class="ln">664  </span></a>                <span class="s2">} else if (nameChanged) {</span>
+<a name="l665"><span class="ln">665  </span></a>                    <span class="s2">alert(&quot;The Control Hub's name has been changed. If you are connected to the Control Hub via Wi-Fi, you have been disconnected. You will need to connect to the new network.&quot;);</span>
+<a name="l666"><span class="ln">666  </span></a>                <span class="s2">} else if (passwordChanged) {</span>
+<a name="l667"><span class="ln">667  </span></a>                    <span class="s2">// If the password changed but not the name, the user needs to &quot;forget&quot; the old network before reconnecting.</span>
+<a name="l668"><span class="ln">668  </span></a>                    <span class="s2">alert(&quot;The Control Hub's password has been changed. If you are connected to the Control Hub via Wi-Fi, you have been disconnected. You will need to \&quot;forget\&quot; the network, and then connect to it again.&quot;);</span>
+<a name="l669"><span class="ln">669  </span></a>                <span class="s2">}</span>
+<a name="l670"><span class="ln">670  </span></a>            <span class="s2">}</span>
+<a name="l671"><span class="ln">671  </span></a>        <span class="s2">}</span>
+<a name="l672"><span class="ln">672  </span></a>    <span class="s2">}</span>
+<a name="l673"><span class="ln">673  </span></a>
+<a name="l674"><span class="ln">674  </span></a>    <span class="s2">var onShowPasswordCheckbox = function () {</span>
+<a name="l675"><span class="ln">675  </span></a>        <span class="s2">var newPw = document.getElementById(&quot;id_ap_new_password&quot;);</span>
+<a name="l676"><span class="ln">676  </span></a>        <span class="s2">var confirmPw = document.getElementById(&quot;id_ap_confirmed_password&quot;);</span>
+<a name="l677"><span class="ln">677  </span></a>        <span class="s2">if (newPw.type === &quot;password&quot;) {</span>
+<a name="l678"><span class="ln">678  </span></a>            <span class="s2">newPw.type = &quot;text&quot;;</span>
+<a name="l679"><span class="ln">679  </span></a>            <span class="s2">confirmPw.type = &quot;text&quot;;</span>
+<a name="l680"><span class="ln">680  </span></a>        <span class="s2">} else {</span>
+<a name="l681"><span class="ln">681  </span></a>            <span class="s2">newPw.type = &quot;password&quot;;</span>
+<a name="l682"><span class="ln">682  </span></a>            <span class="s2">confirmPw.type = &quot;password&quot;;</span>
+<a name="l683"><span class="ln">683  </span></a>        <span class="s2">}</span>
+<a name="l684"><span class="ln">684  </span></a>    <span class="s2">}</span>
+<a name="l685"><span class="ln">685  </span></a>
+<a name="l686"><span class="ln">686  </span></a>    <span class="s2">function updateApSettingsButton() {</span>
+<a name="l687"><span class="ln">687  </span></a>        <span class="s2">const apSettingsButton = document.getElementById(&quot;id_submit_network_settings_button&quot;);</span>
+<a name="l688"><span class="ln">688  </span></a>        <span class="s2">const selectSpecificChannelWarning = document.getElementById(&quot;id_submit_network_settings_warning&quot;);</span>
+<a name="l689"><span class="ln">689  </span></a>        <span class="s2">const channelDropdown = document.getElementById(&quot;id_ap_channel&quot;);</span>
+<a name="l690"><span class="ln">690  </span></a>
+<a name="l691"><span class="ln">691  </span></a>        <span class="s2">let disableApSettingsButtonBecauseOfDisconnection = false;</span>
+<a name="l692"><span class="ln">692  </span></a>        <span class="s2">let showChannelWarningInsteadOfButton = false;</span>
+<a name="l693"><span class="ln">693  </span></a>
+<a name="l694"><span class="ln">694  </span></a>        <span class="s2">// Determine our desired state</span>
+<a name="l695"><span class="ln">695  </span></a>        <span class="s2">if (!WEBSOCKET_LIB.isWebSocketConnected()) {</span>
+<a name="l696"><span class="ln">696  </span></a>            <span class="s2">disableApSettingsButtonBecauseOfDisconnection = true;</span>
+<a name="l697"><span class="ln">697  </span></a>        <span class="s2">} else if (!channelDropdown.value) {</span>
+<a name="l698"><span class="ln">698  </span></a>            <span class="s2">showChannelWarningInsteadOfButton = true;</span>
+<a name="l699"><span class="ln">699  </span></a>        <span class="s2">}</span>
+<a name="l700"><span class="ln">700  </span></a>
+<a name="l701"><span class="ln">701  </span></a>        <span class="s2">// Update the UI accordingly</span>
+<a name="l702"><span class="ln">702  </span></a>        <span class="s2">if (showChannelWarningInsteadOfButton) {</span>
+<a name="l703"><span class="ln">703  </span></a>            <span class="s2">apSettingsButton.style.display = 'none';</span>
+<a name="l704"><span class="ln">704  </span></a>            <span class="s2">selectSpecificChannelWarning.style.display = 'inline-block';</span>
+<a name="l705"><span class="ln">705  </span></a>        <span class="s2">} else {</span>
+<a name="l706"><span class="ln">706  </span></a>            <span class="s2">apSettingsButton.style.display = 'inline-block';</span>
+<a name="l707"><span class="ln">707  </span></a>            <span class="s2">selectSpecificChannelWarning.style.display = 'none';</span>
+<a name="l708"><span class="ln">708  </span></a>
+<a name="l709"><span class="ln">709  </span></a>            <span class="s2">if (disableApSettingsButtonBecauseOfDisconnection) {</span>
+<a name="l710"><span class="ln">710  </span></a>                <span class="s2">apSettingsButton.disabled = true;</span>
+<a name="l711"><span class="ln">711  </span></a>                <span class="s2">apSettingsButton.title = 'Not connected to robot';</span>
+<a name="l712"><span class="ln">712  </span></a>            <span class="s2">} else {</span>
+<a name="l713"><span class="ln">713  </span></a>                <span class="s2">apSettingsButton.disabled = false;</span>
+<a name="l714"><span class="ln">714  </span></a>                <span class="s2">apSettingsButton.title = '';</span>
+<a name="l715"><span class="ln">715  </span></a>            <span class="s2">}</span>
+<a name="l716"><span class="ln">716  </span></a>        <span class="s2">}</span>
+<a name="l717"><span class="ln">717  </span></a>    <span class="s2">}</span>
+<a name="l718"><span class="ln">718  </span></a>
+<a name="l719"><span class="ln">719  </span></a>    <span class="s2">var updateChannelList = function (reason) {</span>
+<a name="l720"><span class="ln">720  </span></a>        <span class="s2">var show5GhzChannels = document.getElementById(&quot;id_wifi_band_5&quot;).checked;</span>
+<a name="l721"><span class="ln">721  </span></a>        <span class="s2">var showOverlappingChannels = document.getElementById(&quot;id_show_overlapping_channels_checkbox&quot;).checked;</span>
+<a name="l722"><span class="ln">722  </span></a>        <span class="s2">var channelDropdown = document.getElementById(&quot;id_ap_channel&quot;);</span>
+<a name="l723"><span class="ln">723  </span></a>        <span class="s2">const previousChannelSelection = channelDropdown.value;</span>
+<a name="l724"><span class="ln">724  </span></a>        <span class="s2">hideElement(document.getElementById(&quot;id_show_overlapping_channels&quot;), show5GhzChannels);</span>
+<a name="l725"><span class="ln">725  </span></a>        <span class="s2">channelDropdown.innerText = '';</span>
+<a name="l726"><span class="ln">726  </span></a>        <span class="s2">allAvailableChannels.forEach(function(channel) {</span>
+<a name="l727"><span class="ln">727  </span></a>            <span class="s2">var fiveGhzChannel = (channel.band === &quot;BAND_5_GHZ&quot;);</span>
+<a name="l728"><span class="ln">728  </span></a>            <span class="s2">var showChannel = (show5GhzChannels &amp;&amp; fiveGhzChannel) || (!show5GhzChannels &amp;&amp; !fiveGhzChannel);</span>
+<a name="l729"><span class="ln">729  </span></a>            <span class="s2">if (!showOverlappingChannels &amp;&amp; channel.overlapsWithOtherChannels) {</span>
+<a name="l730"><span class="ln">730  </span></a>                <span class="s2">showChannel = false;</span>
+<a name="l731"><span class="ln">731  </span></a>            <span class="s2">}</span>
+<a name="l732"><span class="ln">732  </span></a>            <span class="s2">if (showChannel) {</span>
+<a name="l733"><span class="ln">733  </span></a>                <span class="s2">var channelOption = document.createElement(&quot;option&quot;);</span>
+<a name="l734"><span class="ln">734  </span></a>                <span class="s2">channelOption.value = channel.name;</span>
+<a name="l735"><span class="ln">735  </span></a>                <span class="s2">channelOption.textContent = channel.displayName;</span>
+<a name="l736"><span class="ln">736  </span></a>                <span class="s2">channelDropdown.appendChild(channelOption);</span>
+<a name="l737"><span class="ln">737  </span></a>            <span class="s2">}</span>
+<a name="l738"><span class="ln">738  </span></a>        <span class="s2">});</span>
+<a name="l739"><span class="ln">739  </span></a>
+<a name="l740"><span class="ln">740  </span></a>        <span class="s2">if (reason === 'overlappingChannelsCheckbox') {</span>
+<a name="l741"><span class="ln">741  </span></a>            <span class="s2">// When the user checks the overlapping channels checkbox, we want to restore the</span>
+<a name="l742"><span class="ln">742  </span></a>            <span class="s2">// previous selection (if possible), not the current channel we're broadcasting on.</span>
+<a name="l743"><span class="ln">743  </span></a>            <span class="s2">channelDropdown.value = previousChannelSelection;</span>
+<a name="l744"><span class="ln">744  </span></a>        <span class="s2">} else {</span>
+<a name="l745"><span class="ln">745  </span></a>            <span class="s2">if ((show5GhzChannels &amp;&amp; currentlyOn5Ghz) || (!show5GhzChannels &amp;&amp; currentlyOn2_4Ghz)) {</span>
+<a name="l746"><span class="ln">746  </span></a>                <span class="s2">channelDropdown.value = currentChannel;</span>
+<a name="l747"><span class="ln">747  </span></a>            <span class="s2">} else {</span>
+<a name="l748"><span class="ln">748  </span></a>                <span class="s2">channelDropdown.value = '';</span>
+<a name="l749"><span class="ln">749  </span></a>            <span class="s2">}</span>
+<a name="l750"><span class="ln">750  </span></a>        <span class="s2">}</span>
+<a name="l751"><span class="ln">751  </span></a>        <span class="s2">updateApSettingsButton();</span>
+<a name="l752"><span class="ln">752  </span></a>    <span class="s2">}</span>
+<a name="l753"><span class="ln">753  </span></a>
+<a name="l754"><span class="ln">754  </span></a>    <span class="s2">var selectBand = function (select5GhzBand) {</span>
+<a name="l755"><span class="ln">755  </span></a>        <span class="s2">if (select5GhzBand) {</span>
+<a name="l756"><span class="ln">756  </span></a>            <span class="s2">document.getElementById(&quot;id_wifi_band_5&quot;).checked = true;</span>
+<a name="l757"><span class="ln">757  </span></a>        <span class="s2">} else {</span>
+<a name="l758"><span class="ln">758  </span></a>            <span class="s2">document.getElementById(&quot;id_wifi_band_24&quot;).checked = true;</span>
+<a name="l759"><span class="ln">759  </span></a>        <span class="s2">}</span>
+<a name="l760"><span class="ln">760  </span></a>    <span class="s2">}</span>
+<a name="l761"><span class="ln">761  </span></a>
+<a name="l762"><span class="ln">762  </span></a>    <span class="s2">function refreshRCInfo() {</span>
+<a name="l763"><span class="ln">763  </span></a>        <span class="s2">loadRcInfo(function (rcInfo) {</span>
+<a name="l764"><span class="ln">764  </span></a>            <span class="s2">if (rcInfo) {</span>
+<a name="l765"><span class="ln">765  </span></a>                <span class="s2">scaleTextInDocumentBody(rcInfo);</span>
+<a name="l766"><span class="ln">766  </span></a>
+<a name="l767"><span class="ln">767  </span></a>                <span class="s2">document.getElementById(&quot;id_rc_name&quot;).value = rcInfo.deviceName;</span>
+<a name="l768"><span class="ln">768  </span></a>                <span class="s2">document.getElementById(&quot;id_ap_new_password&quot;).value = rcInfo.passphrase;</span>
+<a name="l769"><span class="ln">769  </span></a>                <span class="s2">document.getElementById(&quot;id_ap_confirmed_password&quot;).value = rcInfo.passphrase;</span>
+<a name="l770"><span class="ln">770  </span></a>
+<a name="l771"><span class="ln">771  </span></a>                <span class="s2">var uaIsRobotController = rcInfo.ftcUserAgentCategory === &quot;ROBOT_CONTROLLER&quot;;</span>
+<a name="l772"><span class="ln">772  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_download_logs&quot;), uaIsRobotController);</span>
+<a name="l773"><span class="ln">773  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_upload_firmware&quot;), uaIsRobotController);</span>
+<a name="l774"><span class="ln">774  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_update_robot_controller_application&quot;), uaIsRobotController || !rcInfo.isREVControlHub);</span>
+<a name="l775"><span class="ln">775  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_control_hub_wifi_warnings&quot;), !rcInfo.isREVControlHub);</span>
+<a name="l776"><span class="ln">776  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_password_group&quot;), !rcInfo.isREVControlHub);</span>
+<a name="l777"><span class="ln">777  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_confirmed_password_group&quot;), !rcInfo.isREVControlHub);</span>
+<a name="l778"><span class="ln">778  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_wifi_band_group&quot;), !rcInfo.supports5GhzAp);</span>
+<a name="l779"><span class="ln">779  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_update_control_hub_operating_system&quot;), !rcInfo.supportsOtaUpdate || !rcInfo.isREVControlHub);</span>
+<a name="l780"><span class="ln">780  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_control_hub_os_version_item&quot;), !rcInfo.isREVControlHub);</span>
+<a name="l781"><span class="ln">781  </span></a>                <span class="s2">hideElement(document.getElementById(&quot;id_rev_firmware_versions_item&quot;), !rcInfo.revHubNamesAndVersions || rcInfo.revHubNamesAndVersions.length === 0);</span>
+<a name="l782"><span class="ln">782  </span></a>
+<a name="l783"><span class="ln">783  </span></a>                <span class="s2">allAvailableChannels = rcInfo.availableChannels;</span>
+<a name="l784"><span class="ln">784  </span></a>                <span class="s2">isControlHub = rcInfo.isREVControlHub;</span>
+<a name="l785"><span class="ln">785  </span></a>                <span class="s2">originalName = rcInfo.deviceName;</span>
+<a name="l786"><span class="ln">786  </span></a>                <span class="s2">originalPassword = rcInfo.passphrase;</span>
+<a name="l787"><span class="ln">787  </span></a>
+<a name="l788"><span class="ln">788  </span></a>                <span class="s2">let select5GhzBand = false;</span>
+<a name="l789"><span class="ln">789  </span></a>                <span class="s2">if (rcInfo.currentChannel.name !== &quot;UNKNOWN&quot;) {</span>
+<a name="l790"><span class="ln">790  </span></a>                    <span class="s2">currentChannel = rcInfo.currentChannel.name;</span>
+<a name="l791"><span class="ln">791  </span></a>                    <span class="s2">if (rcInfo.currentChannel.band === &quot;BAND_5_GHZ&quot;) {</span>
+<a name="l792"><span class="ln">792  </span></a>                        <span class="s2">currentlyOn5Ghz = true;</span>
+<a name="l793"><span class="ln">793  </span></a>                        <span class="s2">currentlyOn2_4Ghz = false;</span>
+<a name="l794"><span class="ln">794  </span></a>                        <span class="s2">select5GhzBand = true;</span>
+<a name="l795"><span class="ln">795  </span></a>                    <span class="s2">} else {</span>
+<a name="l796"><span class="ln">796  </span></a>                        <span class="s2">currentlyOn2_4Ghz = true;</span>
+<a name="l797"><span class="ln">797  </span></a>                        <span class="s2">currentlyOn5Ghz = false;</span>
+<a name="l798"><span class="ln">798  </span></a>                    <span class="s2">}</span>
+<a name="l799"><span class="ln">799  </span></a>                    <span class="s2">if (rcInfo.currentChannel.overlapsWithOtherChannels === true) {</span>
+<a name="l800"><span class="ln">800  </span></a>                        <span class="s2">document.getElementById(&quot;id_show_overlapping_channels_checkbox&quot;).checked = true;</span>
+<a name="l801"><span class="ln">801  </span></a>                    <span class="s2">}</span>
+<a name="l802"><span class="ln">802  </span></a>                <span class="s2">} else {</span>
+<a name="l803"><span class="ln">803  </span></a>                    <span class="s2">currentlyOn2_4Ghz = false;</span>
+<a name="l804"><span class="ln">804  </span></a>                    <span class="s2">currentlyOn5Ghz = false;</span>
+<a name="l805"><span class="ln">805  </span></a>                    <span class="s2">currentChannel = undefined;</span>
+<a name="l806"><span class="ln">806  </span></a>                    <span class="s2">if (rcInfo.supports5GhzAp) {</span>
+<a name="l807"><span class="ln">807  </span></a>                        <span class="s2">select5GhzBand = true;</span>
+<a name="l808"><span class="ln">808  </span></a>                    <span class="s2">}</span>
+<a name="l809"><span class="ln">809  </span></a>                <span class="s2">}</span>
+<a name="l810"><span class="ln">810  </span></a>                <span class="s2">selectBand(select5GhzBand);</span>
+<a name="l811"><span class="ln">811  </span></a>                <span class="s2">updateChannelList();</span>
+<a name="l812"><span class="ln">812  </span></a>
+<a name="l813"><span class="ln">813  </span></a>                <span class="s2">document.getElementById(&quot;id_rc_version&quot;).textContent = rcInfo.rcVersion;</span>
+<a name="l814"><span class="ln">814  </span></a>                <span class="s2">document.getElementById(&quot;id_control_hub_os_version&quot;).textContent = rcInfo.chOsVersion;</span>
+<a name="l815"><span class="ln">815  </span></a>
+<a name="l816"><span class="ln">816  </span></a>                <span class="s2">var revFirmwareVersions = document.getElementById(&quot;id_rev_firmware_versions&quot;);</span>
+<a name="l817"><span class="ln">817  </span></a>                <span class="s2">revFirmwareVersions.textContent = &quot;&quot;;</span>
+<a name="l818"><span class="ln">818  </span></a>
+<a name="l819"><span class="ln">819  </span></a>                <span class="s2">if (rcInfo.revHubNamesAndVersions) {</span>
+<a name="l820"><span class="ln">820  </span></a>                    <span class="s2">rcInfo.revHubNamesAndVersions.forEach(function(nameAndVersion) {</span>
+<a name="l821"><span class="ln">821  </span></a>                        <span class="s2">var entry = document.createElement('p');</span>
+<a name="l822"><span class="ln">822  </span></a>                        <span class="s2">entry.innerHTML = '&lt;b&gt;&lt;i&gt;' + nameAndVersion.name + '&lt;/i&gt;&lt;/b&gt;: ' + nameAndVersion.firmwareVersion;</span>
+<a name="l823"><span class="ln">823  </span></a>                        <span class="s2">revFirmwareVersions.appendChild(entry);</span>
+<a name="l824"><span class="ln">824  </span></a>                    <span class="s2">});</span>
+<a name="l825"><span class="ln">825  </span></a>                <span class="s2">}</span>
+<a name="l826"><span class="ln">826  </span></a>
+<a name="l827"><span class="ln">827  </span></a>
+<a name="l828"><span class="ln">828  </span></a>                <span class="s2">// Only update the fw update button if no fw file has been selected</span>
+<a name="l829"><span class="ln">829  </span></a>                <span class="s2">if (!document.getElementById(&quot;id_input_file_firmware&quot;).value) {</span>
+<a name="l830"><span class="ln">830  </span></a>                    <span class="s2">document.getElementById(&quot;id_action_firmware&quot;).innerText = &quot;Update to firmware version &quot; + rcInfo.includedFirmwareFileVersion;</span>
+<a name="l831"><span class="ln">831  </span></a>                <span class="s2">}</span>
+<a name="l832"><span class="ln">832  </span></a>
+<a name="l833"><span class="ln">833  </span></a>                <span class="s2">if (rcInfo.appUpdateRequiresReboot) {</span>
+<a name="l834"><span class="ln">834  </span></a>                    <span class="s2">appUpdateRequiresReboot = true;</span>
+<a name="l835"><span class="ln">835  </span></a>                    <span class="s2">$('#id_action_apk').html('Update &amp;amp; Reboot');</span>
+<a name="l836"><span class="ln">836  </span></a>                <span class="s2">}</span>
+<a name="l837"><span class="ln">837  </span></a>            <span class="s2">}</span>
+<a name="l838"><span class="ln">838  </span></a>        <span class="s2">});</span>
+<a name="l839"><span class="ln">839  </span></a>    <span class="s2">};</span>
+<a name="l840"><span class="ln">840  </span></a>    <span class="s2">refreshRCInfo();</span>
+<a name="l841"><span class="ln">841  </span></a>
+<a name="l842"><span class="ln">842  </span></a>    <span class="s2">loadJsonObject(URI_LIST_LOG_FILES, function (logFileList) {</span>
+<a name="l843"><span class="ln">843  </span></a>        <span class="s2">if (logFileList) {</span>
+<a name="l844"><span class="ln">844  </span></a>            <span class="s2">document.getElementById(&quot;id_log_count&quot;).innerHTML = &quot; (&quot; + logFileList.length + &quot;)&quot;;</span>
+<a name="l845"><span class="ln">845  </span></a>        <span class="s2">}</span>
+<a name="l846"><span class="ln">846  </span></a>    <span class="s2">});</span>
+<a name="l847"><span class="ln">847  </span></a>
+<a name="l848"><span class="ln">848  </span></a>    <span class="s2">var onDownloadLogsClicked = function() {</span>
+<a name="l849"><span class="ln">849  </span></a>        <span class="s2">loadJsonObject(URI_LIST_LOG_FILES, function (logFileList) {</span>
+<a name="l850"><span class="ln">850  </span></a>            <span class="s2">if (logFileList) {</span>
+<a name="l851"><span class="ln">851  </span></a>                <span class="s2">var i = 0;</span>
+<a name="l852"><span class="ln">852  </span></a>                <span class="s2">if (isInternetExplorer()) {</span>
+<a name="l853"><span class="ln">853  </span></a>                    <span class="s2">// the short delay allows IE to download the multiple files</span>
+<a name="l854"><span class="ln">854  </span></a>                    <span class="s2">var interval = setInterval(function() {</span>
+<a name="l855"><span class="ln">855  </span></a>                        <span class="s2">if (i &lt; logFileList.length) {</span>
+<a name="l856"><span class="ln">856  </span></a>                            <span class="s2">var logFileName = logFileList[i++];</span>
+<a name="l857"><span class="ln">857  </span></a>                            <span class="s2">downloadFile(logFileName);</span>
+<a name="l858"><span class="ln">858  </span></a>                        <span class="s2">} else {</span>
+<a name="l859"><span class="ln">859  </span></a>                            <span class="s2">clearInterval(interval);</span>
+<a name="l860"><span class="ln">860  </span></a>                        <span class="s2">}</span>
+<a name="l861"><span class="ln">861  </span></a>                    <span class="s2">}, 100);</span>
+<a name="l862"><span class="ln">862  </span></a>                <span class="s2">} else {</span>
+<a name="l863"><span class="ln">863  </span></a>                    <span class="s2">for (i = 0; i &lt; logFileList.length; i++) {</span>
+<a name="l864"><span class="ln">864  </span></a>                        <span class="s2">downloadFile(logFileList[i]);</span>
+<a name="l865"><span class="ln">865  </span></a>                    <span class="s2">}</span>
+<a name="l866"><span class="ln">866  </span></a>                <span class="s2">}</span>
+<a name="l867"><span class="ln">867  </span></a>            <span class="s2">} else {</span>
+<a name="l868"><span class="ln">868  </span></a>                <span class="s2">alert('unable to list robot controller log files');</span>
+<a name="l869"><span class="ln">869  </span></a>            <span class="s2">}</span>
+<a name="l870"><span class="ln">870  </span></a>        <span class="s2">});</span>
+<a name="l871"><span class="ln">871  </span></a>    <span class="s2">}</span>
+<a name="l872"><span class="ln">872  </span></a>
+<a name="l873"><span class="ln">873  </span></a>    <span class="s2">var downloadFile = function(fileName) {</span>
+<a name="l874"><span class="ln">874  </span></a>        <span class="s2">console.log(&quot;downloadFile(&quot; + fileName + &quot;)&quot;);</span>
+<a name="l875"><span class="ln">875  </span></a>        <span class="s2">var url = URI_DOWNLOAD_FILE + &quot;?&quot; + PARAM_NAME + &quot;=&quot; + encodeURIComponent(fileName);</span>
+<a name="l876"><span class="ln">876  </span></a>        <span class="s2">var anchor = document.createElement(&quot;A&quot;);</span>
+<a name="l877"><span class="ln">877  </span></a>        <span class="s2">document.body.appendChild(anchor);  // firefox needs the anchor to be in the body</span>
+<a name="l878"><span class="ln">878  </span></a>        <span class="s2">anchor.style.display = &quot;none&quot;;</span>
+<a name="l879"><span class="ln">879  </span></a>        <span class="s2">anchor.href = url;</span>
+<a name="l880"><span class="ln">880  </span></a>        <span class="s2">anchor.download = fileName;</span>
+<a name="l881"><span class="ln">881  </span></a>        <span class="s2">anchor.click();</span>
+<a name="l882"><span class="ln">882  </span></a>        <span class="s2">document.body.removeChild(anchor);</span>
+<a name="l883"><span class="ln">883  </span></a>    <span class="s2">}</span>
+<a name="l884"><span class="ln">884  </span></a>
+<a name="l885"><span class="ln">885  </span></a><span class="s0">&lt;/script&gt;</span>
+<a name="l886"><span class="ln">886  </span></a><span class="s0">&lt;/body&gt;</span>
+<a name="l887"><span class="ln">887  </span></a><span class="s0">&lt;/html&gt;</span>
+<a name="l888"><span class="ln">888  </span></a></pre>
+</body>
+</html>

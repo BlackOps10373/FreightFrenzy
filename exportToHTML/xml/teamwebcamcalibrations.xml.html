@@ -1,0 +1,183 @@
+<html>
+<head>
+<title>teamwebcamcalibrations.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #bababa;}
+.s2 { color: #6a8759;}
+.s3 { color: #a9b7c6;}
+.s4 { color: #808080;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+teamwebcamcalibrations.xml</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">='1.0' </span><span class="s1">encoding</span><span class="s2">='UTF-8' </span><span class="s1">standalone</span><span class="s2">='yes' </span><span class="s0">?&gt;</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s4">&lt;!-- </span>
+<a name="l3"><span class="ln">3    </span></a>  <span class="s4">This file can provide additional camera calibration settings beyond those built into the SDK itself. 
+<a name="l4"><span class="ln">4    </span></a>  Each calibration is for a particular camera (indicated by USB vid &amp; pid pair) and a particular 
+<a name="l5"><span class="ln">5    </span></a>  capture resolution for the camera. Note: it is very important when capturing images used to calibrate 
+<a name="l6"><span class="ln">6    </span></a>  a camera that the image acquisition tool can actually control this capture resolution within the camera 
+<a name="l7"><span class="ln">7    </span></a>  itself and that you use this setting correctly. Many image acquistion tools do not in fact provide 
+<a name="l8"><span class="ln">8    </span></a>  this level of control. 
+<a name="l9"><span class="ln">9    </span></a> 
+<a name="l10"><span class="ln">10   </span></a>  Beyond simply providing additional, new camera calibrations, calibrations provided herein can 
+<a name="l11"><span class="ln">11   </span></a>  *replace/update* those that are builtin to the SDK. This matching is keyed, of course, by the 
+<a name="l12"><span class="ln">12   </span></a>  (vid, pid, size) triple. Further, if such a calibration has the 'remove' attribute with value 'true', 
+<a name="l13"><span class="ln">13   </span></a>  any existing calibration with that key is removed (and the calibration itself not added). 
+<a name="l14"><span class="ln">14   </span></a> 
+<a name="l15"><span class="ln">15   </span></a>  Calibrations are internally processed according to aspect ratio. If a format is requested in a size 
+<a name="l16"><span class="ln">16   </span></a>  that is not calibrated, but a calibration does exist for the same aspect ratio on the same camera, 
+<a name="l17"><span class="ln">17   </span></a>  then the latter will be scaled to accommodate the request. For example, if a 640x480 calibration 
+<a name="l18"><span class="ln">18   </span></a>  is requested but only a 800x600 calibration exists for that camera, then the 800x600 is scaled 
+<a name="l19"><span class="ln">19   </span></a>  down to service the 640x480 request. 
+<a name="l20"><span class="ln">20   </span></a> 
+<a name="l21"><span class="ln">21   </span></a>  Further, it is important to note that if *no* calibrations exist for a given camera, then Vuforia 
+<a name="l22"><span class="ln">22   </span></a>  is offered the entire range of capture resolutions that the hardware can support (and it does its 
+<a name="l23"><span class="ln">23   </span></a>  best to deal with the lack of calibration). However, if *any* calibrations are provided for a camera, 
+<a name="l24"><span class="ln">24   </span></a>  then capture resolutions in those aspect ratios supported by the camera for which any calibrations 
+<a name="l25"><span class="ln">25   </span></a>  are *not* provided are *not* offered. Thus, if you calibrate a camera but fail to calibrate all 
+<a name="l26"><span class="ln">26   </span></a>  the camera's supported aspect ratios, you limit the choices of capture resolutions that Vuforia can 
+<a name="l27"><span class="ln">27   </span></a>  select from. 
+<a name="l28"><span class="ln">28   </span></a> 
+<a name="l29"><span class="ln">29   </span></a>  One image acquisition program that supports control of camera capture resolution is YouCam 7: 
+<a name="l30"><span class="ln">30   </span></a>    https://www.cyberlink.com/products/youcam/features_en_US.html 
+<a name="l31"><span class="ln">31   </span></a> 
+<a name="l32"><span class="ln">32   </span></a>  Programs that can process acquired images to determine camera calibration settings include: 
+<a name="l33"><span class="ln">33   </span></a>    https://www.3dflow.net/3df-zephyr-free/ (see &quot;Utilities/Images/Launch Camera Calibration&quot; therein) 
+<a name="l34"><span class="ln">34   </span></a>    http://graphics.cs.msu.ru/en/node/909 
+<a name="l35"><span class="ln">35   </span></a>  Note that the type of images that must be acquired in order to calibrate is specific to the 
+<a name="l36"><span class="ln">36   </span></a>  calibration software used. 
+<a name="l37"><span class="ln">37   </span></a> 
+<a name="l38"><span class="ln">38   </span></a>  The required contents are illustrated here by example. Note that for the attribute names, both the 
+<a name="l39"><span class="ln">39   </span></a>  camelCase or the underscore_variations are supported; they are equivalent. The attributes for 
+<a name="l40"><span class="ln">40   </span></a>  each Calibration are as follows: 
+<a name="l41"><span class="ln">41   </span></a> 
+<a name="l42"><span class="ln">42   </span></a>    size (int pair): space separated camera resolution (width, height). 
+<a name="l43"><span class="ln">43   </span></a>    focalLength (float pair): space separated focal length value. 
+<a name="l44"><span class="ln">44   </span></a>    principalPoint (float pair): space separated principal point values (width, height). 
+<a name="l45"><span class="ln">45   </span></a>    distortionCoefficients (an 8-element float array): distortion coefficients in the following form 
+<a name="l46"><span class="ln">46   </span></a>        (r:radial, t:tangential): [r0, r1, t0, t1, r2, r3, r4, r5] 
+<a name="l47"><span class="ln">47   </span></a>        see https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html 
+<a name="l48"><span class="ln">48   </span></a> 
+<a name="l49"><span class="ln">49   </span></a>  The examples here are commented out as the values are built-in to the FTC SDK. They serve instead 
+<a name="l50"><span class="ln">50   </span></a>  here as examples on how make your own. 
+<a name="l51"><span class="ln">51   </span></a> 
+<a name="l52"><span class="ln">52   </span></a>--&gt;</span>
+<a name="l53"><span class="ln">53   </span></a><span class="s0">&lt;Calibrations&gt;</span>
+<a name="l54"><span class="ln">54   </span></a>
+<a name="l55"><span class="ln">55   </span></a>    <span class="s4">&lt;!-- ======================================================================================= --&gt;</span>
+<a name="l56"><span class="ln">56   </span></a>
+<a name="l57"><span class="ln">57   </span></a>    <span class="s4">&lt;!-- Microsoft Lifecam HD 3000 v1, Calibrated by PTC using unknown tooling --&gt;</span>
+<a name="l58"><span class="ln">58   </span></a>    <span class="s4">&lt;!-- &lt;Camera vid=&quot;Microsoft&quot; pid=&quot;0x0779&quot;&gt; 
+<a name="l59"><span class="ln">59   </span></a>        &lt;Calibration 
+<a name="l60"><span class="ln">60   </span></a>            size=&quot;640 480&quot; 
+<a name="l61"><span class="ln">61   </span></a>            focalLength=&quot;678.154f, 678.17f&quot; 
+<a name="l62"><span class="ln">62   </span></a>            principalPoint=&quot;318.135f, 228.374f&quot; 
+<a name="l63"><span class="ln">63   </span></a>            distortionCoefficients=&quot;0.154576f, -1.19143f, 0f, 0f, 2.06105f, 0f, 0f, 0f&quot; 
+<a name="l64"><span class="ln">64   </span></a>            /&gt; 
+<a name="l65"><span class="ln">65   </span></a>    &lt;/Camera&gt; --&gt;</span>
+<a name="l66"><span class="ln">66   </span></a>
+<a name="l67"><span class="ln">67   </span></a>    <span class="s4">&lt;!-- ======================================================================================= --&gt;</span>
+<a name="l68"><span class="ln">68   </span></a>
+<a name="l69"><span class="ln">69   </span></a>    <span class="s4">&lt;!-- Microsoft Lifecam HD 3000 v2, Calibrated by PTC using unknown tooling --&gt;</span>
+<a name="l70"><span class="ln">70   </span></a>    <span class="s4">&lt;!-- &lt;Camera vid=&quot;Microsoft&quot; pid=&quot;0x0810&quot;&gt; 
+<a name="l71"><span class="ln">71   </span></a>        &lt;Calibration 
+<a name="l72"><span class="ln">72   </span></a>            size=&quot;640 480&quot; 
+<a name="l73"><span class="ln">73   </span></a>            focalLength=&quot;678.154f, 678.17f&quot; 
+<a name="l74"><span class="ln">74   </span></a>            principalPoint=&quot;318.135f, 228.374f&quot; 
+<a name="l75"><span class="ln">75   </span></a>            distortionCoefficients=&quot;0.154576f, -1.19143f, 0f, 0f, 2.06105f, 0f, 0f, 0f&quot; 
+<a name="l76"><span class="ln">76   </span></a>            /&gt; 
+<a name="l77"><span class="ln">77   </span></a>    &lt;/Camera&gt; --&gt;</span>
+<a name="l78"><span class="ln">78   </span></a>
+<a name="l79"><span class="ln">79   </span></a>    <span class="s4">&lt;!-- ======================================================================================= --&gt;</span>
+<a name="l80"><span class="ln">80   </span></a>
+<a name="l81"><span class="ln">81   </span></a>    <span class="s4">&lt;!-- Logitech HD Webcam C310, Calibrated by by Robert Atkinson, 2018.05.30 using 3DF Zephyr --&gt;</span>
+<a name="l82"><span class="ln">82   </span></a>    <span class="s4">&lt;!-- &lt;Camera vid=&quot;Logitech&quot; pid=&quot;0x081B&quot;&gt; 
+<a name="l83"><span class="ln">83   </span></a>        &lt;Calibration 
+<a name="l84"><span class="ln">84   </span></a>            size=&quot;640 480&quot; 
+<a name="l85"><span class="ln">85   </span></a>            focalLength=&quot;821.993f, 821.993f&quot; 
+<a name="l86"><span class="ln">86   </span></a>            principalPoint=&quot;330.489f, 248.997f&quot; 
+<a name="l87"><span class="ln">87   </span></a>            distortionCoefficients=&quot;-0.018522, 1.03979, 0, 0, -3.3171, 0, 0, 0&quot; 
+<a name="l88"><span class="ln">88   </span></a>            /&gt; 
+<a name="l89"><span class="ln">89   </span></a> 
+<a name="l90"><span class="ln">90   </span></a>        &lt;Calibration 
+<a name="l91"><span class="ln">91   </span></a>            size=&quot;640 360&quot; 
+<a name="l92"><span class="ln">92   </span></a>            focalLength=&quot;715.307f, 715.307f&quot; 
+<a name="l93"><span class="ln">93   </span></a>            principalPoint=&quot;319.759f, 188.917f&quot; 
+<a name="l94"><span class="ln">94   </span></a>            distortionCoefficients=&quot;-0.0258948, 1.06258, 0, 0, -3.40245, 0, 0, 0&quot; 
+<a name="l95"><span class="ln">95   </span></a>            /&gt; 
+<a name="l96"><span class="ln">96   </span></a>    &lt;/Camera&gt; --&gt;</span>
+<a name="l97"><span class="ln">97   </span></a>
+<a name="l98"><span class="ln">98   </span></a>    <span class="s4">&lt;!-- ======================================================================================= --&gt;</span>
+<a name="l99"><span class="ln">99   </span></a>
+<a name="l100"><span class="ln">100  </span></a>    <span class="s4">&lt;!-- Logitech HD Pro Webcam C920, Calibrated by Robert Atkinson, 2018.05.30 using 3DF Zephyr --&gt;</span>
+<a name="l101"><span class="ln">101  </span></a>    <span class="s4">&lt;!-- &lt;Camera vid=&quot;Logitech&quot; pid=&quot;0x082D&quot;&gt; 
+<a name="l102"><span class="ln">102  </span></a> 
+<a name="l103"><span class="ln">103  </span></a>        &lt;Calibration 
+<a name="l104"><span class="ln">104  </span></a>            size=&quot;640 480&quot; 
+<a name="l105"><span class="ln">105  </span></a>            focalLength=&quot;622.001f, 622.001f&quot; 
+<a name="l106"><span class="ln">106  </span></a>            principalPoint=&quot;319.803f, 241.251f&quot; 
+<a name="l107"><span class="ln">107  </span></a>            distortionCoefficients=&quot;0.1208, -0.261599, 0, 0, 0.10308, 0, 0, 0&quot; 
+<a name="l108"><span class="ln">108  </span></a>            /&gt; 
+<a name="l109"><span class="ln">109  </span></a> 
+<a name="l110"><span class="ln">110  </span></a>        &lt;Calibration 
+<a name="l111"><span class="ln">111  </span></a>            size=&quot;800 600&quot; 
+<a name="l112"><span class="ln">112  </span></a>            focalLength=&quot;775.79f, 775.79f&quot; 
+<a name="l113"><span class="ln">113  </span></a>            principalPoint=&quot;400.898f, 300.79f&quot; 
+<a name="l114"><span class="ln">114  </span></a>            distortionCoefficients=&quot;0.112507, -0.272067, 0, 0, 0.15775, 0, 0, 0&quot; 
+<a name="l115"><span class="ln">115  </span></a>            /&gt; 
+<a name="l116"><span class="ln">116  </span></a> 
+<a name="l117"><span class="ln">117  </span></a>        &lt;Calibration 
+<a name="l118"><span class="ln">118  </span></a>            size=&quot;640 360&quot; 
+<a name="l119"><span class="ln">119  </span></a>            focalLength=&quot;463.566f, 463.566f&quot; 
+<a name="l120"><span class="ln">120  </span></a>            principalPoint=&quot;316.402f, 176.412f&quot; 
+<a name="l121"><span class="ln">121  </span></a>            distortionCoefficients=&quot;0.111626 , -0.255626, 0, 0, 0.107992, 0, 0, 0&quot; 
+<a name="l122"><span class="ln">122  </span></a>            /&gt; 
+<a name="l123"><span class="ln">123  </span></a> 
+<a name="l124"><span class="ln">124  </span></a>        &lt;Calibration 
+<a name="l125"><span class="ln">125  </span></a>            size=&quot;1920, 1080&quot; 
+<a name="l126"><span class="ln">126  </span></a>            focalLength=&quot;1385.92f , 1385.92f&quot; 
+<a name="l127"><span class="ln">127  </span></a>            principalPoint=&quot;951.982f , 534.084f&quot; 
+<a name="l128"><span class="ln">128  </span></a>            distortionCoefficients=&quot;0.117627, -0.248549, 0, 0, 0.107441, 0, 0, 0&quot; 
+<a name="l129"><span class="ln">129  </span></a>            /&gt; 
+<a name="l130"><span class="ln">130  </span></a> 
+<a name="l131"><span class="ln">131  </span></a>        &lt;Calibration 
+<a name="l132"><span class="ln">132  </span></a>            size=&quot;800, 448&quot; 
+<a name="l133"><span class="ln">133  </span></a>            focalLength=&quot;578.272f , 578.272f&quot; 
+<a name="l134"><span class="ln">134  </span></a>            principalPoint=&quot;402.145f , 221.506f&quot; 
+<a name="l135"><span class="ln">135  </span></a>            distortionCoefficients=&quot;0.12175, -0.251652 , 0, 0, 0.112142, 0, 0, 0&quot; 
+<a name="l136"><span class="ln">136  </span></a>            /&gt; 
+<a name="l137"><span class="ln">137  </span></a> 
+<a name="l138"><span class="ln">138  </span></a>        &lt;Calibration 
+<a name="l139"><span class="ln">139  </span></a>            size=&quot;864, 480&quot; 
+<a name="l140"><span class="ln">140  </span></a>            focalLength=&quot;626.909f , 626.909f&quot; 
+<a name="l141"><span class="ln">141  </span></a>            principalPoint=&quot;426.007f , 236.834f&quot; 
+<a name="l142"><span class="ln">142  </span></a>            distortionCoefficients=&quot;0.120988, -0.253336 , 0, 0, 0.102445, 0, 0, 0&quot; 
+<a name="l143"><span class="ln">143  </span></a>            /&gt; 
+<a name="l144"><span class="ln">144  </span></a> 
+<a name="l145"><span class="ln">145  </span></a>    &lt;/Camera&gt; --&gt;</span>
+<a name="l146"><span class="ln">146  </span></a>
+<a name="l147"><span class="ln">147  </span></a>    <span class="s4">&lt;!-- ======================================================================================= --&gt;</span>
+<a name="l148"><span class="ln">148  </span></a>
+<a name="l149"><span class="ln">149  </span></a>    <span class="s4">&lt;!-- Logitech HD Webcam C270, Calibrated by Noah Andrews, 2019.03.13 using 3DF Zephyr --&gt;</span>
+<a name="l150"><span class="ln">150  </span></a>    <span class="s4">&lt;!--&lt;Camera vid=&quot;Logitech&quot; pid=&quot;0x0825&quot;&gt; 
+<a name="l151"><span class="ln">151  </span></a>        &lt;Calibration 
+<a name="l152"><span class="ln">152  </span></a>            size=&quot;640 480&quot; 
+<a name="l153"><span class="ln">153  </span></a>            focalLength=&quot;822.317f, 822.317f&quot; 
+<a name="l154"><span class="ln">154  </span></a>            principalPoint=&quot;319.495f, 242.502f&quot; 
+<a name="l155"><span class="ln">155  </span></a>            distortionCoefficients=&quot;-0.0449369, 1.17277, 0, 0, -3.63244, 0, 0, 0&quot; 
+<a name="l156"><span class="ln">156  </span></a>            /&gt; 
+<a name="l157"><span class="ln">157  </span></a>    &lt;/Camera&gt; --&gt;</span>
+<a name="l158"><span class="ln">158  </span></a>
+<a name="l159"><span class="ln">159  </span></a>    <span class="s4">&lt;!-- ======================================================================================= --&gt;</span>
+<a name="l160"><span class="ln">160  </span></a>
+<a name="l161"><span class="ln">161  </span></a><span class="s0">&lt;/Calibrations&gt;</span>
+<a name="l162"><span class="ln">162  </span></a></pre>
+</body>
+</html>

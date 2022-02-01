@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>default.blk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+default.blk</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">&lt;xml xmlns=&quot;https://developers.google.com/blockly/xml&quot;&gt;</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">&lt;block type=&quot;procedures_defnoreturn&quot; id=&quot;WtpyD@tEu+EoY=P9iY,D&quot; deletable=&quot;false&quot; editable=&quot;false&quot; x=&quot;50&quot; y=&quot;50&quot;&gt;</span>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">&lt;field name=&quot;NAME&quot;&gt;runOpMode&lt;/field&gt;</span>
+<a name="l4"><span class="ln">4    </span></a><span class="s0">&lt;comment pinned=&quot;false&quot; h=&quot;32&quot; w=&quot;532&quot;&gt;This function is executed when this Op Mode is selected from the Driver Station.&lt;/comment&gt;</span>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">&lt;statement name=&quot;STACK&quot;&gt;</span>
+<a name="l6"><span class="ln">6    </span></a><span class="s0">&lt;block type=&quot;comment&quot; id=&quot;Lc#BFtj*NTB48YL;eBl.&quot;&gt;</span>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">&lt;field name=&quot;COMMENT&quot;&gt;Put initialization blocks here.&lt;/field&gt;</span>
+<a name="l8"><span class="ln">8    </span></a><span class="s0">&lt;next&gt;</span>
+<a name="l9"><span class="ln">9    </span></a><span class="s0">&lt;block type=&quot;linearOpMode_waitForStart&quot; id=&quot;:`$wN_ci`O;o6P0~.(+g&quot;&gt;</span>
+<a name="l10"><span class="ln">10   </span></a><span class="s0">&lt;next&gt;</span>
+<a name="l11"><span class="ln">11   </span></a><span class="s0">&lt;block type=&quot;controls_if&quot; id=&quot;}Q?5mbxSO8Di;i!__6[y&quot;&gt;</span>
+<a name="l12"><span class="ln">12   </span></a><span class="s0">&lt;value name=&quot;IF0&quot;&gt;</span>
+<a name="l13"><span class="ln">13   </span></a><span class="s0">&lt;block type=&quot;linearOpMode_opModeIsActive&quot; id=&quot;)o%YFX/#9kvv^sgXr4~5&quot;/&gt;</span>
+<a name="l14"><span class="ln">14   </span></a><span class="s0">&lt;/value&gt;</span>
+<a name="l15"><span class="ln">15   </span></a><span class="s0">&lt;statement name=&quot;DO0&quot;&gt;</span>
+<a name="l16"><span class="ln">16   </span></a><span class="s0">&lt;block type=&quot;comment&quot; id=&quot;(rU-p_T_/B|vExcs}liL&quot;&gt;</span>
+<a name="l17"><span class="ln">17   </span></a><span class="s0">&lt;field name=&quot;COMMENT&quot;&gt;Put run blocks here.&lt;/field&gt;</span>
+<a name="l18"><span class="ln">18   </span></a><span class="s0">&lt;next&gt;</span>
+<a name="l19"><span class="ln">19   </span></a><span class="s0">&lt;block type=&quot;controls_whileUntil&quot; id=&quot;^0Kagy/e+Ea{rbZPv2G6&quot;&gt;</span>
+<a name="l20"><span class="ln">20   </span></a><span class="s0">&lt;field name=&quot;MODE&quot;&gt;WHILE&lt;/field&gt;</span>
+<a name="l21"><span class="ln">21   </span></a><span class="s0">&lt;value name=&quot;BOOL&quot;&gt;</span>
+<a name="l22"><span class="ln">22   </span></a><span class="s0">&lt;block type=&quot;linearOpMode_opModeIsActive&quot; id=&quot;e)cr{!2VIET83s,JWC.=&quot;/&gt;</span>
+<a name="l23"><span class="ln">23   </span></a><span class="s0">&lt;/value&gt;</span>
+<a name="l24"><span class="ln">24   </span></a><span class="s0">&lt;statement name=&quot;DO&quot;&gt;</span>
+<a name="l25"><span class="ln">25   </span></a><span class="s0">&lt;block type=&quot;comment&quot; id=&quot;Jh/;L$n@JuX8AQJDFCul&quot;&gt;</span>
+<a name="l26"><span class="ln">26   </span></a><span class="s0">&lt;field name=&quot;COMMENT&quot;&gt;Put loop blocks here.&lt;/field&gt;</span>
+<a name="l27"><span class="ln">27   </span></a><span class="s0">&lt;next&gt;</span>
+<a name="l28"><span class="ln">28   </span></a><span class="s0">&lt;block type=&quot;telemetry_update&quot; id=&quot;exvivmft-pX$n!1,8Ea$&quot;/&gt;</span>
+<a name="l29"><span class="ln">29   </span></a><span class="s0">&lt;/next&gt;</span>
+<a name="l30"><span class="ln">30   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l31"><span class="ln">31   </span></a><span class="s0">&lt;/statement&gt;</span>
+<a name="l32"><span class="ln">32   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l33"><span class="ln">33   </span></a><span class="s0">&lt;/next&gt;</span>
+<a name="l34"><span class="ln">34   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l35"><span class="ln">35   </span></a><span class="s0">&lt;/statement&gt;</span>
+<a name="l36"><span class="ln">36   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l37"><span class="ln">37   </span></a><span class="s0">&lt;/next&gt;</span>
+<a name="l38"><span class="ln">38   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l39"><span class="ln">39   </span></a><span class="s0">&lt;/next&gt;</span>
+<a name="l40"><span class="ln">40   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l41"><span class="ln">41   </span></a><span class="s0">&lt;/statement&gt;</span>
+<a name="l42"><span class="ln">42   </span></a><span class="s0">&lt;/block&gt;</span>
+<a name="l43"><span class="ln">43   </span></a><span class="s0">&lt;/xml&gt;</span>
+<a name="l44"><span class="ln">44   </span></a><span class="s0">&lt;?xml version='1.0' encoding='UTF-8' standalone='yes' ?&gt;</span>
+<a name="l45"><span class="ln">45   </span></a><span class="s0">&lt;Extra&gt;</span>
+<a name="l46"><span class="ln">46   </span></a><span class="s0">&lt;OpModeMeta flavor=&quot;TELEOP&quot; group=&quot;&quot; autoTransition=&quot;&quot; /&gt;</span>
+<a name="l47"><span class="ln">47   </span></a><span class="s0">&lt;Enabled value=&quot;true&quot; /&gt;</span>
+<a name="l48"><span class="ln">48   </span></a><span class="s0">&lt;/Extra&gt;</span>
+<a name="l49"><span class="ln">49   </span></a></pre>
+</body>
+</html>

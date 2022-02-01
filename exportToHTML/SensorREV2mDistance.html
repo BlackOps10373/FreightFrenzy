@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>SensorREV2mDistance</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SensorREV2mDistance</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">/*</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">Copyright (c) 2018 FIRST</span>
+<a name="l3"><span class="ln">3    </span></a>
+<a name="l4"><span class="ln">4    </span></a><span class="s0">All rights reserved.</span>
+<a name="l5"><span class="ln">5    </span></a>
+<a name="l6"><span class="ln">6    </span></a><span class="s0">Redistribution and use in source and binary forms, with or without modification,</span>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">are permitted (subject to the limitations in the disclaimer below) provided that</span>
+<a name="l8"><span class="ln">8    </span></a><span class="s0">the following conditions are met:</span>
+<a name="l9"><span class="ln">9    </span></a>
+<a name="l10"><span class="ln">10   </span></a><span class="s0">Redistributions of source code must retain the above copyright notice, this list</span>
+<a name="l11"><span class="ln">11   </span></a><span class="s0">of conditions and the following disclaimer.</span>
+<a name="l12"><span class="ln">12   </span></a>
+<a name="l13"><span class="ln">13   </span></a><span class="s0">Redistributions in binary form must reproduce the above copyright notice, this</span>
+<a name="l14"><span class="ln">14   </span></a><span class="s0">list of conditions and the following disclaimer in the documentation and/or</span>
+<a name="l15"><span class="ln">15   </span></a><span class="s0">other materials provided with the distribution.</span>
+<a name="l16"><span class="ln">16   </span></a>
+<a name="l17"><span class="ln">17   </span></a><span class="s0">Neither the name of FIRST nor the names of its contributors may be used to</span>
+<a name="l18"><span class="ln">18   </span></a><span class="s0">endorse or promote products derived from this software without specific prior</span>
+<a name="l19"><span class="ln">19   </span></a><span class="s0">written permission.</span>
+<a name="l20"><span class="ln">20   </span></a>
+<a name="l21"><span class="ln">21   </span></a><span class="s0">NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS</span>
+<a name="l22"><span class="ln">22   </span></a><span class="s0">LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS</span>
+<a name="l23"><span class="ln">23   </span></a><span class="s0">&quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</span>
+<a name="l24"><span class="ln">24   </span></a><span class="s0">THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<a name="l25"><span class="ln">25   </span></a><span class="s0">ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE</span>
+<a name="l26"><span class="ln">26   </span></a><span class="s0">FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span>
+<a name="l27"><span class="ln">27   </span></a><span class="s0">DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</span>
+<a name="l28"><span class="ln">28   </span></a><span class="s0">SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER</span>
+<a name="l29"><span class="ln">29   </span></a><span class="s0">CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR</span>
+<a name="l30"><span class="ln">30   </span></a><span class="s0">TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF</span>
+<a name="l31"><span class="ln">31   </span></a><span class="s0">THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<a name="l32"><span class="ln">32   </span></a><span class="s0">*/</span>
+<a name="l33"><span class="ln">33   </span></a><span class="s0">package org.firstinspires.ftc.robotcontroller.external.samples;</span>
+<a name="l34"><span class="ln">34   </span></a>
+<a name="l35"><span class="ln">35   </span></a><span class="s0">import com.qualcomm.hardware.rev.Rev2mDistanceSensor;</span>
+<a name="l36"><span class="ln">36   </span></a><span class="s0">import com.qualcomm.robotcore.eventloop.opmode.TeleOp;</span>
+<a name="l37"><span class="ln">37   </span></a><span class="s0">import com.qualcomm.robotcore.eventloop.opmode.Disabled;</span>
+<a name="l38"><span class="ln">38   </span></a><span class="s0">import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;</span>
+<a name="l39"><span class="ln">39   </span></a><span class="s0">import com.qualcomm.robotcore.hardware.DistanceSensor;</span>
+<a name="l40"><span class="ln">40   </span></a>
+<a name="l41"><span class="ln">41   </span></a><span class="s0">import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;</span>
+<a name="l42"><span class="ln">42   </span></a>
+<a name="l43"><span class="ln">43   </span></a><span class="s0">/**</span>
+<a name="l44"><span class="ln">44   </span></a> <span class="s0">* {@link SensorREV2mDistance} illustrates how to use the REV Robotics</span>
+<a name="l45"><span class="ln">45   </span></a> <span class="s0">* Time-of-Flight Range Sensor.</span>
+<a name="l46"><span class="ln">46   </span></a> <span class="s0">*</span>
+<a name="l47"><span class="ln">47   </span></a> <span class="s0">* The op mode assumes that the range sensor is configured with a name of &quot;sensor_range&quot;.</span>
+<a name="l48"><span class="ln">48   </span></a> <span class="s0">*</span>
+<a name="l49"><span class="ln">49   </span></a> <span class="s0">* Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.</span>
+<a name="l50"><span class="ln">50   </span></a> <span class="s0">* Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list</span>
+<a name="l51"><span class="ln">51   </span></a> <span class="s0">*</span>
+<a name="l52"><span class="ln">52   </span></a> <span class="s0">* @see &lt;a href=&quot;http://revrobotics.com&quot;&gt;REV Robotics Web Page&lt;/a&gt;</span>
+<a name="l53"><span class="ln">53   </span></a> <span class="s0">*/</span>
+<a name="l54"><span class="ln">54   </span></a><span class="s0">@TeleOp(name = &quot;Sensor: REV2mDistance&quot;, group = &quot;Sensor&quot;)</span>
+<a name="l55"><span class="ln">55   </span></a><span class="s0">@Disabled</span>
+<a name="l56"><span class="ln">56   </span></a><span class="s0">public class SensorREV2mDistance extends LinearOpMode {</span>
+<a name="l57"><span class="ln">57   </span></a>
+<a name="l58"><span class="ln">58   </span></a>    <span class="s0">private DistanceSensor sensorRange;</span>
+<a name="l59"><span class="ln">59   </span></a>
+<a name="l60"><span class="ln">60   </span></a>    <span class="s0">@Override</span>
+<a name="l61"><span class="ln">61   </span></a>    <span class="s0">public void runOpMode() {</span>
+<a name="l62"><span class="ln">62   </span></a>        <span class="s0">// you can use this as a regular DistanceSensor.</span>
+<a name="l63"><span class="ln">63   </span></a>        <span class="s0">sensorRange = hardwareMap.get(DistanceSensor.class, &quot;sensor_range&quot;);</span>
+<a name="l64"><span class="ln">64   </span></a>
+<a name="l65"><span class="ln">65   </span></a>        <span class="s0">// you can also cast this to a Rev2mDistanceSensor if you want to use added</span>
+<a name="l66"><span class="ln">66   </span></a>        <span class="s0">// methods associated with the Rev2mDistanceSensor class.</span>
+<a name="l67"><span class="ln">67   </span></a>        <span class="s0">Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor)sensorRange;</span>
+<a name="l68"><span class="ln">68   </span></a>
+<a name="l69"><span class="ln">69   </span></a>        <span class="s0">telemetry.addData(&quot;&gt;&gt;&quot;, &quot;Press start to continue&quot;);</span>
+<a name="l70"><span class="ln">70   </span></a>        <span class="s0">telemetry.update();</span>
+<a name="l71"><span class="ln">71   </span></a>
+<a name="l72"><span class="ln">72   </span></a>        <span class="s0">waitForStart();</span>
+<a name="l73"><span class="ln">73   </span></a>        <span class="s0">while(opModeIsActive()) {</span>
+<a name="l74"><span class="ln">74   </span></a>            <span class="s0">// generic DistanceSensor methods.</span>
+<a name="l75"><span class="ln">75   </span></a>            <span class="s0">telemetry.addData(&quot;deviceName&quot;,sensorRange.getDeviceName() );</span>
+<a name="l76"><span class="ln">76   </span></a>            <span class="s0">telemetry.addData(&quot;range&quot;, String.format(&quot;%.01f mm&quot;, sensorRange.getDistance(DistanceUnit.MM)));</span>
+<a name="l77"><span class="ln">77   </span></a>            <span class="s0">telemetry.addData(&quot;range&quot;, String.format(&quot;%.01f cm&quot;, sensorRange.getDistance(DistanceUnit.CM)));</span>
+<a name="l78"><span class="ln">78   </span></a>            <span class="s0">telemetry.addData(&quot;range&quot;, String.format(&quot;%.01f m&quot;, sensorRange.getDistance(DistanceUnit.METER)));</span>
+<a name="l79"><span class="ln">79   </span></a>            <span class="s0">telemetry.addData(&quot;range&quot;, String.format(&quot;%.01f in&quot;, sensorRange.getDistance(DistanceUnit.INCH)));</span>
+<a name="l80"><span class="ln">80   </span></a>
+<a name="l81"><span class="ln">81   </span></a>            <span class="s0">// Rev2mDistanceSensor specific methods.</span>
+<a name="l82"><span class="ln">82   </span></a>            <span class="s0">telemetry.addData(&quot;ID&quot;, String.format(&quot;%x&quot;, sensorTimeOfFlight.getModelID()));</span>
+<a name="l83"><span class="ln">83   </span></a>            <span class="s0">telemetry.addData(&quot;did time out&quot;, Boolean.toString(sensorTimeOfFlight.didTimeoutOccur()));</span>
+<a name="l84"><span class="ln">84   </span></a>
+<a name="l85"><span class="ln">85   </span></a>            <span class="s0">telemetry.update();</span>
+<a name="l86"><span class="ln">86   </span></a>        <span class="s0">}</span>
+<a name="l87"><span class="ln">87   </span></a>    <span class="s0">}</span>
+<a name="l88"><span class="ln">88   </span></a>
+<a name="l89"><span class="ln">89   </span></a><span class="s0">}</span></pre>
+</body>
+</html>
