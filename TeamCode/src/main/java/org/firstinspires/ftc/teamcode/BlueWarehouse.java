@@ -24,9 +24,6 @@ public class BlueWarehouse extends LinearOpMode {
 
         DriveTrain driveTrain = new DriveTrain(telemetry, hardwareMap);
         ObjectGrab objectGrab = new ObjectGrab(telemetry, hardwareMap);
-        objectGrab.turnServo.setPosition(.6);
-
-
 
         //objectGrab.turnServo = hardwareMap.servo.get("turnServo");
 
@@ -54,8 +51,8 @@ public class BlueWarehouse extends LinearOpMode {
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
         waitForStart();
-        driveTrain.frontTargetPosition = 390;
-        driveTrain.backTargetPosition = 390;
+        driveTrain.frontTargetPosition = 0;
+        driveTrain.backTargetPosition = 0;
        /*switch (detector.getLocation()) {
             case LEFT:
                 // do stuff
@@ -70,16 +67,8 @@ public class BlueWarehouse extends LinearOpMode {
         //detector.camera.stopStreaming();
 
         // run until the end of the match (driver presses STOP)
+        driveTrain.move("side", -1500);
         driveTrain.move("straight", 3000);
-        driveTrain.frontTargetPosition = 0;
-        driveTrain.backTargetPosition = 0;
-        driveTrain.frontTwist.setTargetPosition(driveTrain.frontTargetPosition);
-        driveTrain.backTwist.setTargetPosition(driveTrain.backTargetPosition);
-        driveTrain.frontTwist.setMode(RUN_TO_POSITION);
-        driveTrain.backTwist.setMode(RUN_TO_POSITION);
-        driveTrain.holdPosition();
-        while(driveTrain.backTwist.isBusy() || driveTrain.frontTwist.isBusy()){};
-
         //driveTrain.move("side", 1500);
         //driveTrain.move("rotate", 30);
     }

@@ -30,7 +30,7 @@ public class BlueDuck extends LinearOpMode {
         driveTrain.brw = hardwareMap.dcMotor.get("brw");
 
         objectGrab.turnServo = hardwareMap.servo.get("turnServo");
-        objectGrab.upDownServo = hardwareMap.crservo.get("upDownServo");
+       // objectGrab.upDownS = hardwareMap.crservo.get("upDownServo");
         objectGrab.fingerServo = hardwareMap.crservo.get("fingerServo");
         objectGrab.duck = hardwareMap.crservo.get("duck");
         objectGrab.extend = hardwareMap.dcMotor.get("extend");

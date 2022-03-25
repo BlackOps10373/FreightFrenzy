@@ -6,11 +6,15 @@ import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.STOP_AND_RESET_ENC
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -20,17 +24,16 @@ import java.util.Arrays;
 
 public class DriveTrain {
     // Declarations of all hardware
-    Telemetry   telemetry;
-    DcMotor     lw;
-    DcMotor     rw;
-    DcMotor     blw;
-    DcMotor     brw;
-    DcMotor     frontTwist;
-    DcMotor     backTwist;
-    DcMotor     tread;
-    BNO055IMU   imu;
-    ColorRangeSensor frontColorSensor;
-    ColorRangeSensor backColorSensor;
+    Telemetry telemetry;
+    DcMotor lw;
+    DcMotor rw;
+    DcMotor blw;
+    DcMotor brw;
+    DcMotor frontTwist;
+    DcMotor backTwist;
+    CRServo treadLeft;
+    CRServo treadRight;
+    BNO055IMU imu;
 
     // Target Positions of frontTwist and backTwist
     int frontTargetPosition = 0;
@@ -56,56 +59,48 @@ public class DriveTrain {
     int windowSize = 3;
     double targetDegree = 0.0;
     double resetTargetDegree = 0.0;
-    int piecewiseWindow = 150;
+    int piecewiseWindow = 30;
     double piecewiseSpeed = 0.007517647057771725;
     double piecewiseMinTurn = 0.004;
-    double turnSpeed = 8;
+    double turnSpeed = 5;
+
+    // Lower moveTurnRatio means you turn more when moving (set between 0-1) (1 is 100% turn priority over moving)
+    double moveTurnRatio = 0.7;
+
+    double moveSpeed = (7.0 / 10);
+
 
     // Drive Train Constructor
     public DriveTrain(Telemetry t, HardwareMap hardwareMap) {
-        telemetry        = t;
-        lw               = hardwareMap.get(DcMotor.class, "lw");
-        rw               = hardwareMap.get(DcMotor.class, "rw");
+        telemetry = t;
+        lw = hardwareMap.get(DcMotor.class, "lw");
+        rw = hardwareMap.get(DcMotor.class, "rw");
         rw.setDirection(DcMotor.Direction.REVERSE);
-        blw              = hardwareMap.get(DcMotor.class, "blw");
-        brw              = hardwareMap.get(DcMotor.class, "brw");
-        brw.setDirection(DcMotor.Direction.REVERSE);
+        blw = hardwareMap.get(DcMotor.class, "blw");
+        brw = hardwareMap.get(DcMotor.class, "brw");
+        blw.setDirection(DcMotor.Direction.REVERSE);
         lw.setMode(RUN_WITHOUT_ENCODER);
         blw.setMode(RUN_WITHOUT_ENCODER);
         rw.setMode(RUN_WITHOUT_ENCODER);
         brw.setMode(RUN_WITHOUT_ENCODER);
 
 
-        frontTwist       = hardwareMap.get(DcMotor.class, "frontTwist");
-        frontTwist.setMode(STOP_AND_RESET_ENCODER);
-        backTwist        = hardwareMap.get(DcMotor.class, "backTwist");
-        backTwist.setDirection(DcMotor.Direction.REVERSE);
-        backTwist.setMode(STOP_AND_RESET_ENCODER);
-        tread            = hardwareMap.get(DcMotor.class, "tread");
-        tread.setMode(RUN_WITHOUT_ENCODER);
-        tread.setDirection(DcMotor.Direction.REVERSE);
-
-
-        imu              = hardwareMap.get(BNO055IMU.class,"imu");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.loggingEnabled = false;
         imu.initialize(parameters);
-        while(!imu.isGyroCalibrated()){
+        while (!imu.isGyroCalibrated()) {
             telemetry.addData("isCalibrating", "isCalibrating");
             telemetry.update();
         }
-        telemetry.update();
         targetDegree = getHeading();
         resetTargetDegree = targetDegree;
-
-        frontColorSensor = hardwareMap.get(ColorRangeSensor.class, "frontColorSensor");
-        backColorSensor  = hardwareMap.get(ColorRangeSensor.class, "backColorSensor");
     }
 
     //Move Function For Auto
-    public void move(String variation, int ticCount){
+    public void move(String variation, int ticCount) {
         int[] ticks = new int[4];
         lw.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rw.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -144,13 +139,13 @@ public class DriveTrain {
         blw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         brw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while(lw.isBusy() || blw.isBusy() || rw.isBusy() || brw.isBusy()){
-            holdPosition();
+        while (lw.isBusy() || rw.isBusy() || brw.isBusy()) {
+            //holdPosition();
             //telemetry.addData("rw", rw.getCurrentPosition());
             //telemetry.addData("lw", lw.getCurrentPosition());
             //telemetry.addData("brw", brw.getCurrentPosition());
             //telemetry.addData("blw", blw.getCurrentPosition());
-           // telemetry.update();
+            // telemetry.update();
 
             ticks[0] = Math.abs(lw.getTargetPosition() - lw.getCurrentPosition());
             ticks[1] = Math.abs(blw.getTargetPosition() - blw.getCurrentPosition());
@@ -158,26 +153,26 @@ public class DriveTrain {
             ticks[3] = Math.abs(rw.getTargetPosition() - rw.getCurrentPosition());
             Arrays.sort(ticks);
 
-            lwPower = (lw.getTargetPosition() - lw.getCurrentPosition()) * 1.0 / ticks[3];
-            blwPower = (blw.getTargetPosition() - blw.getCurrentPosition()) * 1.0 / ticks[3];
-            rwPower = (rw.getTargetPosition() - rw.getCurrentPosition()) * 1.0 / ticks[3];
-            brwPower = (brw.getTargetPosition() - brw.getCurrentPosition()) * 1.0 / ticks[3];
+            lwPower = (lw.getTargetPosition() - lw.getCurrentPosition()) * 1.0 / 2;
+            blwPower = (blw.getTargetPosition() - blw.getCurrentPosition()) * 1.0 / 2;
+            rwPower = (rw.getTargetPosition() - rw.getCurrentPosition()) * 1.0 / 2;
+            brwPower = (brw.getTargetPosition() - brw.getCurrentPosition()) * 1.0 / 2;
+            telemetry.addData("blw status", blw.getCurrentPosition());
+            telemetry.update();
 
-            gyroStraight();
+            //gyroStraight();
 
-            if(ticks[3] > 1000) {
+            if (ticks[3] > 1000) {
                 lw.setPower(lwPower / 3);
                 blw.setPower(blwPower / 3);
                 rw.setPower(rwPower / 3);
                 brw.setPower(brwPower / 3);
-            }
-            else if(ticks[3] < 500){
+            } else if (ticks[3] < 500) {
                 lw.setPower(lwPower / 8);
                 blw.setPower(blwPower / 8);
                 rw.setPower(rwPower / 8);
                 brw.setPower(brwPower / 8);
-            }
-            else {
+            } else {
                 lw.setPower(lwPower / 5);
                 blw.setPower(blwPower / 5);
                 rw.setPower(rwPower / 5);
@@ -190,165 +185,99 @@ public class DriveTrain {
         brw.setPower(0);
     }
 
-    //Barrier Function
-    public void rockCrawler(double trigger) {
-        if (forwardFacing) {
-            telemetry.addData("frontTwistDelay", frontTwistDelay);
-            telemetry.update();
-            frontTwistDelay++;
-            if (trigger > 0.2 && !firstRun && frontTwistDelay > 30) {
-                frontTargetPosition = 3270;
-                frontTwist.setTargetPosition(frontTargetPosition);
-                frontTwist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                frontTwist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                firstRun = true;
-                blackCount++;
-                isFlipping = true;
-                tread.setPower(0.5);
-                brw.setPower(0.33);
-                lw.setPower(0);
-                rw.setPower(0);
-                blw.setPower(0.33);
-            } else if ((frontTargetPosition - 50 <= frontTwist.getCurrentPosition()) &&
-                    (frontTwist.getCurrentPosition() <= frontTargetPosition + 50) && blackCount >= 1) {
-                backTargetPosition = 3270;
-                backTwist.setTargetPosition(backTargetPosition);
-                backTwist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backTwist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                forwardFacing = false;
-                frontTwistDelay = 0;
-                firstRun = false;
-                blackCount = 0;
-                isFlipping = false;
-                tread.setPower(0.5);
-                blw.setPower(0);
-                brw.setPower(0);
-                lw.setPower(0.33);
-                rw.setPower(0.33);
-            }
-        } else if (!forwardFacing) {
-            telemetry.addData("backTwistDelay", backTwistDelay);
-            telemetry.update();
-            backTwistDelay++;
-            if (trigger > 0.2 && !firstRun && backTwistDelay > 30) {
-                backTargetPosition = 390;
-                backTwist.setTargetPosition(backTargetPosition);
-                backTwist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backTwist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                firstRun = true;
-                blackCount++;
-                isFlipping = true;
-                tread.setPower(-0.5);
-                blw.setPower(0);
-                brw.setPower(0);
-                lw.setPower(-0.33);
-                rw.setPower(-0.33);
-            } else if ((backTargetPosition - 50 <= backTwist.getCurrentPosition()) && (backTwist.getCurrentPosition() <= backTargetPosition + 50) && blackCount >= 1) {
-                frontTargetPosition = 390;
-                frontTwist.setTargetPosition(frontTargetPosition);
-                frontTwist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                frontTwist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                forwardFacing = true;
-                backTwistDelay = 0;
-                firstRun = false;
-                blackCount = 0;
-                isFlipping = false;
-                tread.setPower(-0.5);
-                brw.setPower(-0.33);
-                lw.setPower(0);
-                rw.setPower(0);
-                blw.setPower(-0.33);
-            }
-        }
-    }
-
-    // Hold Axels in Place
-    public void holdPosition() {
-            if (!frontTwist.isBusy() && !backTwist.isBusy()) {
-                tread.setPower(0);
-                frontTwist.setPower(0);
-                backTwist.setPower(0);
-                frontTwist.setTargetPosition(frontTargetPosition);
-                backTwist.setTargetPosition(backTargetPosition);
-                frontTwist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backTwist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                frontTwist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                backTwist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            } else {
-                frontTwist.setPower(1);
-                backTwist.setPower(1);
-            }
-    }
-
-    public double degreeCalc(double degree){
+    public double degreeCalc(double degree) {
         double returnDegree = degree;
-        if(returnDegree < 0){
+        if (returnDegree < 0) {
             returnDegree = returnDegree + 360;
         }
 
-        if(returnDegree >= 360){
+        if (returnDegree >= 360) {
             returnDegree = returnDegree - 360;
         }
         return returnDegree;
 
     }
 
-    public double degreeCalc180(double degree){
+    public double degreeCalc180(double degree) {
         double returnDegree = degree;
-        if(returnDegree < -180){
+        if (returnDegree < -180) {
             returnDegree = returnDegree + 360;
-        }
-        else if(returnDegree >= 180){
+        } else if (returnDegree >= 180) {
             returnDegree = returnDegree - 360;
         }
         return returnDegree;
 
     }
 
-    public void turnPower(double amount){
+    public double greatest(double a, double b) {
+        // returns the greatest of two numbers
+        return a > b ? a : b;
+    }
+
+    public void turnPower(double amount) {
+        // (OLD, but still might be useful) The multiplication is for if it turns, it slows it down first (so if it was going max speed it can still turn (based on the ratio defined in moveTurnRatio)
+        /*
+        lwPower *= 1 - moveTurnRatio;
+        rwPower *= 1 - moveTurnRatio;
+        blwPower *= 1 - moveTurnRatio;
+        brwPower *= 1 - moveTurnRatio;
+        // moveTurnRatio is also used in the TelOp class
+        */
+
+
         lwPower += amount;
         rwPower -= amount;
         blwPower += amount;
         brwPower -= amount;
+
+        // Preserves the ratios of each wheel, but changes all magnitudes to be 1 or less
+        double a = Math.abs(greatest(greatest(Math.abs(lwPower), Math.abs(rwPower)), greatest(Math.abs(blwPower), Math.abs(brwPower))));
+        if (a > 1) {
+            lwPower /= a;
+            rwPower /= a;
+            blwPower /= a;
+            brwPower /= a;
+        }
     }
 
     public void gyroStraight() {
         targetDegree = degreeCalc180(targetDegree);
 
         if (degreeCalc(getHeading() - targetDegree) > windowSize + piecewiseWindow && degreeCalc(getHeading() - targetDegree) <= 180) {
-            if ((Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)) >= minTurn) {
-                turnPower(-( Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)));
-            }
-            else{
+            /*if ((Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)) >= minTurn) {
+                turnPower(-(Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)));
+            } else {
                 turnPower(-minTurn);
-            }
+            }*/
+            turnPower(-.5);
+
         }
 
         if (degreeCalc(getHeading() - targetDegree) < 360 - windowSize - piecewiseWindow && degreeCalc(getHeading() - targetDegree) > 180) {
-            if ((Math.pow((360 - degreeCalc(getHeading() - targetDegree)) * adjSpeed, 2) >= minTurn)) {
+            /*if ((Math.pow((360 - degreeCalc(getHeading() - targetDegree)) * adjSpeed, 2) >= minTurn)) {
                 turnPower(Math.pow((360 - degreeCalc(getHeading() - targetDegree)) * adjSpeed, 2));
-            }
-            else {
+            } else {
                 turnPower(minTurn);
-            }
+            }*/
+            turnPower(.5);
         }
         // Second graph function (piecewise) the one that is closer to 0 degrees
         if (degreeCalc(getHeading() - targetDegree) > windowSize && degreeCalc(getHeading() - targetDegree) <= piecewiseWindow + windowSize) {
-            if ((Math.sqrt(degreeCalc(getHeading() - targetDegree) * piecewiseSpeed)) >= minTurn) {
+            /*if ((Math.sqrt(degreeCalc(getHeading() - targetDegree) * piecewiseSpeed)) >= minTurn) {
                 turnPower(-(Math.sqrt(degreeCalc(getHeading() - targetDegree) * piecewiseSpeed)));
-            }
-            else {
+            } else {
                 turnPower(-minTurn);
-            }
+            }*/
+            turnPower(-.1);
         }
 
         if (degreeCalc(getHeading() - targetDegree) < 360 - windowSize && degreeCalc(getHeading() - targetDegree) > 360 - piecewiseWindow - windowSize) {
-            if (Math.sqrt((360 - degreeCalc(getHeading() - targetDegree)) * piecewiseSpeed) >= minTurn) {
+            /*if (Math.sqrt((360 - degreeCalc(getHeading() - targetDegree)) * piecewiseSpeed) >= minTurn) {
                 turnPower((Math.sqrt((360 - degreeCalc(getHeading() - targetDegree)) * piecewiseSpeed) + piecewiseMinTurn));
-            }
-            else {
+            } else {
                 turnPower(minTurn);
-            }
+            }*/
+            turnPower(.1);
         }
     }
 
@@ -356,9 +285,4 @@ public class DriveTrain {
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return -angles.firstAngle;
     }
-
-
-
-
-
 }

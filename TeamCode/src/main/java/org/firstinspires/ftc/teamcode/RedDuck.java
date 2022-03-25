@@ -50,7 +50,7 @@ public class RedDuck extends LinearOpMode {
         waitForStart();
         driveTrain.frontTargetPosition = 390;
         driveTrain.backTargetPosition = 390;
-        driveTrain.holdPosition();
+        //driveTrain.holdPosition();
 
         detector.camera.stopStreaming();
         // run until the end of the match (driver presses STOP)

@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "TelOpBlue", group = "TeleOp")
-public class TelOpBlue extends LinearOpMode {
+@TeleOp(name = "TelOpRed", group = "TeleOp")
+public class TelOpRed extends LinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -51,10 +51,10 @@ public class TelOpBlue extends LinearOpMode {
 
 
             //Set Wheel Powers Before Gyro Adjust
-            driveTrain.lwPower  = (gamepad1.left_stick_y + gamepad1.left_stick_x) * driveTrain.moveSpeed;
-            driveTrain.rwPower  = (gamepad1.left_stick_y - gamepad1.left_stick_x) * driveTrain.moveSpeed;
-            driveTrain.blwPower = (gamepad1.left_stick_y - gamepad1.left_stick_x) * driveTrain.moveSpeed;
-            driveTrain.brwPower = (gamepad1.left_stick_y + gamepad1.left_stick_x) * driveTrain.moveSpeed;
+            driveTrain.lwPower  = (gamepad1.left_stick_y - gamepad1.left_stick_x) * -driveTrain.moveSpeed;
+            driveTrain.rwPower  = (gamepad1.left_stick_y + gamepad1.left_stick_x) * -driveTrain.moveSpeed;
+            driveTrain.blwPower = (gamepad1.left_stick_y + gamepad1.left_stick_x) * -driveTrain.moveSpeed;
+            driveTrain.brwPower = (gamepad1.left_stick_y - gamepad1.left_stick_x) * -driveTrain.moveSpeed;
 
             //Gyro Reset
             if (gamepad1.x)
@@ -62,13 +62,13 @@ public class TelOpBlue extends LinearOpMode {
 
             //Left 90 Degree
             if (gamepad1.y)
-                driveTrain.targetDegree = driveTrain.resetTargetDegree + 90;
+                driveTrain.targetDegree = driveTrain.resetTargetDegree - 90;
 
             //GYRO STRAIGHT
             driveTrain.targetDegree += (gamepad1.right_stick_x * driveTrain.turnSpeed)
                     * ( ( driveTrain.moveSpeed - (( (Math.abs(driveTrain.lwPower) > Math.abs(driveTrain.rwPower))
-                    ? Math.abs(driveTrain.lwPower) * driveTrain.moveTurnRatio
-                    : Math.abs(driveTrain.rwPower) * driveTrain.moveTurnRatio))) / driveTrain.moveSpeed );
+                            ? Math.abs(driveTrain.lwPower) * driveTrain.moveTurnRatio
+                                    : Math.abs(driveTrain.rwPower) * driveTrain.moveTurnRatio))) / driveTrain.moveSpeed);
             driveTrain.gyroStraight();
             telemetry.addData("heading", driveTrain.getHeading());
             telemetry.addData("targetDegree", driveTrain.targetDegree);
@@ -82,12 +82,12 @@ public class TelOpBlue extends LinearOpMode {
 
             // Object Grab -----------------------------------------------------------------------
             //EXTEND ARM
-            if (gamepad2.right_stick_y < 0 && objectGrab.extend.getCurrentPosition() >= 3300)
+            if (gamepad2.left_stick_y < 0 && objectGrab.extend.getCurrentPosition() >= 3300)
                 objectGrab.extend.setPower(0);
-            else if (gamepad2.right_stick_y > 0 && objectGrab.extend.getCurrentPosition() <= 100)
+            else if (gamepad2.left_stick_y > 0 && objectGrab.extend.getCurrentPosition() <= 100)
                 objectGrab.extend.setPower(0);
             else
-                objectGrab.extend.setPower(-gamepad2.right_stick_y);
+                objectGrab.extend.setPower(-gamepad2.left_stick_y * .75);
 
             //MAGNET DROPPER
             if (gamepad2.a && objectGrab.fingerOut && objectGrab.firstPressA) {
@@ -101,10 +101,7 @@ public class TelOpBlue extends LinearOpMode {
                 objectGrab.fingerOut = false;
                 objectGrab.firstPressA = false;
             }
-            else if (!gamepad2.a)
-                objectGrab.firstPressA = true;
-
-            if (gamepad2.a && !objectGrab.fingerOut && objectGrab.firstPressA) {
+            else if (gamepad2.a && !objectGrab.fingerOut && objectGrab.firstPressA) {
                 ElapsedTime fingerIn = new ElapsedTime();
                 fingerIn.startTime();
                 objectGrab.fingerServo.setPower(-1);
@@ -119,20 +116,24 @@ public class TelOpBlue extends LinearOpMode {
                 objectGrab.firstPressA = true;
 
             //TURN ARM
-            objectGrab.turnServo.setPosition(objectGrab.turnServo.getPosition() + gamepad2.left_stick_x * .02);
+            objectGrab.turnServo.setPosition(objectGrab.turnServo.getPosition() + gamepad2.left_stick_x * .015);
             if (gamepad2.y)
                 objectGrab.turnServo.setPosition(.5);
             if (gamepad2.x)
                 objectGrab.turnServo.setPosition(0);
 
             //UP AND DOWN ARM
-            objectGrab.upDownMotor.setPower(-gamepad2.left_stick_y);
+            objectGrab.upDownMotor.setPower(-gamepad2.right_stick_y * .5);
 
             //DUCK SPINNER
-            if(gamepad2.dpad_up)
+           if(gamepad2.dpad_up)
                 objectGrab.duck.setPower(.5);
             if(gamepad2.dpad_down)
+                objectGrab.duck.setPower(-.5);
+            if(gamepad2.dpad_right)
                 objectGrab.duck.setPower(0);
         }
+
+
     }
 }
