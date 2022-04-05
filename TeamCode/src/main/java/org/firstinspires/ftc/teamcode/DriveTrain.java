@@ -217,6 +217,7 @@ public class DriveTrain {
     public double greatest(double a, double b) {
         // returns the greatest of two numbers
         return a > b ? a : b;
+        // A warning says this does the same thing as Math.max    Maybe we should use that instead
     }
 
     public void turnPower(double amount) {
@@ -234,6 +235,7 @@ public class DriveTrain {
         rwPower -= amount;
         blwPower += amount;
         brwPower -= amount;
+
 
         // Preserves the ratios of each wheel, but changes all magnitudes to be 1 or less
         double a = Math.abs(greatest(greatest(Math.abs(lwPower), Math.abs(rwPower)), greatest(Math.abs(blwPower), Math.abs(brwPower))));
