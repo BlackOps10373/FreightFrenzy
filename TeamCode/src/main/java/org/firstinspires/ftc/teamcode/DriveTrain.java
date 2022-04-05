@@ -54,13 +54,13 @@ public class DriveTrain {
     double brwPower;
 
     // Variables for Gyro
-    double adjSpeed = 0.03;
+    double adjSpeed = 0.03; // Mostly unused, but may still be needed
     double minTurn = 0.01;
     int windowSize = 3;
     double targetDegree = 0.0;
     double resetTargetDegree = 0.0;
-    int piecewiseWindow = 30;
-    double piecewiseSpeed = 0.007517647057771725;
+    int piecewiseWindow = 179; // 179 to essentially disable it
+    double piecewiseSpeed = 0.007517647057771725; // This one is the main speed it uses to get to the target degree
     double piecewiseMinTurn = 0.004;
     double turnSpeed = 5;
 
@@ -189,10 +189,13 @@ public class DriveTrain {
         double returnDegree = degree;
         if (returnDegree < 0) {
             returnDegree = returnDegree + 360;
+
+            return degreeCalc(returnDegree);
         }
 
         if (returnDegree >= 360) {
             returnDegree = returnDegree - 360;
+            return degreeCalc(returnDegree);
         }
         return returnDegree;
 
@@ -202,8 +205,10 @@ public class DriveTrain {
         double returnDegree = degree;
         if (returnDegree < -180) {
             returnDegree = returnDegree + 360;
+            return degreeCalc180(returnDegree);
         } else if (returnDegree >= 180) {
             returnDegree = returnDegree - 360;
+            return degreeCalc180(returnDegree);
         }
         return returnDegree;
 
@@ -243,41 +248,41 @@ public class DriveTrain {
     public void gyroStraight() {
         targetDegree = degreeCalc180(targetDegree);
 
+        // function farther from 0 (targetDegree)
         if (degreeCalc(getHeading() - targetDegree) > windowSize + piecewiseWindow && degreeCalc(getHeading() - targetDegree) <= 180) {
-            /*if ((Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)) >= minTurn) {
+            if ((Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)) >= minTurn) {
                 turnPower(-(Math.pow(degreeCalc(getHeading() - targetDegree) * adjSpeed, 2)));
             } else {
                 turnPower(-minTurn);
-            }*/
-            turnPower(-.5);
+            }
+            //turnPower(-.5);
 
         }
-
         if (degreeCalc(getHeading() - targetDegree) < 360 - windowSize - piecewiseWindow && degreeCalc(getHeading() - targetDegree) > 180) {
-            /*if ((Math.pow((360 - degreeCalc(getHeading() - targetDegree)) * adjSpeed, 2) >= minTurn)) {
+            if ((Math.pow((360 - degreeCalc(getHeading() - targetDegree)) * adjSpeed, 2) >= minTurn)) {
                 turnPower(Math.pow((360 - degreeCalc(getHeading() - targetDegree)) * adjSpeed, 2));
             } else {
                 turnPower(minTurn);
-            }*/
-            turnPower(.5);
+            }
+            //turnPower(.5);
         }
-        // Second graph function (piecewise) the one that is closer to 0 degrees
+
+        // (piecewise) the one that is closer to 0 degrees (targetDegree)
         if (degreeCalc(getHeading() - targetDegree) > windowSize && degreeCalc(getHeading() - targetDegree) <= piecewiseWindow + windowSize) {
-            /*if ((Math.sqrt(degreeCalc(getHeading() - targetDegree) * piecewiseSpeed)) >= minTurn) {
+            if ((Math.sqrt(degreeCalc(getHeading() - targetDegree) * piecewiseSpeed)) >= minTurn) {
                 turnPower(-(Math.sqrt(degreeCalc(getHeading() - targetDegree) * piecewiseSpeed)));
             } else {
                 turnPower(-minTurn);
-            }*/
-            turnPower(-.1);
+            }
+            //turnPower(-.1);
         }
-
         if (degreeCalc(getHeading() - targetDegree) < 360 - windowSize && degreeCalc(getHeading() - targetDegree) > 360 - piecewiseWindow - windowSize) {
-            /*if (Math.sqrt((360 - degreeCalc(getHeading() - targetDegree)) * piecewiseSpeed) >= minTurn) {
+            if (Math.sqrt((360 - degreeCalc(getHeading() - targetDegree)) * piecewiseSpeed) >= minTurn) {
                 turnPower((Math.sqrt((360 - degreeCalc(getHeading() - targetDegree)) * piecewiseSpeed) + piecewiseMinTurn));
             } else {
                 turnPower(minTurn);
-            }*/
-            turnPower(.1);
+            }
+            //turnPower(.1);
         }
     }
 
