@@ -20,92 +20,110 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
 
         boolean turnGripped = false;
         double rAngleDiff = 0;
+        int armTargetPosition = 0;
+        boolean useSafeArmTarget = false;
+        int safeArmTargetPosition = 0;
+        int rotateTargetPosition = 0;
+        boolean useSafeRotate = false;
+        int safeRotateTargetPosition = 0;
+        int inOutTargetDegree = 0;
 
         waitForStart();
         // Run Until Match is Over ---------------------------------------------------------------
         while (opModeIsActive()) {
-            int armTargetPosition = 0;
-            double driveTurn = gamepad1.right_stick_x;
-            double XCoordinate = gamepad1.left_stick_x;
-            double YCoordinate = -gamepad1.left_stick_y;
-
-            double gamepadHypot = Range.clip(Math.hypot(XCoordinate, YCoordinate), 0, 1);
-            double gamepadDegree = -(Math.toDegrees(Math.atan2(YCoordinate, XCoordinate)) - 90);
-            gamepadDegree = driveTrain.degreeCalc180(gamepadDegree);
-
-            telemetry.addData("gamepadDegree", gamepadDegree);
-            //the inverse tangent of opposite/adjacent gives us our gamepad degree
-            double robotDegree = driveTrain.getHeading();
-            telemetry.addData("robotDegree", robotDegree);
-            //gives us the angle our robot is at
-            double movementDegree = gamepadDegree - robotDegree;
-            telemetry.addData("movementDegree", movementDegree);
-
-            //adjust the angle we need to move at by finding needed movement degree based on gamepad and robot angles
-            double gamepadXControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;
-            telemetry.addData("X", gamepadXControl);
-            //by finding the adjacent side, we can get our needed x value to power our motors
-            double gamepadYControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;
-            telemetry.addData("Y", gamepadYControl);
-            //by finding the opposite side, we can get our needed y value to power our motors
-            telemetry.update();
-
-            // The rotation controls that are similar to flick-stick style controls
-            // It changes the targetDegree for the gyro straight
-            /*
-            double rXCoordinate = gamepad1.right_stick_x;
-            double rYCoordinate = -gamepad1.right_stick_y;
-
-            double rgamepadHypot = Range.clip(Math.hypot(rXCoordinate, rYCoordinate), 0, 1);
-            if(rgamepadHypot > 0.99) {
-                double rgamepadDegree = -(Math.toDegrees(Math.atan2(rYCoordinate, rXCoordinate)) - 90);
-                rgamepadDegree = driveTrain.degreeCalc180(rgamepadDegree);
-                if(!turnGripped) {
-                    // Activates each time you move the stick to the outer ring (outer ring gripped)
-                    turnGripped = true;
+            //DRIVE
+            driveTrain.move(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 
-                    rAngleDiff = rgamepadDegree - driveTrain.targetDegree;
-                }
+            if(objectGrab.touchSensor.isPressed()) {
+                objectGrab.leftGrab.setPower(-0.5);
+                objectGrab.rightGrab.setPower(0.01);
 
-                driveTrain.targetDegree = driveTrain.degreeCalc180(rgamepadDegree - rAngleDiff);
+                armTargetPosition = 5400;
 
-                telemetry.addData("rgamepadDegree", rgamepadDegree);
+                useSafeRotate = true;
+                safeRotateTargetPosition = 3000;
             }
-            else turnGripped = false;
 
 
-            //GYRO STRAIGHT
+            if(gamepad2.a || gamepad1.a) {
+                useSafeArmTarget = true;
+                safeArmTargetPosition = 0;
+                objectGrab.leftGrab.setPower(-1);
+                objectGrab.rightGrab.setPower(1);
+            } else {
+                if(!objectGrab.touchSensor.isPressed())
+                {
+                    useSafeArmTarget = true;
+                    safeArmTargetPosition = 1000;
+                    objectGrab.rightGrab.setPower(0);
+                    objectGrab.leftGrab.setPower(-0);
+                }
+            }
+            //SPIT OUT
+            if(gamepad2.x || gamepad1.x){
+                objectGrab.leftGrab.setPower(1);
+                objectGrab.rightGrab.setPower(-1);
+            }
 
-            driveTrain.rwPower = gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl);
-            driveTrain.brwPower = gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl);
-            driveTrain.lwPower = gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl);
-            driveTrain.blwPower = gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl);
+            if(gamepad2.y || gamepad1.y){
+                objectGrab.rightGrab.setPower(0);
+                objectGrab.leftGrab.setPower(-0);
 
-            driveTrain.gyroStraight();
+                useSafeRotate = true;
+                safeRotateTargetPosition = 0;
+            }
 
-            driveTrain.rw.setPower(driveTrain.rwPower);
-            driveTrain.brw.setPower(driveTrain.brwPower);
-            driveTrain.lw.setPower(driveTrain.lwPower);
-            driveTrain.blw.setPower(driveTrain.blwPower);
-            */
 
-            driveTrain.rw.setPower(gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl) + driveTurn);
-            driveTrain.brw.setPower(gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl) + driveTurn);
-            driveTrain.lw.setPower(gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl) - driveTurn);
-            driveTrain.blw.setPower(gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl) - driveTurn);
+            telemetry.addData("Rotation", rotateTargetPosition);
+            telemetry.addData("touch", objectGrab.touchSensor.isPressed());
 
-            /*frontRight.setPower(driveVertical - driveHorizontal + driveTurn);
-            backRight.setPower(driveVertical + driveHorizontal + driveTurn);
-            frontLeft.setPower(driveVertical + driveHorizontal - driveTurn);
-            backLeft.setPower(driveVertical - driveHorizontal - driveTurn);*/
 
-            /*armTargetPosition += (int)(gamepad2.left_stick_y * 10);
-            armUpDown(armTargetPosition);
+            // Safe versions of variables logic (use the safe ones to ensure the arm does not snap)
+            if(useSafeRotate)
+            {
+                if(objectGrab.upDownMotor.getCurrentPosition() >= 2500) {
+                    rotateTargetPosition = safeRotateTargetPosition;
+                    useSafeRotate = false;
+                }
+                else
+                {
+                    armTargetPosition = 5400;
+                }
+            }
+
+            if(useSafeArmTarget)
+            {
+                if ((objectGrab.rotate.getCurrentPosition() > -300 && objectGrab.rotate.getCurrentPosition() < 300)) {
+                    armTargetPosition = safeArmTargetPosition;
+                    useSafeArmTarget = false;
+                }
+                else
+                {
+                    useSafeRotate = true;
+                    safeRotateTargetPosition = 0;
+                }
+            }
+
+
+
+            if(objectGrab.upDownMotor.getCurrentPosition() <1500 )
+
+            armTargetPosition -= (int)(gamepad2.left_stick_y * 15 * 5);
+            telemetry.addData("position", armTargetPosition);
+            telemetry.update();
+            if(armTargetPosition < 0)
+                armTargetPosition = 0;
+            if(armTargetPosition > 5500)
+                armTargetPosition = 5500;
             objectGrab.upDownMotor.setTargetPosition(armTargetPosition);
             objectGrab.upDownMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            objectGrab.upDownMotor.setPower(.5);*/
+            objectGrab.upDownMotor.setPower(.75);
 
+            rotateTargetPosition += (int)(gamepad2.right_stick_x * 50);
+            objectGrab.rotate.setTargetPosition(rotateTargetPosition);
+            objectGrab.rotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            objectGrab.rotate.setPower(1);
         }
     }
 }
