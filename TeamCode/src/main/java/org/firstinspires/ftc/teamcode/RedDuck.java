@@ -25,7 +25,7 @@ public class RedDuck extends LinearOpMode {
         DriveTrain driveTrain = new DriveTrain(telemetry, hardwareMap);
         ObjectGrab objectGrab = new ObjectGrab(telemetry, hardwareMap);
 
-
+/*
         ObjectDetector detector = new ObjectDetector(telemetry);
         detector.logiCam = hardwareMap.get(WebcamName.class, "logiCam");
         int cameraMonitorViewId = hardwareMap.appContext
@@ -46,31 +46,43 @@ public class RedDuck extends LinearOpMode {
 
             }
         });
+
+ */
         //driveTrain.start();
         waitForStart();
         driveTrain.frontTargetPosition = 390;
         driveTrain.backTargetPosition = 390;
         //driveTrain.holdPosition();
 
-        detector.camera.stopStreaming();
+            //detector.camera.stopStreaming();
         // run until the end of the match (driver presses STOP)
 
-        driveTrain.move("side", 1240);
+        //driveTrain.move("side", 1240);
+        /*
         switch (detector.getLocation()) {
             case LEFT:
-                objectGrab.BlockPlace(1500, -1, -1);
+                //objectGrab.BlockPlace(1500, -1, -1);
                 break;
             case RIGHT:
-                objectGrab.BlockPlace(0, 0, -1);
+                //objectGrab.BlockPlace(0, 0, -1);
                 break;
             case MIDDLE:
-                objectGrab.BlockPlace(2000, 1, -1);
+                //objectGrab.BlockPlace(2000, 1, -1);
                 break;
         }
+        */
+
+        /*
         driveTrain.move("side", -1260);
         driveTrain.move("straight", 5000);
         driveTrain.move("side", 1500);
         driveTrain.move("rotate", 30);
+         */
+
+        driveTrain.moveAmount(0, 1, 0, 1000);
+        driveTrain.moveAmount(1, 0, 0, 1000);
+
+
 
         //driveTrain.threadRun = false;
         //ARM CODE HERE

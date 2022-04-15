@@ -111,6 +111,7 @@ public class TelOpBlue extends LinearOpMode {
                 while (fingerIn.milliseconds() < 1800) {
                     objectGrab.fingerServo.setPower(-1);
                 }
+
                 objectGrab.fingerServo.setPower(0);
                 objectGrab.fingerOut = true;
                 objectGrab.firstPressA = false;

@@ -28,21 +28,27 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
         int safeRotateTargetPosition = 0;
         int inOutTargetDegree = 0;
 
+        boolean simulateTouchSensor = false;
+
         waitForStart();
         // Run Until Match is Over ---------------------------------------------------------------
         while (opModeIsActive()) {
             //DRIVE
             driveTrain.move(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
+            if(gamepad1.dpad_left)
+                simulateTouchSensor = true;
+            if(gamepad1.dpad_down)
+                simulateTouchSensor = false;
 
-            if(objectGrab.touchSensor.isPressed()) {
+            if(objectGrab.touchSensor.isPressed() || simulateTouchSensor) {
                 objectGrab.leftGrab.setPower(-0.5);
                 objectGrab.rightGrab.setPower(0.01);
 
                 armTargetPosition = 5400;
 
                 useSafeRotate = true;
-                safeRotateTargetPosition = 3000;
+                safeRotateTargetPosition = 5100;
             }
 
 
@@ -52,7 +58,7 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
                 objectGrab.leftGrab.setPower(-1);
                 objectGrab.rightGrab.setPower(1);
             } else {
-                if(!objectGrab.touchSensor.isPressed())
+                if(!(objectGrab.touchSensor.isPressed() || simulateTouchSensor))
                 {
                     useSafeArmTarget = true;
                     safeArmTargetPosition = 1000;
@@ -121,6 +127,10 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
             objectGrab.upDownMotor.setPower(.75);
 
             rotateTargetPosition += (int)(gamepad2.right_stick_x * 50);
+            if(rotateTargetPosition < - 5000)
+                rotateTargetPosition = -5000;
+            if(rotateTargetPosition > 5000)
+                rotateTargetPosition = 5000;
             objectGrab.rotate.setTargetPosition(rotateTargetPosition);
             objectGrab.rotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             objectGrab.rotate.setPower(1);
