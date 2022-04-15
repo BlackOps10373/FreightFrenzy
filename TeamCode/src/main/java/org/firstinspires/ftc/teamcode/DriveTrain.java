@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -52,6 +53,7 @@ public class DriveTrain {
     double rwPower;
     double blwPower;
     double brwPower;
+    double speedAdjust = .5;
 
     // Variables for Gyro
     double adjSpeed = 0.03; // Mostly unused, but may still be needed
@@ -79,6 +81,7 @@ public class DriveTrain {
         blw = hardwareMap.get(DcMotor.class, "blw");
         brw = hardwareMap.get(DcMotor.class, "brw");
         blw.setDirection(DcMotor.Direction.REVERSE);
+        brw.setDirection(DcMotorSimple.Direction.REVERSE);
         lw.setMode(RUN_WITHOUT_ENCODER);
         blw.setMode(RUN_WITHOUT_ENCODER);
         rw.setMode(RUN_WITHOUT_ENCODER);
@@ -223,7 +226,7 @@ public class DriveTrain {
     public void turnPower(double amount) {
         // (OLD, but still might be useful) The multiplication is for if it turns, it slows it down first (so if it was going max speed it can still turn (based on the ratio defined in moveTurnRatio)
         /*
-        lwPower *= 1 - moveTurnRatio;
+        lwPower *= 1 - f;
         rwPower *= 1 - moveTurnRatio;
         blwPower *= 1 - moveTurnRatio;
         brwPower *= 1 - moveTurnRatio;
@@ -291,5 +294,55 @@ public class DriveTrain {
     public double getHeading() {
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return -angles.firstAngle;
+    }
+
+    public void move(double YComponent, double XComponent, double Rotate) {
+        double driveTurn = -Rotate;
+        double XCoordinate = XComponent;
+        double YCoordinate = -YComponent;
+
+        double gamepadHypot = Range.clip(Math.hypot(XCoordinate, YCoordinate), 0, 1);
+        double gamepadDegree = -(Math.toDegrees(Math.atan2(YCoordinate, XCoordinate)) - 90);
+        gamepadDegree = degreeCalc180(gamepadDegree);
+        //the inverse tangent of opposite/adjacent gives us our gamepad degree
+        double robotDegree = getHeading();
+        //gives us the angle our robot is at
+        double movementDegree = gamepadDegree - robotDegree;
+
+        //adjust the angle we need to move at by finding needed movement degree based on gamepad and robot angles
+        double gamepadXControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;
+        //by finding the adjacent side, we can get our needed x value to power our motors
+        double gamepadYControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;
+        //by finding the opposite side, we can get our needed y value to power our motors
+
+        rw.setPower((gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl) + driveTurn) * speedAdjust);
+        brw.setPower((gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl) + driveTurn) * speedAdjust);
+        lw.setPower((gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl) - driveTurn) * speedAdjust);
+        blw.setPower((gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl) - driveTurn) * speedAdjust);
+    }
+    public void moveAmount(double YComponent, double XComponent, double Rotate, double dist)
+    {
+        // If you want more precise control over movement, use the normal move function in your own while loop
+
+        // The distance in not in any established units
+        double distanceTraveled = 0;
+        int startTicksLw = lw.getCurrentPosition();
+        int startTicksRw = rw.getCurrentPosition();
+        int startTicksBlw = blw.getCurrentPosition();
+        int startTicksBrw = brw.getCurrentPosition();
+        while(distanceTraveled < dist)
+        {
+            double speedMultiplier = (dist - distanceTraveled);
+            speedMultiplier *= 0.003; // Lower value causes slowdown to happen sooner
+            speedMultiplier *= speedMultiplier;
+            speedMultiplier *= speedMultiplier;
+            speedMultiplier += 0.8; // min speed the quadratic approaches
+            if (speedMultiplier > 1)
+                speedMultiplier = 1;
+            move(YComponent * speedMultiplier, XComponent * speedMultiplier, Rotate);
+            int forward = (lw.getCurrentPosition() - startTicksLw) + (rw.getCurrentPosition() - startTicksRw) + (blw.getCurrentPosition() - startTicksBlw) + (blw.getCurrentPosition() - startTicksBlw);
+            int Right = (-(lw.getCurrentPosition() - startTicksLw) + (rw.getCurrentPosition() - startTicksRw) - (blw.getCurrentPosition() - startTicksBlw) + (brw.getCurrentPosition() - startTicksBrw));
+            distanceTraveled = Math.sqrt((forward * forward) + (Right * Right));
+        }
     }
 }
