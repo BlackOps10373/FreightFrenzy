@@ -53,12 +53,15 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
                 switch(armPositionSteps) {
                     case 0:
                         objectGrab.armTargetPosition = 5400;
+                        objectGrab.rotateTargetPosition = 5000;
                         break;
                     case 1:
                         objectGrab.armTargetPosition = 3300;
+                        objectGrab.rotateTargetPosition = 5000;
                         break;
                     case 2:
                         objectGrab.armTargetPosition = 2500;
+                        objectGrab.rotateTargetPosition = 5000;
                         break;
                 }
                 useSafeRotate = true;
@@ -66,67 +69,26 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
             }
 
 
-            if(gamepad2.a || gamepad1.a) {
-                useSafeArmTarget = true;
-                safeArmTargetPosition = 0;
-                objectGrab.leftGrab.setPower(-1);
-                objectGrab.rightGrab.setPower(1);
-            } else {
-                if(!(objectGrab.touchSensor.isPressed() || simulateTouchSensor))
-                {
-                    objectGrab.armTargetPosition = 3000;
-                    useSafeArmTarget = true;
-                    safeArmTargetPosition = 1000;
-                    objectGrab.rightGrab.setPower(0);
-                    objectGrab.leftGrab.setPower(-0);
-                }
-            }
+
             //SPIT OUT
             if(gamepad2.x || gamepad1.x){
-                objectGrab.leftGrab.setPower(1);
-                objectGrab.rightGrab.setPower(-1);
+                objectGrab.leftGrab.setPower(-1);
+                objectGrab.rightGrab.setPower(1);
             }
 
             if(gamepad2.y || gamepad1.y){
                 objectGrab.rightGrab.setPower(0);
                 objectGrab.leftGrab.setPower(-0);
-
-                useSafeRotate = true;
-                safeRotateTargetPosition = 0;
             }
 
 
             telemetry.addData("Rotation", objectGrab.rotateTargetPosition);
             telemetry.addData("touch", objectGrab.touchSensor.isPressed());
 
-
-            // Safe versions of variables logic (use the safe ones to ensure the arm does not snap)
-            if(useSafeRotate)
-            {
-                if(objectGrab.upDownMotor.getCurrentPosition() >= 2500) {
-                    objectGrab.rotateTargetPosition = safeRotateTargetPosition;
-                    useSafeRotate = false;
-                }
-                else
-                {
-                    objectGrab.armTargetPosition = 5400;
-                }
-            }
-            if(useSafeArmTarget)
-            {
-                if ((objectGrab.rotate.getCurrentPosition() > -300 && objectGrab.rotate.getCurrentPosition() < 300)) {
-                    objectGrab.armTargetPosition = safeArmTargetPosition;
-                    useSafeArmTarget = false;
-                }
-                else
-                {
-                    useSafeRotate = true;
-                    safeRotateTargetPosition = 0;
-                }
-            }
-
-            //player controlled movement
-            objectGrab.armMovement((int)(gamepad2.left_stick_y * 75), (int)(gamepad2.right_stick_x * 50));
+            if(objectGrab.upDownMotor.getCurrentPosition() < 1400 && (objectGrab.rotate.getCurrentPosition() > -2000 && objectGrab.rotate.getCurrentPosition() < 2000))
+                objectGrab.armMovement((int)(gamepad2.left_stick_y * 75), 0);
+            else
+                objectGrab.armMovement((int)(gamepad2.left_stick_y * 75), (int)(gamepad2.right_stick_x * 50));
 
             //Setting the Arms to the right encoder Marks
         }
