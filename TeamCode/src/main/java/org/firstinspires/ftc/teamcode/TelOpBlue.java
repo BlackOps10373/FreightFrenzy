@@ -39,20 +39,20 @@ public class TelOpBlue extends LinearOpMode {
             if (gamepad1.left_trigger > 0.2)
                 //driveTrain.rockCrawler(gamepad1.a);
 
-            //Adjustments to Axles if Needed
-            if (gamepad1.dpad_up)
-                driveTrain.backTargetPosition += 50;
+                //Adjustments to Axles if Needed
+                if (gamepad1.dpad_up)
+                    driveTrain.backTargetPosition += 50;
             if (gamepad1.dpad_down)
                 driveTrain.backTargetPosition -= 50;
-            if(gamepad1.dpad_left)
+            if (gamepad1.dpad_left)
                 driveTrain.frontTargetPosition -= 50;
-            if(gamepad1.dpad_right)
+            if (gamepad1.dpad_right)
                 driveTrain.frontTargetPosition += 50;
 
 
             //Set Wheel Powers Before Gyro Adjust
-            driveTrain.lwPower  = (gamepad1.left_stick_y + gamepad1.left_stick_x) * driveTrain.moveSpeed;
-            driveTrain.rwPower  = (gamepad1.left_stick_y - gamepad1.left_stick_x) * driveTrain.moveSpeed;
+            driveTrain.lwPower = (gamepad1.left_stick_y + gamepad1.left_stick_x) * driveTrain.moveSpeed;
+            driveTrain.rwPower = (gamepad1.left_stick_y - gamepad1.left_stick_x) * driveTrain.moveSpeed;
             driveTrain.blwPower = (gamepad1.left_stick_y - gamepad1.left_stick_x) * driveTrain.moveSpeed;
             driveTrain.brwPower = (gamepad1.left_stick_y + gamepad1.left_stick_x) * driveTrain.moveSpeed;
 
@@ -66,9 +66,9 @@ public class TelOpBlue extends LinearOpMode {
 
             //GYRO STRAIGHT
             driveTrain.targetDegree += (gamepad1.right_stick_x * driveTrain.turnSpeed)
-                    * ( ( driveTrain.moveSpeed - (( (Math.abs(driveTrain.lwPower) > Math.abs(driveTrain.rwPower))
+                    * ((driveTrain.moveSpeed - (((Math.abs(driveTrain.lwPower) > Math.abs(driveTrain.rwPower))
                     ? Math.abs(driveTrain.lwPower) * driveTrain.moveTurnRatio
-                    : Math.abs(driveTrain.rwPower) * driveTrain.moveTurnRatio))) / driveTrain.moveSpeed );
+                    : Math.abs(driveTrain.rwPower) * driveTrain.moveTurnRatio))) / driveTrain.moveSpeed);
             driveTrain.gyroStraight();
             telemetry.addData("heading", driveTrain.getHeading());
             telemetry.addData("targetDegree", driveTrain.targetDegree);
@@ -82,6 +82,7 @@ public class TelOpBlue extends LinearOpMode {
 
             // Object Grab -----------------------------------------------------------------------
             //EXTEND ARM
+            /*
             if (gamepad2.right_stick_y < 0 && objectGrab.extend.getCurrentPosition() >= 3300)
                 objectGrab.extend.setPower(0);
             else if (gamepad2.right_stick_y > 0 && objectGrab.extend.getCurrentPosition() <= 100)
@@ -134,6 +135,9 @@ public class TelOpBlue extends LinearOpMode {
                 objectGrab.duck.setPower(.5);
             if(gamepad2.dpad_down)
                 objectGrab.duck.setPower(0);
+        }
+        */
+
         }
     }
 }

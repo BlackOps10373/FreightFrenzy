@@ -6,6 +6,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.STOP_AND_RESET_ENC
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -217,6 +218,14 @@ public class DriveTrain {
 
     }
 
+    public void resetPowers()
+    {
+        lwPower = 0;
+        rwPower = 0;
+        blwPower = 0;
+        brwPower = 0;
+    }
+
     public double greatest(double a, double b) {
         // returns the greatest of two numbers
         return a > b ? a : b;
@@ -224,21 +233,11 @@ public class DriveTrain {
     }
 
     public void turnPower(double amount) {
-        // (OLD, but still might be useful) The multiplication is for if it turns, it slows it down first (so if it was going max speed it can still turn (based on the ratio defined in moveTurnRatio)
-        /*
-        lwPower *= 1 - f;
-        rwPower *= 1 - moveTurnRatio;
-        blwPower *= 1 - moveTurnRatio;
-        brwPower *= 1 - moveTurnRatio;
-        // moveTurnRatio is also used in the TelOp class
-        */
-
 
         lwPower += amount;
         rwPower -= amount;
         blwPower += amount;
         brwPower -= amount;
-
 
         // Preserves the ratios of each wheel, but changes all magnitudes to be 1 or less
         double a = Math.abs(greatest(greatest(Math.abs(lwPower), Math.abs(rwPower)), greatest(Math.abs(blwPower), Math.abs(brwPower))));
@@ -320,29 +319,23 @@ public class DriveTrain {
         lw.setPower((gamepadYControl * Math.abs(gamepadYControl) + gamepadXControl * Math.abs(gamepadXControl) - driveTurn) * speedAdjust);
         blw.setPower((gamepadYControl * Math.abs(gamepadYControl) - gamepadXControl * Math.abs(gamepadXControl) - driveTurn) * speedAdjust);
     }
-    public void moveAmount(double YComponent, double XComponent, double Rotate, double dist)
+    public void setEveryMove(double YComponent, double XComponent, double Rotate, double ticks, DcMotor wheel, LinearOpMode opMode, int armUpDown, int armRotation, ObjectGrab objectGrab)
     {
         // If you want more precise control over movement, use the normal move function in your own while loop
 
+        objectGrab.safeArmMovement(armUpDown, armRotation);
         // The distance in not in any established units
         double distanceTraveled = 0;
-        int startTicksLw = lw.getCurrentPosition();
-        int startTicksRw = rw.getCurrentPosition();
-        int startTicksBlw = blw.getCurrentPosition();
-        int startTicksBrw = brw.getCurrentPosition();
-        while(distanceTraveled < dist)
+
+        int startTicks = wheel.getCurrentPosition();
+        while(distanceTraveled < ticks && opMode.opModeIsActive())
         {
-            double speedMultiplier = (dist - distanceTraveled);
-            speedMultiplier *= 0.003; // Lower value causes slowdown to happen sooner
-            speedMultiplier *= speedMultiplier;
-            speedMultiplier *= speedMultiplier;
-            speedMultiplier += 0.8; // min speed the quadratic approaches
-            if (speedMultiplier > 1)
-                speedMultiplier = 1;
-            move(YComponent * speedMultiplier, XComponent * speedMultiplier, Rotate);
-            int forward = (lw.getCurrentPosition() - startTicksLw) + (rw.getCurrentPosition() - startTicksRw) + (blw.getCurrentPosition() - startTicksBlw) + (blw.getCurrentPosition() - startTicksBlw);
-            int Right = (-(lw.getCurrentPosition() - startTicksLw) + (rw.getCurrentPosition() - startTicksRw) - (blw.getCurrentPosition() - startTicksBlw) + (brw.getCurrentPosition() - startTicksBrw));
-            distanceTraveled = Math.sqrt((forward * forward) + (Right * Right));
+            telemetry.addData("ticks", wheel.getCurrentPosition());
+            telemetry.update();
+
+            move(YComponent, XComponent, Rotate);
+            distanceTraveled = Math.abs(wheel.getCurrentPosition() - startTicks);
+            objectGrab.armMovementCheck();
         }
     }
 }

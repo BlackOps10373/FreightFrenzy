@@ -29,13 +29,14 @@ public class BlueDuck extends LinearOpMode {
         driveTrain.rw = hardwareMap.dcMotor.get("rw");
         driveTrain.brw = hardwareMap.dcMotor.get("brw");
 
+        /*
         objectGrab.turnServo = hardwareMap.servo.get("turnServo");
        // objectGrab.upDownS = hardwareMap.crservo.get("upDownServo");
         objectGrab.fingerServo = hardwareMap.crservo.get("fingerServo");
         objectGrab.duck = hardwareMap.crservo.get("duck");
         objectGrab.extend = hardwareMap.dcMotor.get("extend");
         objectGrab.extend.setMode(RUN_WITHOUT_ENCODER);
-
+*/
 
         ObjectDetector detector = new ObjectDetector(telemetry);
         detector.logiCam = hardwareMap.get(WebcamName.class, "logiCam");

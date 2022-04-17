@@ -28,7 +28,7 @@ public class BlueWarehouse extends LinearOpMode {
         //objectGrab.turnServo = hardwareMap.servo.get("turnServo");
 
 
-        /*ObjectDetector detector = new ObjectDetector(telemetry);
+        ObjectDetector detector = new ObjectDetector(telemetry);
         detector.logiCam = hardwareMap.get(WebcamName.class, "logiCam");
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
@@ -47,7 +47,7 @@ public class BlueWarehouse extends LinearOpMode {
             public void onError(int errorCode) {
 
             }
-        });*/
+        });
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
         waitForStart();

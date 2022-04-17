@@ -26,14 +26,14 @@ public class ObjectDetector extends OpenCvPipeline {
     private Location location;
      // here
     static final Rect LEFT_ROI = new Rect(
-            new Point(0, 110),
-            new Point(70, 180));
+            new Point(50, 60),
+            new Point(120, 130));
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(110, 110),
-            new Point ( 180, 180));
+            new Point(160, 40),
+            new Point ( 230, 110));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(220, 110),
-            new Point(290, 180));
+            new Point(260, 40),
+            new Point(320, 110));
     //here
     static double PERCENT_COLOR_THRESHOLD = 0.4;
     public ObjectDetector(Telemetry t) {
