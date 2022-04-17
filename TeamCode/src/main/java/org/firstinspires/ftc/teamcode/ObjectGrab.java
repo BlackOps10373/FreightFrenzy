@@ -55,7 +55,7 @@ public class ObjectGrab {
         upDownMotor.setPower(.75);
 
         rotateTargetPosition += Rotate;
-        if(rotateTargetPosition < - 5000)
+        if(rotateTargetPosition < -5000)
             rotateTargetPosition = -5000;
         if(rotateTargetPosition > 5000)
             rotateTargetPosition = 5000;

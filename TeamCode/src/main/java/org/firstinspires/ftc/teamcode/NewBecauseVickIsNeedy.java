@@ -53,15 +53,16 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
                 switch(armPositionSteps) {
                     case 0:
                         objectGrab.armTargetPosition = 5400;
-                        objectGrab.rotateTargetPosition = 5000;
+                        if(!(objectGrab.upDownMotor.getCurrentPosition() < 1400 && (objectGrab.rotate.getCurrentPosition() > -2000 && objectGrab.rotate.getCurrentPosition() < 2000)))
+                            objectGrab.rotateTargetPosition = 5000;
                         break;
                     case 1:
                         objectGrab.armTargetPosition = 3300;
-                        objectGrab.rotateTargetPosition = 5000;
+                        //objectGrab.rotateTargetPosition = 5000;
                         break;
                     case 2:
                         objectGrab.armTargetPosition = 2500;
-                        objectGrab.rotateTargetPosition = 5000;
+                        //objectGrab.rotateTargetPosition = 5000;
                         break;
                 }
                 useSafeRotate = true;
@@ -81,9 +82,15 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
                 objectGrab.leftGrab.setPower(-0);
             }
 
+            if(gamepad2.b || gamepad1.b){
+                objectGrab.leftGrab.setPower(1);
+                objectGrab.rightGrab.setPower(-1);
+            }
+
 
             telemetry.addData("Rotation", objectGrab.rotateTargetPosition);
             telemetry.addData("touch", objectGrab.touchSensor.isPressed());
+            telemetry.addData("rotate pos", objectGrab.rotate.getCurrentPosition());
 
             if(objectGrab.upDownMotor.getCurrentPosition() < 1400 && (objectGrab.rotate.getCurrentPosition() > -2000 && objectGrab.rotate.getCurrentPosition() < 2000))
                 objectGrab.armMovement((int)(gamepad2.left_stick_y * 75), 0);
