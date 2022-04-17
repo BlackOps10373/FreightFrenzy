@@ -48,11 +48,24 @@ public class RedWarehouse extends LinearOpMode {
 
             }
         });*/
-        telemetry.addData("Status:", "Initialized");
-        telemetry.update();
         waitForStart();
-        driveTrain.frontTargetPosition = 0;
-        driveTrain.backTargetPosition = 0;
+        while(driveTrain.rw.getCurrentPosition() > -400) {
+            driveTrain.move(1, 0, 0);
+            telemetry.addData("rw", driveTrain.rw.getCurrentPosition());
+            telemetry.update();
+        }
+        driveTrain.targetDegree += 180;
+        while(!(driveTrain.getHeading() < driveTrain.targetDegree + 2 && driveTrain.getHeading() > driveTrain.targetDegree - 2)) {
+            objectGrab.armTargetPosition = 5400;
+            objectGrab.armMovement(0, 0);
+            driveTrain.move(0, 0, .75);
+            if(objectGrab.upDownMotor.getCurrentPosition() > 1400)
+                objectGrab.rotateTargetPosition = 5000;
+        }
+        while(objectGrab.rotate.getCurrentPosition() != objectGrab.rotateTargetPosition){
+            objectGrab.armMovement(0,0);
+            driveTrain.move(0,0,0);
+        }
        /*switch (detector.getLocation()) {
             case LEFT:
                 // do stuff
@@ -67,8 +80,6 @@ public class RedWarehouse extends LinearOpMode {
         //detector.camera.stopStreaming();
 
         // run until the end of the match (driver presses STOP)
-        driveTrain.move("side", 1500);
-        driveTrain.move("straight", 3000);
         //driveTrain.move("side", 1500);
         //driveTrain.move("rotate", 30);
     }

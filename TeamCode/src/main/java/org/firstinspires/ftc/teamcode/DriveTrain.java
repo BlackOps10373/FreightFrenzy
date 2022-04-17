@@ -85,6 +85,7 @@ public class DriveTrain {
         brw.setDirection(DcMotorSimple.Direction.REVERSE);
         lw.setMode(RUN_WITHOUT_ENCODER);
         blw.setMode(RUN_WITHOUT_ENCODER);
+        rw.setMode(STOP_AND_RESET_ENCODER);
         rw.setMode(RUN_WITHOUT_ENCODER);
         brw.setMode(RUN_WITHOUT_ENCODER);
 
