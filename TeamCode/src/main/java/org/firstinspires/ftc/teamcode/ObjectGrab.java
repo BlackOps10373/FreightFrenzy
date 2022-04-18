@@ -43,25 +43,34 @@ public class ObjectGrab {
     }
 
     public void armMovement(int upDown, int Rotate) {
-        armTargetPosition -= upDown;
-        telemetry.addData("position", armTargetPosition);
-        telemetry.update();
-        if(armTargetPosition < 0)
-            armTargetPosition = 0;
-        if(armTargetPosition > 5500)
-            armTargetPosition = 5500;
-        upDownMotor.setTargetPosition(armTargetPosition);
-        upDownMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        upDownMotor.setPower(.75);
+        if(upDownMotor.getCurrentPosition() > 3200 || ((rotate.getCurrentPosition() > -480) && (rotate.getCurrentPosition() < 480))) {
+            armTargetPosition -= upDown;
+            telemetry.addData("position", armTargetPosition);
+            telemetry.update();
+            if (armTargetPosition < 0)
+                armTargetPosition = 0;
+            if (armTargetPosition > 5500)
+                armTargetPosition = 5500;
+            upDownMotor.setTargetPosition(armTargetPosition);
+            upDownMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            upDownMotor.setPower(.75);
+        } else {
+            upDownMotor.setPower(0);
+        }
 
-        rotateTargetPosition += Rotate;
-        if(rotateTargetPosition < -5000)
-            rotateTargetPosition = -5000;
-        if(rotateTargetPosition > 5000)
-            rotateTargetPosition = 5000;
-        rotate.setTargetPosition(rotateTargetPosition);
-        rotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rotate.setPower(1);
+        if(upDownMotor.getCurrentPosition() > 2800 ||
+                ((rotate.getCurrentPosition() > -280) || rotate.getCurrentPosition() < 280)) {
+            rotateTargetPosition += Rotate;
+            if (rotateTargetPosition < -5000)
+                rotateTargetPosition = -5000;
+            if (rotateTargetPosition > 5000)
+                rotateTargetPosition = 5000;
+            rotate.setTargetPosition(rotateTargetPosition);
+            rotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rotate.setPower(1);
+        } else {
+            rotate.setPower(0);
+        }
     }
 
 

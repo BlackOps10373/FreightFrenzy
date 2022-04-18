@@ -59,7 +59,7 @@ public class RedWarehouse extends LinearOpMode {
             objectGrab.armTargetPosition = 5400;
             objectGrab.armMovement(0, 0);
             driveTrain.move(0, 0, .75);
-            if(objectGrab.upDownMotor.getCurrentPosition() > 1400)
+            if(objectGrab.upDownMotor.getCurrentPosition() > 2800)
                 objectGrab.rotateTargetPosition = 5000;
         }
         while(objectGrab.rotate.getCurrentPosition() != objectGrab.rotateTargetPosition){
