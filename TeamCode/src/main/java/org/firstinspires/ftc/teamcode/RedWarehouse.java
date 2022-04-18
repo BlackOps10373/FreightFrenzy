@@ -57,13 +57,11 @@ public class RedWarehouse extends LinearOpMode {
         driveTrain.targetDegree += 180;
         while(!(driveTrain.getHeading() < driveTrain.targetDegree + 2 && driveTrain.getHeading() > driveTrain.targetDegree - 2)) {
             objectGrab.armTargetPosition = 5400;
-            objectGrab.armMovement(0, 0);
             driveTrain.move(0, 0, .75);
             if(objectGrab.upDownMotor.getCurrentPosition() > 2800)
                 objectGrab.rotateTargetPosition = 5000;
         }
         while(objectGrab.rotate.getCurrentPosition() != objectGrab.rotateTargetPosition){
-            objectGrab.armMovement(0,0);
             driveTrain.move(0,0,0);
         }
        /*switch (detector.getLocation()) {

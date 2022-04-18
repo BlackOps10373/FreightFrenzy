@@ -18,16 +18,14 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
         DriveTrain driveTrain = new DriveTrain(telemetry, hardwareMap);
         ObjectGrab objectGrab = new ObjectGrab(telemetry, hardwareMap);
         ElapsedTime elapsedTime = new ElapsedTime();
-        double powerchange = -0.5;
         int armPositionSteps = 0;
 
-        boolean turnGripped = false;
-        double rAngleDiff = 0;
         boolean useSafeArmTarget = false;
-        int safeArmTargetPosition = 0;
         boolean useSafeRotate = false;
-        int safeRotateTargetPosition = 0;
-        int inOutTargetDegree = 0;
+        int armTargetPosition = 1200;
+        int rotateTargetPosition = 0;
+
+        boolean isNotSafe = false;
 
         boolean simulateTouchSensor = false;
 
@@ -54,13 +52,6 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
             if(gamepad1.right_bumper)
                 armPositionSteps = 0;
 
-            //SPIT OUT
-            if(gamepad2.x || gamepad1.x){
-                objectGrab.leftGrab.setPower(-1);
-                objectGrab.rightGrab.setPower(1);
-                elapsedTime.startTime();
-            }
-
             //STOP SERVOS
             if(gamepad2.y){
                 objectGrab.rightGrab.setPower(0);
@@ -71,11 +62,11 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
             if(gamepad2.a || gamepad1.a){
                 objectGrab.rightGrab.setPower(1);
                 objectGrab.leftGrab.setPower(-1);
-                objectGrab.armTargetPosition = 50;
+                armTargetPosition = 50;
             }
 
             //IF NO BLOCK TURN OFF SERVO
-            if(!objectGrab.touchSensor.isPressed()){
+            if(!(objectGrab.touchSensor.isPressed()) && !(gamepad1.a)){
                 objectGrab.leftGrab.setPower(0);
                 objectGrab.rightGrab.setPower(0);
             }
@@ -87,45 +78,99 @@ public class NewBecauseVickIsNeedy extends LinearOpMode {
             }
 
             if(objectGrab.touchSensor.isPressed() || simulateTouchSensor) {
-                objectGrab.leftGrab.setPower(-0.5);
-                objectGrab.rightGrab.setPower(0.01);
+                if(!(gamepad1.x || gamepad2.x)){
+                    objectGrab.leftGrab.setPower(-0.5);
+                    objectGrab.rightGrab.setPower(0.01);
+                }
+                else if(gamepad1.x || gamepad2.x){
+                    objectGrab.leftGrab.setPower(1);
+                    objectGrab.rightGrab.setPower(-1);
+                    elapsedTime.startTime();
+                }
                 switch(armPositionSteps) {
                     case 0:
-                        objectGrab.armTargetPosition = 5400;
+                        armTargetPosition = 5400;
                         if(objectGrab.upDownMotor.getCurrentPosition() > 2800)
-                            objectGrab.rotateTargetPosition = 5000;
+                            rotateTargetPosition = 5000;
                         break;
                     case 1:
-                        objectGrab.armTargetPosition = 3300;
+                        armTargetPosition = 3300;
                         if(objectGrab.upDownMotor.getCurrentPosition() > 2800)
-                            objectGrab.rotateTargetPosition = 5000;
+                            rotateTargetPosition = 5000;
                         break;
                     case 2:
-                        objectGrab.armTargetPosition = 2500;
+                        armTargetPosition = 2500;
                         if(objectGrab.upDownMotor.getCurrentPosition() > 2800)
-                            objectGrab.rotateTargetPosition = 5000;
+                            rotateTargetPosition = 5000;
                         break;
-                }
-            } else if (elapsedTime.milliseconds() > 2000) {
-                objectGrab.armTargetPosition = 2800;
-                objectGrab.rotateTargetPosition = 0;
-                if(objectGrab.rotate.getCurrentPosition() == 0){
-                    elapsedTime.reset();
-                    objectGrab.armTargetPosition = 800;
                 }
             }
 
-            telemetry.addData("Rotation", objectGrab.rotateTargetPosition);
-            telemetry.addData("touch", objectGrab.touchSensor.isPressed());
-            telemetry.addData("rotate pos", objectGrab.rotate.getCurrentPosition());
-            /*if(objectGrab.upDownMotor.getCurrentPosition() < 2800 && (objectGrab.rotate.getCurrentPosition() > -2200 && objectGrab.rotate.getCurrentPosition() < 2200))
-                objectGrab.armMovement((int)(gamepad2.left_stick_y * 75), 0);
-            else if(objectGrab.upDownMotor.getCurrentPosition() < 3000 && ((objectGrab.rotate.getCurrentPosition() > -2000 && objectGrab.rotate.getCurrentPosition() < -1400) || (objectGrab.rotate.getCurrentPosition() < 2000 && objectGrab.rotate.getCurrentPosition() > 1400)))
-                objectGrab.armMovement(0, (int)(gamepad2.right_stick_x * 50));
-            else*/
-                objectGrab.armMovement((int)(gamepad2.left_stick_y * 42), (int)(gamepad2.right_stick_x * 50));
+            if(!(objectGrab.touchSensor.isPressed()) && elapsedTime.milliseconds() > 3000) {
+                armTargetPosition = 2800;
+                rotateTargetPosition = 0;
+                if(objectGrab.rotate.getCurrentPosition() == 0){
+                    elapsedTime.reset();
+                    armTargetPosition = 1200;
+                }
+            }
 
-            //Setting the Arms to the right encoder Marks
+            //SETTING THE SAFE BOUNDARIES
+            //ARM
+            if(armTargetPosition >= 5500){
+                armTargetPosition = 5500;
+            }
+
+            if(!(objectGrab.rotate.getCurrentPosition() > -480 && objectGrab.rotate.getCurrentPosition() < 480) || !(objectGrab.rotate.getCurrentPosition() > 5000-480 && objectGrab.rotate.getCurrentPosition() < 5000+480) || !(rotateTargetPosition > -480 && rotateTargetPosition < 480) && !(rotateTargetPosition > 5000-480 && rotateTargetPosition < 5000+480)){
+                useSafeArmTarget = false;
+            }else{
+                useSafeArmTarget = true;
+            }
+
+            //SETTING THE POSITION TO BE HIGHER THAN ALL OF THE STUFF IF IT IS NOT SAFE TO ROTATE
+            if(useSafeArmTarget = false && armTargetPosition < 3200){
+                armTargetPosition = 3200;
+            }
+
+            //ROTATE
+            if(armTargetPosition < 3200 && (rotateTargetPosition <-400 && !(rotateTargetPosition < -3000))){
+                rotateTargetPosition = -400;
+            }
+
+            if(armTargetPosition < 3200 && (rotateTargetPosition > 400 && !(rotateTargetPosition > 3000))){
+                rotateTargetPosition = 400;
+            }
+
+            if(armTargetPosition < 3200 && (rotateTargetPosition < 5000-400 && (!(rotateTargetPosition < 400 && rotateTargetPosition > -400) && !(rotateTargetPosition < -3000)))){
+                rotateTargetPosition = 5000-480;
+            }
+
+            if(armTargetPosition < 3200 && (rotateTargetPosition > -5000+400 && (!(rotateTargetPosition < 400 && rotateTargetPosition > -400) && !(rotateTargetPosition > 3000)))){
+                rotateTargetPosition = 5000-480;
+            }
+
+            //LIMIT ROTATING IN GENERAL
+            if(rotateTargetPosition > 5400){
+                rotateTargetPosition = 5400;
+            }
+
+            if(rotateTargetPosition < -5400){
+                rotateTargetPosition = -5400;
+            }
+
+            //SOME TELEMETRY
+            telemetry.addData("ROTATE", objectGrab.rotate.getCurrentPosition());
+            telemetry.addData("UPDOWN", objectGrab.upDownMotor.getCurrentPosition());
+            telemetry.addData("NOT SAFE ROTATE", true);
+            telemetry.update();
+
+            objectGrab.upDownMotor.setTargetPosition(armTargetPosition);
+            objectGrab.upDownMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            objectGrab.upDownMotor.setPower(.75);
+
+            objectGrab.rotate.setTargetPosition(rotateTargetPosition);
+            objectGrab.rotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            objectGrab.rotate.setPower(1);
         }
     }
 }
