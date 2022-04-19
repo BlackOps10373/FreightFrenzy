@@ -6,6 +6,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_WITHOUT_ENCODE
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,6 +25,7 @@ public class RedWarehouse extends LinearOpMode {
 
         DriveTrain driveTrain = new DriveTrain(telemetry, hardwareMap);
         ObjectGrab objectGrab = new ObjectGrab(telemetry, hardwareMap);
+        ElapsedTime elapsedTime = new ElapsedTime();
 
         //objectGrab.turnServo = hardwareMap.servo.get("turnServo");
 
@@ -48,23 +50,107 @@ public class RedWarehouse extends LinearOpMode {
 
             }
         });*/
+
+        // Initialize arm off ground
+        objectGrab.safeArmMovement(200, 0);
+        objectGrab.armMovementCheck();
         waitForStart();
-        while(driveTrain.rw.getCurrentPosition() > -400) {
-            driveTrain.move(1, 0, 0);
-            telemetry.addData("rw", driveTrain.rw.getCurrentPosition());
+
+        // Move diagonal towards wobblegoal while lifting arm behind and turning to have the back facing the goal
+        driveTrain.setEveryMove(-Math.cos(45), Math.sin(45), 0.5, (750 * 2) + 50, driveTrain.rw, this, 5400, 5100, objectGrab);
+        driveTrain.turnMotorsToZero();
+
+        driveTrain.targetDegree += (180 - 30);
+        while(((driveTrain.getHeading() - driveTrain.targetDegree) > driveTrain.windowSize || driveTrain.degreeCalc(driveTrain.getHeading() - driveTrain.targetDegree) < 360 - driveTrain.windowSize) && opModeIsActive()) {
+            objectGrab.armMovementCheck();
+            driveTrain.resetPowers();
+            driveTrain.gyroStraight();
+            driveTrain.lw.setPower(driveTrain.lwPower);
+            driveTrain.rw.setPower(driveTrain.rwPower);
+            driveTrain.blw.setPower(driveTrain.blwPower);
+            driveTrain.brw.setPower(driveTrain.brwPower);
+            telemetry.addData("ticks", driveTrain.rw.getCurrentPosition());
+            telemetry.addData("TargetDegree", driveTrain.targetDegree);
             telemetry.update();
         }
-        driveTrain.targetDegree += 180;
-        while(!(driveTrain.getHeading() < driveTrain.targetDegree + 2 && driveTrain.getHeading() > driveTrain.targetDegree - 2)) {
-            objectGrab.armTargetPosition = 5400;
-            driveTrain.move(0, 0, .75);
-            if(objectGrab.upDownMotor.getCurrentPosition() > 2800)
-                objectGrab.rotateTargetPosition = 5000;
+        driveTrain.resetPowers();
+        driveTrain.turnMotorsToZero();
+        // finish moving arm
+        while (objectGrab.upDownMotor.isBusy() || objectGrab.rotate.isBusy()) {
+            objectGrab.armMovementCheck();
         }
-        while(objectGrab.rotate.getCurrentPosition() != objectGrab.rotateTargetPosition){
-            driveTrain.move(0,0,0);
+
+        // Drop block
+        objectGrab.rightGrab.setPower(-1);
+        objectGrab.leftGrab.setPower(1);
+
+        // wait 2 seconds
+        double time = elapsedTime.time() + 2;
+        while (elapsedTime.time() < time) {
+            objectGrab.armMovementCheck();
         }
-       /*switch (detector.getLocation()) {
+
+        // get ready to grab block
+        objectGrab.rightGrab.setPower(1);
+        objectGrab.leftGrab.setPower(-1);
+
+        // move back at same time as block drop
+        driveTrain.setEveryMove(Math.cos(45) * 0.8, -Math.sin(45) * 0.8, 0, 100, driveTrain.rw, this, 5500, 5100, objectGrab);
+        driveTrain.turnMotorsToZero();
+
+        // lower arm to front position to pick up blocks while rotating to be against the wall and moving to the wall
+        driveTrain.setEveryMove(Math.cos(45), -Math.sin(45), -0.5, 200, driveTrain.rw, this, 200, 0, objectGrab);
+        driveTrain.turnMotorsToZero();
+
+        driveTrain.targetDegree = 90;
+        while(((driveTrain.getHeading() - driveTrain.targetDegree) > driveTrain.windowSize || driveTrain.degreeCalc(driveTrain.getHeading() - driveTrain.targetDegree) < 360 - driveTrain.windowSize) && opModeIsActive()) {
+            objectGrab.armMovementCheck();
+            driveTrain.resetPowers();
+            driveTrain.gyroStraight();
+            driveTrain.lw.setPower(driveTrain.lwPower);
+            driveTrain.rw.setPower(driveTrain.rwPower);
+            driveTrain.blw.setPower(driveTrain.blwPower);
+            driveTrain.brw.setPower(driveTrain.brwPower);
+            telemetry.addData("ticks", driveTrain.rw.getCurrentPosition());
+            telemetry.addData("TargetDegree", driveTrain.targetDegree);
+            telemetry.update();
+        }
+        driveTrain.resetPowers();
+        driveTrain.turnMotorsToZero();
+
+        // finish going to wall
+        driveTrain.setEveryMove(0, -1, 0, 300, driveTrain.rw, this, 200, 0, objectGrab);
+        driveTrain.turnMotorsToZero();
+        // go into warehouse
+        driveTrain.setEveryMove(0.6, 0, 0, 550, driveTrain.rw, this, 200, 0, objectGrab);
+        driveTrain.turnMotorsToZero();
+        // wait for block to be grabbed
+        while(!(objectGrab.touchSensor.isPressed()) && opModeIsActive()) {
+            objectGrab.armMovementCheck();
+            driveTrain.setEveryMove(0.6, 0, 0, 550, driveTrain.rw, this, 200, 0, objectGrab);
+        }
+        driveTrain.turnMotorsToZero();
+        objectGrab.leftGrab.setPower(-0.5);
+        objectGrab.rightGrab.setPower(0.01);
+        // when block is grabbed, back up
+        driveTrain.setEveryMove(-1, -0.4, 0, 550, driveTrain.rw, this, 10, 0, objectGrab);
+        driveTrain.turnMotorsToZero();
+
+
+
+        // end and reset everything
+        objectGrab.rightGrab.setPower(0);
+        objectGrab.leftGrab.setPower(0);
+
+        objectGrab.safeArmMovement(200, 0);
+
+        while (opModeIsActive()) {
+            objectGrab.armMovementCheck();
+        }
+
+
+
+        /*switch (detector.getLocation()) {
             case LEFT:
                 // do stuff
                 break;
