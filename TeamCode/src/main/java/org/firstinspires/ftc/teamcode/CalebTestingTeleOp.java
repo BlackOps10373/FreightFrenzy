@@ -142,13 +142,13 @@ public class CalebTestingTeleOp extends LinearOpMode {
                 isNotSafe = true;
             }
 
-            if(armTargetPosition < 3200 && (rotateTargetPosition < 5000-400 && (!(rotateTargetPosition < 500 && rotateTargetPosition > -500) && !(rotateTargetPosition < -3000)))){
+            if(armTargetPosition < 3200 && (rotateTargetPosition > 5000-400 && (!(rotateTargetPosition < 500 && rotateTargetPosition > -500) && !(rotateTargetPosition < -3000)))){
                 rotateTargetPosition = 5000-400;
                 isNotSafe = true;
             }
 
-            if(armTargetPosition < 3200 && (rotateTargetPosition > -5000+400 && (!(rotateTargetPosition < 500 && rotateTargetPosition > -500) && !(rotateTargetPosition > 3000)))){
-                rotateTargetPosition = -5000-480;
+            if(armTargetPosition < 3200 && (rotateTargetPosition < -5000+400 && (!(rotateTargetPosition < 500 && rotateTargetPosition > -500) && !(rotateTargetPosition > 3000)))){
+                rotateTargetPosition = -5000+400;
                 isNotSafe = true;
             }
 
